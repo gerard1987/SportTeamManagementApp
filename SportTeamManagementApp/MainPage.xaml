@@ -30,19 +30,6 @@
             </ComboBox>
             <Button Content="Submit" Click="SelectPlayer"/>
         </StackPanel>
-
-        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Height="297" Margin="750,20,0,0" Width="422">
-            <TextBlock Text="Name:" />
-            <TextBox x:Name="NameTextBox" />
-
-            <TextBlock Text="Age:" />
-            <TextBox x:Name="AgeTextBox" />
-
-            <TextBlock Text="Salary:" />
-            <TextBox x:Name="SalaryTextBox" />
-
-            <Button Content="Load Data" Click="LoadDataButton_Click" />
-        </StackPanel>
     </Grid>
 
 
