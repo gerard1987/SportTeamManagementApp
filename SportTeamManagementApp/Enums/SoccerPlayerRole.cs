@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SportTeamManagementApp
+namespace SportTeamManagementApp.Enums
 {
-    public enum Role
+    public enum SoccerPlayerRole
     {
-        Coach,
         Goalkeeper,
         Defender,
         Midfielder,

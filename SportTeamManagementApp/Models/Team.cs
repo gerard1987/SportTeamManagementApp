@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SportTeamManagementApp.Models.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,12 +9,14 @@ namespace SportTeamManagementApp.Models
 {
     public class Team
     {
-        public readonly string name;
-        public List<Player> players = new List<Player>();
+        public string name;
+        public ISoccerCoach coach;
+        public List<ISoccerPlayer> players = new List<ISoccerPlayer>();
 
-        public Team(string name)
+        public Team(string name, ISoccerCoach coach)
         {
             this.name = name;
+            this.coach = coach;
         }
     }
 }

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SportTeamManagementApp.Models.Interfaces
+namespace SportTeamManagementApp.Enums
 {
-    public interface ITeamMember
+    public enum SoccerCoachRole
     {
-        void asignRoleToTeamMember(Role role);
+        HeadCoach,
+        Assistent
     }
 }

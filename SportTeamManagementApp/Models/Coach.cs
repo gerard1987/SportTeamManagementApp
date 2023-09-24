@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SportTeamManagementApp.Models
 {
-    public class Coach : TeamMember, ITeamMember
+    public class Coach : TeamMember, ISoccerCoach
     {
 
     }

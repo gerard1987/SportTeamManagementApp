@@ -9,27 +9,6 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <!-- First Area -->
-        <StackPanel Margin="20,20,0,870" HorizontalAlignment="Left" Width="700" VerticalAlignment="Stretch">
-            <TextBlock Text="Create team:"/>
-            <TextBox x:Name="TeamName" PlaceholderText="Enter text here" FontFamily="Segoe UI"/>
-            <Button Content="Submit" Click="CreateTeam"/>
-        </StackPanel>
-
-        <!-- Second Area -->
-        <StackPanel Margin="21,130,0,751" HorizontalAlignment="Left" Width="699">
-            <TextBlock Text="Select a team:"/>
-            <ComboBox x:Name="selectteam" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Width="365">
-            </ComboBox>
-            <Button Content="Submit" Click="SelectTeam"/>
-        </StackPanel>
-
-        <StackPanel Margin="21,254,0,629" HorizontalAlignment="Left" Width="699">
-            <TextBlock Text="Selected team players:"/>
-            <ComboBox x:Name="selectplayer" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Width="365">
-            </ComboBox>
-            <Button Content="Submit" Click="SelectPlayer"/>
-        </StackPanel>
     </Grid>
 
 

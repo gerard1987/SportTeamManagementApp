@@ -1,4 +1,6 @@
-﻿using SportTeamManagementApp.Models;
+﻿using SportTeamManagementApp.Enums;
+using SportTeamManagementApp.Models;
+using SportTeamManagementApp.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,77 +26,34 @@ namespace SportTeamManagementApp
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private Sport soccer;
-        private Team selectedTeam;
-
         public MainPage()
         {
             this.InitializeComponent();
 
             Sport soccer = new Sport("Soccer");
-            Team arsenal = new Team("Arsenal");
-            Team liverPool = new Team("Liverpool");
-            Team ManUnited = new Team("Manchester united");
 
-            this.soccer = soccer;
-
-            this.soccer.teams.Add(arsenal);
-            this.soccer.teams.Add(liverPool);
-            this.soccer.teams.Add(ManUnited);
-
-            // Fill select team dropdown
-            foreach (Team team in soccer.teams)
+            ISoccerCoach coachArteta = new Coach()
             {
-                selectteam.Items.Add(new ComboBoxItem() { Content = team.name });
-            }
+                firstName = "Mikel",
+                lastName = "Arteta",
+                age = 56,
+                salary = 87000.0,
+                role = SoccerCoachRole.HeadCoach
+            };
 
-            //Player playerOne = new Player()
-            //{
-            //    name = "Messi",
-            //    age = 36,
-            //    salary = 54000000.0
-            //};
-            //playerOne.asignRoleToTeamMember(Role.Forward);
-
-            //Player playerTwo = new Player()
-            //{
-            //    name = "Van der Sar",
-            //    age = 52,
-            //    salary = 417000.0
-            //};
-
-            //playerTwo.asignRoleToTeamMember(Role.Goalkeeper);
-        }
-
-        private void CreateTeam(object sender, RoutedEventArgs e)
-        {
-            string teamName = TeamName.Text;
-
-            Team newTeam = new Team(teamName);
-            soccer.teams.Add(newTeam);
-
-            selectteam.Items.Add(new ComboBoxItem() { Content = newTeam.name });
-        }
-
-        private void SelectTeam(object sender, RoutedEventArgs e)
-        {
-            if (selectteam.SelectedItem != null)
+            ISoccerPlayer playerMessi = new Player()
             {
-                string selectedTeamName = ((ComboBoxItem)selectteam.SelectedItem).Content.ToString();
+                firstName = "Lionel",
+                lastName = "Messi",
+                age = 36,
+                salary = 54000000.0,
+                role = SoccerPlayerRole.Forward
+            };
 
-                this.selectedTeam = this.soccer.teams.Find(t => t.name == selectedTeamName);
+            Team arsenal = new Team("Arsenal", coachArteta);
+            arsenal.players.Add(playerMessi);
 
-                foreach (Player player in this.selectedTeam.players)
-                {
-                    selectplayer.Items.Add(new ComboBoxItem() { Content = player.name });
-                }
-            }
-            
-        }
-
-        private void SelectPlayer(object sender, RoutedEventArgs e)
-        {
-
+            soccer.teams.Add(arsenal);
         }
     }
 }

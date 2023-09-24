@@ -119,17 +119,19 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Enums\SoccerCoachRole.cs" />
+    <Compile Include="Enums\SoccerPlayerRole.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Coach.cs" />
-    <Compile Include="Models\Interfaces\ITeamMember.cs" />
+    <Compile Include="Models\Interfaces\ISoccerCoach.cs" />
+    <Compile Include="Models\Interfaces\ISoccerPlayer.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\Sport.cs" />
     <Compile Include="Models\Team.cs" />
     <Compile Include="Models\TeamMember.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Role.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

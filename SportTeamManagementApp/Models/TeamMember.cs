@@ -1,4 +1,4 @@
-﻿using SportTeamManagementApp.Models.Interfaces;
+﻿using SportTeamManagementApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,16 +7,12 @@ using System.Threading.Tasks;
 
 namespace SportTeamManagementApp.Models
 {
-    public abstract class TeamMember : ITeamMember
+    public abstract class TeamMember
     {
-        public string name;
+        public string firstName;
+        public string lastName;
         public int age;
         public double salary;
-        private Role Role;
-
-        public void asignRoleToTeamMember(Role role)
-        {
-            this.Role = role;
-        }
+        public Enum role;
     }
 }
