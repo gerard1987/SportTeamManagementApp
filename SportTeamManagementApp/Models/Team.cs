@@ -13,10 +13,11 @@ namespace SportTeamManagementApp.Models
         public ISoccerCoach coach;
         public List<ISoccerPlayer> players = new List<ISoccerPlayer>();
 
-        public Team(string name, ISoccerCoach coach)
+        public Team(string name, ISoccerCoach coach, List<ISoccerPlayer> players)
         {
             this.name = name;
             this.coach = coach;
+            this.players = players;
         }
     }
 }

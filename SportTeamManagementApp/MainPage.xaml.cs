@@ -50,10 +50,26 @@ namespace SportTeamManagementApp
                 role = SoccerPlayerRole.Forward
             };
 
-            Team arsenal = new Team("Arsenal", coachArteta);
-            arsenal.players.Add(playerMessi);
+            ISoccerPlayer playerRamos = new Player()
+            {
+                firstName = "Sergio",
+                lastName = "Ramos",
+                age = 37,
+                salary = 11700000.0,
+                role = SoccerPlayerRole.Defender
+            };
+
+            List<ISoccerPlayer> arsenalPlayers = new List<ISoccerPlayer>();
+            arsenalPlayers.Add(playerMessi);
+            arsenalPlayers.Add(playerRamos);
+
+            Team arsenal = new Team("Arsenal", coachArteta, arsenalPlayers);
+            Team liverpool = new Team("Liverpool", coachArteta, new List<ISoccerPlayer>() { });
 
             soccer.teams.Add(arsenal);
+
+            coachArteta.RemovePlayerFromTeam(arsenal, playerMessi);
+            playerRamos.ChangeTeams(arsenal, liverpool);
         }
     }
 }
