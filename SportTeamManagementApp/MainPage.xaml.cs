@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -29,47 +30,72 @@ namespace SportTeamManagementApp
         public MainPage()
         {
             this.InitializeComponent();
-
+            SoccerCoachRoleComboBox.ItemsSource = Enum.GetValues(typeof(SoccerCoachRole));
             Sport soccer = new Sport("Soccer");
+        }
 
-            ISoccerCoach coachArteta = new Coach()
+        private void MainMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (MainMenu.SelectedItem != null)
             {
-                firstName = "Mikel",
-                lastName = "Arteta",
-                age = 56,
-                salary = 87000.0,
-                role = SoccerCoachRole.HeadCoach
-            };
+                string selectedItem = (MainMenu.SelectedItem as ListViewItem).Content.ToString();
 
-            ISoccerPlayer playerMessi = new Player()
+                switch (selectedItem)
+                {
+                    case "Create Coach":
+                        CreateCoachSection.Visibility = Visibility.Visible;
+                        // Navigate to the Create Coach page or show a relevant submenu.
+                        // You can use the ContentArea grid to display content.
+                        break;
+                    case "Create Player":
+                        // Navigate to the Create Player page or show a relevant submenu.
+                        break;
+                    case "Create Team":
+                        // Navigate to the Create Team page or show a relevant submenu.
+                        break;
+                    case "Exit":
+                        // Handle the exit option.
+                        Application.Current.Exit();
+                        break;
+                        // Add more cases for additional options.
+                }
+            }
+
+            // Clear the selection to allow reselection.
+            MainMenu.SelectedItem = null;
+        }
+
+        private async void CreateCoach(object sender, RoutedEventArgs e)
+        {
+            Dictionary<string, string> inputValues = new Dictionary<string, string>();
+
+            foreach (var control in CreateCoachSection.Children)
             {
-                firstName = "Lionel",
-                lastName = "Messi",
-                age = 36,
-                salary = 54000000.0,
-                role = SoccerPlayerRole.Forward
-            };
+                if (control is TextBox textBox)
+                {
+                    if (!String.IsNullOrEmpty(textBox.Text))
+                    {
+                        inputValues[textBox.Name] = textBox.Text;
+                    }
+                    else
+                    {
+                        await ShowExceptionMessage($"No value provided for {textBox.Name} ");
+                    }
+                }
+                else if (control is ComboBox comboBox)
+                {
+                    if (comboBox.SelectedItem is SoccerCoachRole selectedRole)
+                    {
+                        inputValues[comboBox.Name] = selectedRole.ToString();
+                    }
+                }
+            }
+        }
 
-            ISoccerPlayer playerRamos = new Player()
-            {
-                firstName = "Sergio",
-                lastName = "Ramos",
-                age = 37,
-                salary = 11700000.0,
-                role = SoccerPlayerRole.Defender
-            };
-
-            List<ISoccerPlayer> arsenalPlayers = new List<ISoccerPlayer>();
-            arsenalPlayers.Add(playerMessi);
-            arsenalPlayers.Add(playerRamos);
-
-            Team arsenal = new Team("Arsenal", coachArteta, arsenalPlayers);
-            Team liverpool = new Team("Liverpool", coachArteta, new List<ISoccerPlayer>() { });
-
-            soccer.teams.Add(arsenal);
-
-            coachArteta.RemovePlayerFromTeam(arsenal, playerMessi);
-            playerRamos.ChangeTeams(arsenal, liverpool);
+        private async Task ShowExceptionMessage(string errorMessage)
+        {
+            ErrorDialog.Content = errorMessage;
+            await ErrorDialog.ShowAsync();
         }
     }
 }

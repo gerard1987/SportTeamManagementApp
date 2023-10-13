@@ -6,11 +6,38 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    >
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <StackPanel>
+            <TextBlock Text="Sport Team Management" FontSize="24" Margin="10"/>
+
+            <ContentDialog x:Name="ErrorDialog" Title="Message" PrimaryButtonText="OK">
+                <StackPanel>
+                    <TextBlock Text="Your message goes here." />
+                </StackPanel>
+            </ContentDialog>
+
+            <!-- Main Menu -->
+            <ListView Name="MainMenu" SelectionChanged="MainMenu_SelectionChanged">
+                <ListViewItem Content="Create Coach"/>
+                <ListViewItem Content="Create Player"/>
+                <ListViewItem Content="Create Team"/>
+                <ListViewItem Content="Exit"/>
+            </ListView>
+        </StackPanel>
+
+        <!-- Create Coach Section -->
+        <StackPanel VerticalAlignment="Center" x:Name="CreateCoachSection" Visibility="Collapsed">
+            <TextBlock Text="Create Coach" FontSize="20"/>
+            <TextBox PlaceholderText="FirstName" Name="firstName" Margin="10"/>
+            <TextBox PlaceholderText="LastName" Name="lastName" Margin="10"/>
+            <TextBox PlaceholderText="Age" Name="age" Margin="10"/>
+            <TextBox PlaceholderText="Salary" Name="salary" Margin="10"/>
+            <ComboBox PlaceholderText="Role" Margin="10" x:Name="SoccerCoachRoleComboBox" />
+
+            <Button Content="Save" Click="CreateCoach" Margin="10"/>
+        </StackPanel>
     </Grid>
-
-
-
 </Page>
