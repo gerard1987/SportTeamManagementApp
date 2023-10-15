@@ -1,6 +1,7 @@
 ﻿using SportTeamManagementApp.Enums;
 using SportTeamManagementApp.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -15,13 +16,19 @@ namespace SportTeamManagementApp
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        public Sport soccer = new Sport("Soccer");
+        public List<Coach> coaches = new List<Coach>();
+        public List<Player> players = new List<Player>();
+        public List<Team> teams = new List<Team>();
+
         public MainPage()
         {
             this.InitializeComponent();
             SoccerCoachRoleComboBox.ItemsSource = Enum.GetValues(typeof(SoccerCoachRole));
-            Sport soccer = new Sport("Soccer");
+            SoccerPlayerRoleComboBox.ItemsSource = Enum.GetValues(typeof(SoccerPlayerRole));
 
-
+            TeamPlayersComboBox.ItemsSource = players;
+            TeamCoachesComboBox.ItemsSource = coaches;
         }
 
         private void MainMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -34,14 +41,12 @@ namespace SportTeamManagementApp
                 {
                     case "Create Coach":
                         CreateCoachSection.Visibility = Visibility.Visible;
-                        // Navigate to the Create Coach page or show a relevant submenu.
-                        // You can use the ContentArea grid to display content.
                         break;
                     case "Create Player":
-                        // Navigate to the Create Player page or show a relevant submenu.
+                        CreatePlayerSection.Visibility = Visibility.Visible;
                         break;
                     case "Create Team":
-                        // Navigate to the Create Team page or show a relevant submenu.
+                        CreateTeamSection.Visibility = Visibility.Visible;
                         break;
                     case "Exit":
                         // Handle the exit option.
@@ -60,7 +65,33 @@ namespace SportTeamManagementApp
             try
             {
                 Coach newCoach = new Coach();
-                newCoach = ValidateTeamMember(newCoach) as Coach;
+
+                if (String.IsNullOrEmpty(CoachFirstName.Text) || String.IsNullOrEmpty(CoachLastName.Text))
+                {
+                    throw new ArgumentException("First name or last name cannot be empty.");
+                }
+                if (!Int32.TryParse(CoachAge.Text, out int ageResult))
+                {
+                    throw new FormatException($"Could not parse value {CoachAge.Text} to a integer value");
+                }
+                if (!double.TryParse(CoachSalary.Text, out double salaryResult))
+                {
+                    throw new FormatException($"Could not parse value {CoachSalary.Text} to a integer value");
+                }
+                if (!Enum.TryParse(SoccerCoachRoleComboBox.SelectedItem?.ToString(), out SoccerCoachRole soccerCoachRole))
+                {
+                    throw new FormatException($"Could not parse value {SoccerCoachRoleComboBox.Text} to a SoccerPlayerRole");
+                }
+
+                newCoach.firstName = CoachFirstName.Text;
+                newCoach.lastName = CoachLastName.Text;
+                newCoach.age = ageResult;
+                newCoach.salary = salaryResult;
+                newCoach.role = soccerCoachRole;
+
+                coaches.Add(newCoach);
+
+                CreateCoachSection.Visibility = Visibility.Collapsed;
             }
             catch(ArgumentException aEx)
             {
@@ -72,16 +103,42 @@ namespace SportTeamManagementApp
             }
             catch(Exception ex)
             {
+
                 await ShowExceptionMessage($"Something went wrong {ex.Message} ");
             }
         }
-
         private async void CreatePlayer(object sender, RoutedEventArgs e)
         {
             try
             {
                 Player newPlayer = new Player();
-                newPlayer = ValidateTeamMember(newPlayer) as Player;
+
+                if (String.IsNullOrEmpty(PlayerFirstName.Text) || String.IsNullOrEmpty(PlayerLastName.Text))
+                {
+                    throw new ArgumentException("First name or last name cannot be empty.");
+                }
+                if (!Int32.TryParse(PlayerAge.Text, out int ageResult))
+                {
+                    throw new FormatException($"Could not parse value {PlayerAge.Text} to a integer value");
+                }
+                if (!double.TryParse(PlayerSalary.Text, out double salaryResult))
+                {
+                    throw new FormatException($"Could not parse value {PlayerSalary.Text} to a integer value");
+                }
+                if (!Enum.TryParse(SoccerPlayerRoleComboBox.SelectedItem?.ToString(), out SoccerPlayerRole soccerPlayerRole))
+                {
+                    throw new FormatException($"Could not parse value {SoccerPlayerRoleComboBox.Text} to a SoccerPlayerRole");
+                }
+
+                newPlayer.firstName = PlayerFirstName.Text;
+                newPlayer.lastName = PlayerLastName.Text;
+                newPlayer.age = ageResult;
+                newPlayer.salary = salaryResult;
+                newPlayer.role = soccerPlayerRole;
+
+                players.Add(newPlayer);
+
+                CreatePlayerSection.Visibility = Visibility.Collapsed;
             }
             catch (ArgumentException aEx)
             {
@@ -97,51 +154,29 @@ namespace SportTeamManagementApp
             }
         }
 
-        private object ValidateTeamMember(Object teamMember)
+        private async void CreateTeam(object sender, RoutedEventArgs e)
         {
-            string firstName = "";
-            string lastName = "";
-            var age = "";
-            var salary = "";
-            var role = "";
+            try
+            {
+                if (coaches.Count < 1 || players.Count < 1)
+                {
+                    throw new ArgumentException("Cannot create a team without having created a coach or players first!");
+                }
 
-            if (teamMember is Player)
-            {
-                teamMember = teamMember as Player;
-                firstName = PlayerFirstName.Text;
-                lastName = PlayerLastName.Text;
-                age = PlayerAge.Text;
-                salary = PlayerSalary.Text;
-                role = SoccerPlayerRoleComboBox.Text;
+                CreateTeamSection.Visibility = Visibility.Collapsed;
             }
-            else if (teamMember is Coach)
+            catch (ArgumentException aEx)
             {
-                teamMember = teamMember as Coach;
-                firstName = CoachFirstName.Text;
-                lastName = CoachLastName.Text;
-                age = CoachAge.Text;
-                salary = CoachSalary.Text;
-                role = SoccerCoachRoleComboBox.Text;
+                await ShowExceptionMessage(aEx.Message);
             }
-
-            if (String.IsNullOrEmpty(firstName) || String.IsNullOrEmpty(lastName))
+            catch (FormatException fEx)
             {
-                throw new ArgumentException("First name or last name cannot be empty.");
+                await ShowExceptionMessage(fEx.Message);
             }
-            if (!Int32.TryParse(age, out int ageResult))
+            catch (Exception ex)
             {
-                throw new FormatException($"Could not parse value {age} to a integer value");
+                await ShowExceptionMessage($"Something went wrong {ex.Message} ");
             }
-            if (!double.TryParse(salary, out double salaryResult))
-            {
-                throw new FormatException($"Could not parse value {salary} to a integer value");
-            }
-            if (!Enum.TryParse(role, out SoccerCoachRole soccerCoachRole))
-            {
-                throw new FormatException($"Could not parse value {role} to a SoccerCoach role");
-            }
-
-            return teamMember;
         }
 
         private async Task ShowExceptionMessage(string errorMessage)
