@@ -31,13 +31,26 @@
         <!-- Create Coach Section -->
         <StackPanel VerticalAlignment="Center" x:Name="CreateCoachSection" Visibility="Collapsed">
             <TextBlock Text="Create Coach" FontSize="20"/>
-            <TextBox PlaceholderText="FirstName" Name="firstName" Margin="10"/>
-            <TextBox PlaceholderText="LastName" Name="lastName" Margin="10"/>
-            <TextBox PlaceholderText="Age" Name="age" Margin="10"/>
-            <TextBox PlaceholderText="Salary" Name="salary" Margin="10"/>
+            <TextBox PlaceholderText="FirstName" Name="CoachFirstName" Margin="10"/>
+            <TextBox PlaceholderText="LastName" Name="CoachLastName" Margin="10"/>
+            <TextBox PlaceholderText="Age" Name="CoachAge" Margin="10"/>
+            <TextBox PlaceholderText="Salary" Name="CoachSalary" Margin="10"/>
             <ComboBox PlaceholderText="Role" Margin="10" x:Name="SoccerCoachRoleComboBox" />
 
             <Button Content="Save" Click="CreateCoach" Margin="10"/>
         </StackPanel>
+
+        <!-- Create Player Section -->
+        <StackPanel VerticalAlignment="Center" x:Name="CreatePlayerSection" Visibility="Collapsed">
+            <TextBlock Text="Create Coach" FontSize="20"/>
+            <TextBox PlaceholderText="FirstName" Name="PlayerFirstName" Margin="10"/>
+            <TextBox PlaceholderText="LastName" Name="PlayerLastName" Margin="10"/>
+            <TextBox PlaceholderText="Age" Name="PlayerAge" Margin="10"/>
+            <TextBox PlaceholderText="Salary" Name="PlayerSalary" Margin="10"/>
+            <ComboBox PlaceholderText="Role" Margin="10" x:Name="SoccerPlayerRoleComboBox" />
+
+            <Button Content="Save" Click="CreateCoach" Margin="10"/>
+        </StackPanel>
+
     </Grid>
 </Page>

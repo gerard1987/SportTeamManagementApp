@@ -1,21 +1,9 @@
 ﻿using SportTeamManagementApp.Enums;
 using SportTeamManagementApp.Models;
-using SportTeamManagementApp.Models.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -32,6 +20,8 @@ namespace SportTeamManagementApp
             this.InitializeComponent();
             SoccerCoachRoleComboBox.ItemsSource = Enum.GetValues(typeof(SoccerCoachRole));
             Sport soccer = new Sport("Soccer");
+
+
         }
 
         private void MainMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -67,29 +57,91 @@ namespace SportTeamManagementApp
 
         private async void CreateCoach(object sender, RoutedEventArgs e)
         {
-            Dictionary<string, string> inputValues = new Dictionary<string, string>();
-
-            foreach (var control in CreateCoachSection.Children)
+            try
             {
-                if (control is TextBox textBox)
-                {
-                    if (!String.IsNullOrEmpty(textBox.Text))
-                    {
-                        inputValues[textBox.Name] = textBox.Text;
-                    }
-                    else
-                    {
-                        await ShowExceptionMessage($"No value provided for {textBox.Name} ");
-                    }
-                }
-                else if (control is ComboBox comboBox)
-                {
-                    if (comboBox.SelectedItem is SoccerCoachRole selectedRole)
-                    {
-                        inputValues[comboBox.Name] = selectedRole.ToString();
-                    }
-                }
+                Coach newCoach = new Coach();
+                newCoach = ValidateTeamMember(newCoach) as Coach;
             }
+            catch(ArgumentException aEx)
+            {
+                await ShowExceptionMessage(aEx.Message);
+            }
+            catch(FormatException fEx)
+            {
+                await ShowExceptionMessage(fEx.Message);
+            }
+            catch(Exception ex)
+            {
+                await ShowExceptionMessage($"Something went wrong {ex.Message} ");
+            }
+        }
+
+        private async void CreatePlayer(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Player newPlayer = new Player();
+                newPlayer = ValidateTeamMember(newPlayer) as Player;
+            }
+            catch (ArgumentException aEx)
+            {
+                await ShowExceptionMessage(aEx.Message);
+            }
+            catch (FormatException fEx)
+            {
+                await ShowExceptionMessage(fEx.Message);
+            }
+            catch (Exception ex)
+            {
+                await ShowExceptionMessage($"Something went wrong {ex.Message} ");
+            }
+        }
+
+        private object ValidateTeamMember(Object teamMember)
+        {
+            string firstName = "";
+            string lastName = "";
+            var age = "";
+            var salary = "";
+            var role = "";
+
+            if (teamMember is Player)
+            {
+                teamMember = teamMember as Player;
+                firstName = PlayerFirstName.Text;
+                lastName = PlayerLastName.Text;
+                age = PlayerAge.Text;
+                salary = PlayerSalary.Text;
+                role = SoccerPlayerRoleComboBox.Text;
+            }
+            else if (teamMember is Coach)
+            {
+                teamMember = teamMember as Coach;
+                firstName = CoachFirstName.Text;
+                lastName = CoachLastName.Text;
+                age = CoachAge.Text;
+                salary = CoachSalary.Text;
+                role = SoccerCoachRoleComboBox.Text;
+            }
+
+            if (String.IsNullOrEmpty(firstName) || String.IsNullOrEmpty(lastName))
+            {
+                throw new ArgumentException("First name or last name cannot be empty.");
+            }
+            if (!Int32.TryParse(age, out int ageResult))
+            {
+                throw new FormatException($"Could not parse value {age} to a integer value");
+            }
+            if (!double.TryParse(salary, out double salaryResult))
+            {
+                throw new FormatException($"Could not parse value {salary} to a integer value");
+            }
+            if (!Enum.TryParse(role, out SoccerCoachRole soccerCoachRole))
+            {
+                throw new FormatException($"Could not parse value {role} to a SoccerCoach role");
+            }
+
+            return teamMember;
         }
 
         private async Task ShowExceptionMessage(string errorMessage)
