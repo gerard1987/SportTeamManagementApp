@@ -1,7 +1,9 @@
 ﻿using SportTeamManagementApp.Enums;
 using SportTeamManagementApp.Models;
+using SportTeamManagementApp.Models.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -20,15 +22,13 @@ namespace SportTeamManagementApp
         public List<Coach> coaches = new List<Coach>();
         public List<Player> players = new List<Player>();
         public List<Team> teams = new List<Team>();
+        public List<Player> selectedPlayersForTeam = new List<Player>();
 
         public MainPage()
         {
             this.InitializeComponent();
             SoccerCoachRoleComboBox.ItemsSource = Enum.GetValues(typeof(SoccerCoachRole));
             SoccerPlayerRoleComboBox.ItemsSource = Enum.GetValues(typeof(SoccerPlayerRole));
-
-            TeamPlayersComboBox.ItemsSource = players;
-            TeamCoachesComboBox.ItemsSource = coaches;
         }
 
         private void MainMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -41,12 +41,15 @@ namespace SportTeamManagementApp
                 {
                     case "Create Coach":
                         CreateCoachSection.Visibility = Visibility.Visible;
+                        CollapseSections(CreateCoachSection);
                         break;
                     case "Create Player":
                         CreatePlayerSection.Visibility = Visibility.Visible;
+                        CollapseSections(CreatePlayerSection);
                         break;
                     case "Create Team":
                         CreateTeamSection.Visibility = Visibility.Visible;
+                        CollapseSections(CreateTeamSection);
                         break;
                     case "Exit":
                         // Handle the exit option.
@@ -58,6 +61,23 @@ namespace SportTeamManagementApp
 
             // Clear the selection to allow reselection.
             MainMenu.SelectedItem = null;
+        }
+
+        private void CollapseSections(StackPanel currentlySelected)
+        {
+            List<StackPanel> sections = new List<StackPanel>()
+            {
+                CreateCoachSection,
+                CreatePlayerSection,
+                CreateTeamSection
+            };
+
+            sections.Remove(currentlySelected);
+
+            foreach(StackPanel section in sections)
+            {
+                section.Visibility = Visibility.Collapsed;
+            }
         }
 
         private async void CreateCoach(object sender, RoutedEventArgs e)
@@ -90,6 +110,7 @@ namespace SportTeamManagementApp
                 newCoach.role = soccerCoachRole;
 
                 coaches.Add(newCoach);
+                TeamCoachesComboBox.ItemsSource = coaches.Select(c => new { Key = c.Id, Value = c.firstName }).ToList();
 
                 CreateCoachSection.Visibility = Visibility.Collapsed;
             }
@@ -137,6 +158,7 @@ namespace SportTeamManagementApp
                 newPlayer.role = soccerPlayerRole;
 
                 players.Add(newPlayer);
+                TeamPlayersComboBox.ItemsSource = players.Select(p => new { Key = p.Id, Value = p.firstName }).ToList();
 
                 CreatePlayerSection.Visibility = Visibility.Collapsed;
             }
@@ -162,8 +184,53 @@ namespace SportTeamManagementApp
                 {
                     throw new ArgumentException("Cannot create a team without having created a coach or players first!");
                 }
+                if (String.IsNullOrEmpty(TeamName.Text))
+                {
+                    throw new ArgumentException("Team name cannot be empty!");
+                }
+                if (selectedPlayersForTeam.Count < 1)
+                {
+                    throw new ArgumentException("Please select at least 1 player for the team");
+                }
+
+                Int32.TryParse(TeamCoachesComboBox.SelectedValue.ToString(), out int coachId);
+                Coach coach = coaches.Find(c => c.Id == coachId);
+
+                List<Player> playersToAdd = selectedPlayersForTeam;
+                Team newTeam = new Team(TeamName.Text, coach, playersToAdd);
+
+                teams.Add(newTeam);
 
                 CreateTeamSection.Visibility = Visibility.Collapsed;
+                selectedPlayersForTeam = new List<Player>();
+            }
+            catch (ArgumentException aEx)
+            {
+                await ShowExceptionMessage(aEx.Message);
+            }
+            catch (FormatException fEx)
+            {
+                await ShowExceptionMessage(fEx.Message);
+            }
+            catch (Exception ex)
+            {
+                await ShowExceptionMessage($"Something went wrong {ex.Message} ");
+            }
+        }
+
+        public async void AddPlayerToTeam(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Int32.TryParse(TeamPlayersComboBox.SelectedValue.ToString(), out int playerId);
+                Player playerToAdd = players.Find(p => p.Id == playerId);
+                bool exists = selectedPlayersForTeam.Exists(sp => sp.Id == playerId);
+                if (exists)
+                {
+                    throw new ArgumentException($"Player already in team!");
+                }
+                selectedPlayersForTeam.Add(playerToAdd);
+                SelectedPlayersListBox.ItemsSource = selectedPlayersForTeam.Select(c => new { Key = c.Id, Value = c.firstName }).ToList();
             }
             catch (ArgumentException aEx)
             {

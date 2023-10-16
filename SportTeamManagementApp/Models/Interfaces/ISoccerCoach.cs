@@ -8,6 +8,6 @@ namespace SportTeamManagementApp.Models.Interfaces
 {
     public interface ISoccerCoach
     {
-        void RemovePlayerFromTeam(Team team ,ISoccerPlayer soccerPlayer);
+        void RemovePlayerFromTeam(Team team ,Player soccerPlayer);
     }
 }

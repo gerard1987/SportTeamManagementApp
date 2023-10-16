@@ -56,8 +56,19 @@
         <StackPanel VerticalAlignment="Center" x:Name="CreateTeamSection" Visibility="Collapsed">
             <TextBlock Text="Create Team" FontSize="20"/>
             <TextBox PlaceholderText="Name" Name="TeamName" Margin="10"/>
-            <ComboBox PlaceholderText="Players" Margin="10" x:Name="TeamPlayersComboBox" DisplayMemberPath="FirstName" />
-            <ComboBox PlaceholderText="Coaches" Margin="10" x:Name="TeamCoachesComboBox" />
+            <ComboBox PlaceholderText="Players" Margin="10" x:Name="TeamPlayersComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
+            <ComboBox PlaceholderText="Coaches" Margin="10" x:Name="TeamCoachesComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
+
+            <ListBox x:Name="SelectedPlayersListBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="200">
+                <!-- Here you can define the appearance of each item in the list -->
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Value}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <Button Content="Add player to team" Click="AddPlayerToTeam" Margin="10"/>
+
 
             <Button Content="Save" Click="CreateTeam" Margin="10"/>
         </StackPanel>

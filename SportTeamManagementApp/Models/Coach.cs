@@ -30,7 +30,7 @@ namespace SportTeamManagementApp.Models
             }
         }
 
-        public void RemovePlayerFromTeam(Team team, ISoccerPlayer soccerPlayer)
+        public void RemovePlayerFromTeam(Team team, Player soccerPlayer)
         {
 
             if (this.Equals(team.coach))

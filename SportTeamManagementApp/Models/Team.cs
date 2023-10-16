@@ -10,10 +10,10 @@ namespace SportTeamManagementApp.Models
     public class Team
     {
         public string name;
-        public ISoccerCoach coach;
-        public List<ISoccerPlayer> players = new List<ISoccerPlayer>();
+        public Coach coach;
+        public List<Player> players = new List<Player>();
 
-        public Team(string name, ISoccerCoach coach, List<ISoccerPlayer> players)
+        public Team(string name, Coach coach, List<Player> players)
         {
             this.name = name;
             this.coach = coach;
