@@ -25,6 +25,7 @@ namespace SportTeamManagementApp
         public List<Player> selectedPlayersForTeam = new List<Player>();
         public Team teamSelectedForEdit;
         public Player playerSelectedForEdit;
+        public Coach coachSelectedForEdit;
 
         public MainPage()
         {
@@ -54,12 +55,16 @@ namespace SportTeamManagementApp
                         CollapseSections(CreateTeamSection);
                         break;
                     case "Edit Team":
-                        EditTeamSection.Visibility = Visibility.Visible;
-                        CollapseSections(EditTeamSection);
+                        EditTeamSelectSection.Visibility = Visibility.Visible;
+                        CollapseSections(EditTeamSelectSection);
                         break;
                     case "Edit Player":
                         EditPlayerSelectSection.Visibility = Visibility.Visible;
                         CollapseSections(EditPlayerSelectSection);
+                        break;
+                    case "Edit Coach":
+                        EditCoachSelectSection.Visibility = Visibility.Visible;
+                        CollapseSections(EditCoachSelectSection);
                         break;
                     case "Exit":
                         Application.Current.Exit();
@@ -78,13 +83,35 @@ namespace SportTeamManagementApp
                 CreateCoachSection,
                 CreatePlayerSection,
                 CreateTeamSection,
-                EditTeamSection,
-                EditPlayerSelectSection
+                EditTeamSelectSection,
+                EditPlayerSelectSection,
+                EditCoachSelectSection
             };
 
-            sections.Remove(currentlySelected);
+            if (currentlySelected != null)
+            {
+                sections.Remove(currentlySelected);
+            }
 
             foreach(StackPanel section in sections)
+            {
+                section.Visibility = Visibility.Collapsed;
+            }
+        }
+        private void Cancel(object sender, RoutedEventArgs e)
+        {
+            List<StackPanel> sections = new List<StackPanel>()
+            {
+                CreateCoachSection,
+                CreatePlayerSection,
+                CreateTeamSection,
+                EditTeamSelectSection,
+                EditPlayerSelectSection,
+                EditCoachSelectSection,
+                EditCoachSection
+            };
+
+            foreach (StackPanel section in sections)
             {
                 section.Visibility = Visibility.Collapsed;
             }
@@ -121,6 +148,7 @@ namespace SportTeamManagementApp
 
                 coaches.Add(newCoach);
                 TeamCoachesComboBox.ItemsSource = coaches.Select(c => new { Key = c.Id, Value = c.firstName }).ToList();
+                CoachToEditComboBox.ItemsSource = coaches.Select(c => new { Key = c.Id, Value = c.firstName }).ToList();
 
                 CreateCoachSection.Visibility = Visibility.Collapsed;
             }
@@ -267,11 +295,9 @@ namespace SportTeamManagementApp
 
                 if (teamSelectedForEdit != null)
                 {
-                    TeamsToEditComboBox.Visibility = Visibility.Collapsed;
-                    TeamNameEdit.Visibility = Visibility.Visible;
-
                     PlayersInTeamComboBox.ItemsSource = teamSelectedForEdit.players.Select(p => new { Key = p.Id, Value = p.firstName }).ToList();
-                    PlayersInTeamComboBox.Visibility = Visibility.Visible;
+                    EditTeamSelectSection.Visibility = Visibility.Collapsed;
+                    EditTeamSection.Visibility = Visibility.Visible;
                 }
             }
             catch (ArgumentException aEx)
@@ -281,6 +307,27 @@ namespace SportTeamManagementApp
             catch (FormatException fEx)
             {
                 await ShowExceptionMessage(fEx.Message);
+            }
+            catch (Exception ex)
+            {
+                await ShowExceptionMessage($"Something went wrong {ex.Message} ");
+            }
+        }
+        public async void EditTeam(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(TeamNameEdit.Text))
+                {
+                    throw new ArgumentException("Team name can't be empty");
+                }
+
+                Team teamToUpdate = teams.Find(t => t.Id == teamSelectedForEdit.Id);
+                teamToUpdate.name = TeamNameEdit.Text;
+            }
+            catch (ArgumentException aEx)
+            {
+                await ShowExceptionMessage(aEx.Message);
             }
             catch (Exception ex)
             {
@@ -397,6 +444,101 @@ namespace SportTeamManagementApp
                 }
 
                 EditPlayerSection.Visibility = Visibility.Collapsed;
+            }
+            catch (ArgumentException aEx)
+            {
+                await ShowExceptionMessage(aEx.Message);
+            }
+            catch (FormatException fEx)
+            {
+                await ShowExceptionMessage(fEx.Message);
+            }
+            catch (Exception ex)
+            {
+                await ShowExceptionMessage($"Something went wrong {ex.Message} ");
+            }
+        }
+
+        public async void SelectCoachToEdit(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Int32.TryParse(CoachToEditComboBox.SelectedValue.ToString(), out int coachId);
+                coachSelectedForEdit = coaches.Find(p => p.Id == coachId);
+
+                if (coachSelectedForEdit != null)
+                {
+                    EditCoachSelectSection.Visibility = Visibility.Collapsed;
+                    EditCoachSection.Visibility = Visibility.Visible;
+
+                    Array roles = Enum.GetValues(typeof(SoccerCoachRole));
+                    int selectedRole = 0;
+                    for (int i = 0; i < roles.Length; i++)
+                    {
+                        SoccerCoachRole role = (SoccerCoachRole)roles.GetValue(i);
+                        if (coachSelectedForEdit.role.Equals(role))
+                        {
+                            selectedRole = i;
+                        }
+                    }
+
+                    CoachEditFirstName.Text = coachSelectedForEdit.firstName;
+                    CoachEditLastName.Text = coachSelectedForEdit.lastName;
+                    CoachEditAge.Text = coachSelectedForEdit.age.ToString();
+                    CoachEditSalary.Text = coachSelectedForEdit.salary.ToString();
+                    SoccerCoachRoleEditComboBox.ItemsSource = roles;
+                    SoccerCoachRoleEditComboBox.SelectedIndex = selectedRole;
+                    EditCoachSelectSection.Visibility = Visibility.Collapsed;
+                }
+            }
+            catch (ArgumentException aEx)
+            {
+                await ShowExceptionMessage(aEx.Message);
+            }
+            catch (FormatException fEx)
+            {
+                await ShowExceptionMessage(fEx.Message);
+            }
+            catch (Exception ex)
+            {
+                await ShowExceptionMessage($"Something went wrong {ex.Message} ");
+            }
+        }
+
+        private async void EditCoach(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(CoachEditFirstName.Text) || String.IsNullOrEmpty(CoachEditLastName.Text))
+                {
+                    throw new ArgumentException("First name or last name cannot be empty.");
+                }
+                if (!Int32.TryParse(CoachEditAge.Text, out int ageResult))
+                {
+                    throw new FormatException($"Could not parse value {CoachEditAge.Text} to a integer value");
+                }
+                if (!double.TryParse(CoachEditSalary.Text, out double salaryResult))
+                {
+                    throw new FormatException($"Could not parse value {CoachEditSalary.Text} to a integer value");
+                }
+                if (!Enum.TryParse(SoccerCoachRoleEditComboBox.SelectedItem?.ToString(), out SoccerCoachRole soccerCoachRole))
+                {
+                    throw new FormatException($"Could not parse value {SoccerCoachRoleEditComboBox.Text} to a SoccerCoachRole");
+                }
+
+                Coach coachToUpdate = coaches.FirstOrDefault(c => c.Id == coachSelectedForEdit.Id);
+
+                if (coachToUpdate != null)
+                {
+                    coachToUpdate.firstName = CoachEditFirstName.Text;
+                    coachToUpdate.lastName = CoachEditLastName.Text;
+                    coachToUpdate.age = ageResult;
+                    coachToUpdate.salary = salaryResult;
+                    coachToUpdate.role = soccerCoachRole;
+                }
+
+                EditCoachSection.Visibility = Visibility.Collapsed;
+                coachSelectedForEdit = new Coach();
             }
             catch (ArgumentException aEx)
             {
