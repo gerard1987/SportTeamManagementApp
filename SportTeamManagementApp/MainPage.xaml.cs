@@ -23,6 +23,8 @@ namespace SportTeamManagementApp
         public List<Player> players = new List<Player>();
         public List<Team> teams = new List<Team>();
         public List<Player> selectedPlayersForTeam = new List<Player>();
+        public Team teamSelectedForEdit;
+        public Player playerSelectedForEdit;
 
         public MainPage()
         {
@@ -51,11 +53,17 @@ namespace SportTeamManagementApp
                         CreateTeamSection.Visibility = Visibility.Visible;
                         CollapseSections(CreateTeamSection);
                         break;
+                    case "Edit Team":
+                        EditTeamSection.Visibility = Visibility.Visible;
+                        CollapseSections(EditTeamSection);
+                        break;
+                    case "Edit Player":
+                        EditPlayerSelectSection.Visibility = Visibility.Visible;
+                        CollapseSections(EditPlayerSelectSection);
+                        break;
                     case "Exit":
-                        // Handle the exit option.
                         Application.Current.Exit();
                         break;
-                        // Add more cases for additional options.
                 }
             }
 
@@ -69,7 +77,9 @@ namespace SportTeamManagementApp
             {
                 CreateCoachSection,
                 CreatePlayerSection,
-                CreateTeamSection
+                CreateTeamSection,
+                EditTeamSection,
+                EditPlayerSelectSection
             };
 
             sections.Remove(currentlySelected);
@@ -107,7 +117,7 @@ namespace SportTeamManagementApp
                 newCoach.lastName = CoachLastName.Text;
                 newCoach.age = ageResult;
                 newCoach.salary = salaryResult;
-                newCoach.role = soccerCoachRole;
+                newCoach.role = (SoccerPlayerRole)soccerCoachRole;
 
                 coaches.Add(newCoach);
                 TeamCoachesComboBox.ItemsSource = coaches.Select(c => new { Key = c.Id, Value = c.firstName }).ToList();
@@ -159,6 +169,7 @@ namespace SportTeamManagementApp
 
                 players.Add(newPlayer);
                 TeamPlayersComboBox.ItemsSource = players.Select(p => new { Key = p.Id, Value = p.firstName }).ToList();
+                PlayerToEditComboBox.ItemsSource = players.Select(p => new { Key = p.Id, Value = p.firstName }).ToList();
 
                 CreatePlayerSection.Visibility = Visibility.Collapsed;
             }
@@ -200,6 +211,7 @@ namespace SportTeamManagementApp
                 Team newTeam = new Team(TeamName.Text, coach, playersToAdd);
 
                 teams.Add(newTeam);
+                TeamsToEditComboBox.ItemsSource = teams.Select(t => new { Key = t.Id, Value = t.name }).ToList();
 
                 CreateTeamSection.Visibility = Visibility.Collapsed;
                 selectedPlayersForTeam = new List<Player>();
@@ -231,6 +243,160 @@ namespace SportTeamManagementApp
                 }
                 selectedPlayersForTeam.Add(playerToAdd);
                 SelectedPlayersListBox.ItemsSource = selectedPlayersForTeam.Select(c => new { Key = c.Id, Value = c.firstName }).ToList();
+            }
+            catch (ArgumentException aEx)
+            {
+                await ShowExceptionMessage(aEx.Message);
+            }
+            catch (FormatException fEx)
+            {
+                await ShowExceptionMessage(fEx.Message);
+            }
+            catch (Exception ex)
+            {
+                await ShowExceptionMessage($"Something went wrong {ex.Message} ");
+            }
+        }
+
+        public async void SelectTeamToEdit(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Int32.TryParse(TeamsToEditComboBox.SelectedValue.ToString(), out int teamId);
+                teamSelectedForEdit = teams.Find(t => t.Id == teamId);
+
+                if (teamSelectedForEdit != null)
+                {
+                    TeamsToEditComboBox.Visibility = Visibility.Collapsed;
+                    TeamNameEdit.Visibility = Visibility.Visible;
+
+                    PlayersInTeamComboBox.ItemsSource = teamSelectedForEdit.players.Select(p => new { Key = p.Id, Value = p.firstName }).ToList();
+                    PlayersInTeamComboBox.Visibility = Visibility.Visible;
+                }
+            }
+            catch (ArgumentException aEx)
+            {
+                await ShowExceptionMessage(aEx.Message);
+            }
+            catch (FormatException fEx)
+            {
+                await ShowExceptionMessage(fEx.Message);
+            }
+            catch (Exception ex)
+            {
+                await ShowExceptionMessage($"Something went wrong {ex.Message} ");
+            }
+        }
+
+        public async void RemovePlayerFromTeam(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Int32.TryParse(PlayersInTeamComboBox.SelectedValue.ToString(), out int playerId);
+                if (teamSelectedForEdit == null)
+                {
+                    throw new ArgumentException("No team selected");
+                }
+                Player teamPlayer = teamSelectedForEdit.players.Find(p => p.Id == playerId);
+
+                teamSelectedForEdit.players.Remove(teamPlayer);
+                PlayersInTeamComboBox.ItemsSource = teamSelectedForEdit.players.Select(p => new { Key = p.Id, Value = p.firstName }).ToList();
+            }
+            catch (ArgumentException aEx)
+            {
+                await ShowExceptionMessage(aEx.Message);
+            }
+            catch (FormatException fEx)
+            {
+                await ShowExceptionMessage(fEx.Message);
+            }
+            catch (Exception ex)
+            {
+                await ShowExceptionMessage($"Something went wrong {ex.Message} ");
+            }
+        }
+
+        public async void SelectPlayerToEdit(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Int32.TryParse(PlayerToEditComboBox.SelectedValue.ToString(), out int playerId);
+                playerSelectedForEdit = players.Find(p => p.Id == playerId);
+
+                if (playerSelectedForEdit != null)
+                {
+                    EditPlayerSelectSection.Visibility = Visibility.Collapsed;
+                    EditPlayerSection.Visibility = Visibility.Visible;
+
+                    Array roles = Enum.GetValues(typeof(SoccerPlayerRole));
+                    int selectedRole = 0;
+                    for (int i = 0; i < roles.Length; i++)
+                    {
+                        SoccerPlayerRole role = (SoccerPlayerRole)roles.GetValue(i);
+                        if (playerSelectedForEdit.role.Equals(role))
+                        {
+                            selectedRole = i;
+                        }
+                    }
+
+                    Enum.TryParse(playerSelectedForEdit.role.ToString(), out SoccerPlayerRole parsedRole);
+
+                    PlayerEditFirstName.Text = playerSelectedForEdit.firstName;
+                    PlayerEditLastName.Text = playerSelectedForEdit.lastName;
+                    PlayerEditAge.Text = playerSelectedForEdit.age.ToString();
+                    PlayerEditSalary.Text = playerSelectedForEdit.salary.ToString();
+                    SoccerPlayerRoleEditComboBox.ItemsSource = roles;
+                    SoccerPlayerRoleEditComboBox.SelectedIndex = selectedRole;
+                    EditPlayerSelectSection.Visibility = Visibility.Collapsed;
+                }
+            }
+            catch (ArgumentException aEx)
+            {
+                await ShowExceptionMessage(aEx.Message);
+            }
+            catch (FormatException fEx)
+            {
+                await ShowExceptionMessage(fEx.Message);
+            }
+            catch (Exception ex)
+            {
+                await ShowExceptionMessage($"Something went wrong {ex.Message} ");
+            }
+        }
+
+        private async void EditPlayer(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(PlayerEditFirstName.Text) || String.IsNullOrEmpty(PlayerEditLastName.Text))
+                {
+                    throw new ArgumentException("First name or last name cannot be empty.");
+                }
+                if (!Int32.TryParse(PlayerEditAge.Text, out int ageResult))
+                {
+                    throw new FormatException($"Could not parse value {PlayerEditAge.Text} to a integer value");
+                }
+                if (!double.TryParse(PlayerEditSalary.Text, out double salaryResult))
+                {
+                    throw new FormatException($"Could not parse value {PlayerEditSalary.Text} to a integer value");
+                }
+                if (!Enum.TryParse(SoccerPlayerRoleEditComboBox.SelectedItem?.ToString(), out SoccerPlayerRole soccerPlayerRole))
+                {
+                    throw new FormatException($"Could not parse value {SoccerPlayerRoleEditComboBox.Text} to a SoccerPlayerRole");
+                }
+
+                Player playerToUpdate = players.FirstOrDefault(p => p.Id == playerSelectedForEdit.Id);
+
+                if (playerToUpdate != null)
+                {
+                    playerToUpdate.firstName = PlayerEditFirstName.Text;
+                    playerToUpdate.lastName = PlayerEditLastName.Text;
+                    playerToUpdate.age = ageResult;
+                    playerToUpdate.salary = salaryResult;
+                    playerToUpdate.role = soccerPlayerRole;
+                }
+
+                EditPlayerSection.Visibility = Visibility.Collapsed;
             }
             catch (ArgumentException aEx)
             {
