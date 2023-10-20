@@ -88,7 +88,8 @@
         <StackPanel VerticalAlignment="Center" x:Name="EditTeamSection" Visibility="Collapsed">
             <TextBox PlaceholderText="Name" Name="TeamNameEdit" Margin="10"/>
             <Button Content="Save" Click="EditTeam" Margin="10"/>
-            
+
+            <ComboBox PlaceholderText="Players" Margin="10" x:Name="AvailablePlayersComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
             <ComboBox PlaceholderText="Players" Margin="10" x:Name="PlayersInTeamComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
             <Button Content="Remove player from team" Click="RemovePlayerFromTeam" Margin="10" />
             <Button Content="Cancel" Click="Cancel" Margin="10"/>

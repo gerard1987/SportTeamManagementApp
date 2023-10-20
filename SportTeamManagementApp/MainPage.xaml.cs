@@ -26,12 +26,26 @@ namespace SportTeamManagementApp
         public Team teamSelectedForEdit;
         public Player playerSelectedForEdit;
         public Coach coachSelectedForEdit;
+        List<StackPanel> sections;
 
         public MainPage()
         {
             this.InitializeComponent();
             SoccerCoachRoleComboBox.ItemsSource = Enum.GetValues(typeof(SoccerCoachRole));
             SoccerPlayerRoleComboBox.ItemsSource = Enum.GetValues(typeof(SoccerPlayerRole));
+
+            sections = new List<StackPanel>()
+            {
+                CreateCoachSection,
+                CreatePlayerSection,
+                CreateTeamSection,
+                EditTeamSelectSection,
+                EditPlayerSelectSection,
+                EditCoachSelectSection,
+                EditTeamSection,
+                EditPlayerSection,
+                EditCoachSection
+            };
         }
 
         private void MainMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -78,42 +92,38 @@ namespace SportTeamManagementApp
 
         private void CollapseSections(StackPanel currentlySelected)
         {
-            List<StackPanel> sections = new List<StackPanel>()
-            {
-                CreateCoachSection,
-                CreatePlayerSection,
-                CreateTeamSection,
-                EditTeamSelectSection,
-                EditPlayerSelectSection,
-                EditCoachSelectSection
-            };
-
-            if (currentlySelected != null)
-            {
-                sections.Remove(currentlySelected);
-            }
-
             foreach(StackPanel section in sections)
             {
-                section.Visibility = Visibility.Collapsed;
+                if (section != currentlySelected)
+                {
+                    section.Visibility = Visibility.Collapsed;
+                }
             }
         }
         private void Cancel(object sender, RoutedEventArgs e)
         {
-            List<StackPanel> sections = new List<StackPanel>()
-            {
-                CreateCoachSection,
-                CreatePlayerSection,
-                CreateTeamSection,
-                EditTeamSelectSection,
-                EditPlayerSelectSection,
-                EditCoachSelectSection,
-                EditCoachSection
-            };
-
             foreach (StackPanel section in sections)
             {
                 section.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void ClearFields(StackPanel section)
+        {
+            if (section.Children.Any())
+            {
+                foreach (var child in section.Children)
+                {
+                    if (child is TextBox textBox)
+                    {
+                        textBox.Text = "";
+                        string text = textBox.Text;
+                    }
+                    if (child is ComboBox comboBox)
+                    {
+                        comboBox.SelectedIndex = 0;
+                    }
+                }
             }
         }
 
@@ -151,6 +161,7 @@ namespace SportTeamManagementApp
                 CoachToEditComboBox.ItemsSource = coaches.Select(c => new { Key = c.Id, Value = c.firstName }).ToList();
 
                 CreateCoachSection.Visibility = Visibility.Collapsed;
+                ClearFields(CreateCoachSection);
             }
             catch(ArgumentException aEx)
             {
@@ -200,6 +211,7 @@ namespace SportTeamManagementApp
                 PlayerToEditComboBox.ItemsSource = players.Select(p => new { Key = p.Id, Value = p.firstName }).ToList();
 
                 CreatePlayerSection.Visibility = Visibility.Collapsed;
+                ClearFields(CreatePlayerSection);
             }
             catch (ArgumentException aEx)
             {
@@ -243,6 +255,7 @@ namespace SportTeamManagementApp
 
                 CreateTeamSection.Visibility = Visibility.Collapsed;
                 selectedPlayersForTeam = new List<Player>();
+                ClearFields(CreateTeamSection);
             }
             catch (ArgumentException aEx)
             {
@@ -298,6 +311,7 @@ namespace SportTeamManagementApp
                     PlayersInTeamComboBox.ItemsSource = teamSelectedForEdit.players.Select(p => new { Key = p.Id, Value = p.firstName }).ToList();
                     EditTeamSelectSection.Visibility = Visibility.Collapsed;
                     EditTeamSection.Visibility = Visibility.Visible;
+                    TeamNameEdit.Text = teamSelectedForEdit.name;
                 }
             }
             catch (ArgumentException aEx)
