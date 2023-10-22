@@ -69,7 +69,7 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Button Content="Add player to team" Click="AddPlayerToTeam" Margin="10"/>
+            <Button Content="Add player to team" Click="AddPlayerToSelectionForTeam" Margin="10"/>
             <ComboBox PlaceholderText="Coaches" Margin="10" x:Name="TeamCoachesComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
 
             <Button Content="Create team" Click="CreateTeam" Margin="10"/>
@@ -90,8 +90,16 @@
             <Button Content="Save" Click="EditTeam" Margin="10"/>
 
             <ComboBox PlaceholderText="Players" Margin="10" x:Name="AvailablePlayersComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
+            <Button Content="Add player to team" Click="AddPlayerToTeam" Margin="10" />
+            
             <ComboBox PlaceholderText="Players" Margin="10" x:Name="PlayersInTeamComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
             <Button Content="Remove player from team" Click="RemovePlayerFromTeam" Margin="10" />
+
+            <ComboBox PlaceholderText="Players" Margin="10" x:Name="AvailableCoachesComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
+            <Button Content="Add Coach to team" Click="AddCoachToTeam" Margin="10" />
+
+            <ComboBox PlaceholderText="Coaches" Margin="10" x:Name="CoachesInTeamComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
+            <Button Content="Remove coach from team" Click="RemoveCoachFromTeam" Margin="10" />
             <Button Content="Cancel" Click="Cancel" Margin="10"/>
         </StackPanel>
 
@@ -112,6 +120,7 @@
             <ComboBox PlaceholderText="Role" Margin="10" x:Name="SoccerPlayerRoleEditComboBox" />
 
             <Button Content="Save" Click="EditPlayer" Margin="10"/>
+            <Button Content="Remove" Click="RemovePlayer" Margin="10"/>
             <Button Content="Cancel" Click="Cancel" Margin="10"/>
         </StackPanel>
 
@@ -132,6 +141,7 @@
             <ComboBox PlaceholderText="Role" Margin="10" x:Name="SoccerCoachRoleEditComboBox" />
 
             <Button Content="Save" Click="EditCoach" Margin="10"/>
+            <Button Content="Remove" Click="RemoveCoach" Margin="10"/>
             <Button Content="Cancel" Click="Cancel" Margin="10"/>
         </StackPanel>
     </Grid>

@@ -22,10 +22,13 @@ namespace SportTeamManagementApp
         public List<Coach> coaches = new List<Coach>();
         public List<Player> players = new List<Player>();
         public List<Team> teams = new List<Team>();
+
         public List<Player> selectedPlayersForTeam = new List<Player>();
+
         public Team teamSelectedForEdit;
         public Player playerSelectedForEdit;
         public Coach coachSelectedForEdit;
+
         List<StackPanel> sections;
 
         public MainPage()
@@ -157,8 +160,7 @@ namespace SportTeamManagementApp
                 newCoach.role = (SoccerPlayerRole)soccerCoachRole;
 
                 coaches.Add(newCoach);
-                TeamCoachesComboBox.ItemsSource = coaches.Select(c => new { Key = c.Id, Value = c.firstName }).ToList();
-                CoachToEditComboBox.ItemsSource = coaches.Select(c => new { Key = c.Id, Value = c.firstName }).ToList();
+                SetAvailableCoaches();
 
                 CreateCoachSection.Visibility = Visibility.Collapsed;
                 ClearFields(CreateCoachSection);
@@ -207,19 +209,18 @@ namespace SportTeamManagementApp
                 newPlayer.role = soccerPlayerRole;
 
                 players.Add(newPlayer);
-                TeamPlayersComboBox.ItemsSource = players.Select(p => new { Key = p.Id, Value = p.firstName }).ToList();
-                PlayerToEditComboBox.ItemsSource = players.Select(p => new { Key = p.Id, Value = p.firstName }).ToList();
+                SetAvailablePlayers();
 
                 CreatePlayerSection.Visibility = Visibility.Collapsed;
                 ClearFields(CreatePlayerSection);
             }
-            catch (ArgumentException aEx)
+            catch (ArgumentOutOfRangeException aEx)
             {
                 await ShowExceptionMessage(aEx.Message);
             }
-            catch (FormatException fEx)
+            catch (ArgumentException aEx)
             {
-                await ShowExceptionMessage(fEx.Message);
+                await ShowExceptionMessage(aEx.Message);
             }
             catch (Exception ex)
             {
@@ -251,19 +252,24 @@ namespace SportTeamManagementApp
                 Team newTeam = new Team(TeamName.Text, coach, playersToAdd);
 
                 teams.Add(newTeam);
-                TeamsToEditComboBox.ItemsSource = teams.Select(t => new { Key = t.Id, Value = t.name }).ToList();
+                SetAvailableTeams();
+                SetAvailablePlayers();
+                SetAvailableCoaches();
+
+                teamSelectedForEdit = null;
+                selectedPlayersForTeam = new List<Player>();
+                SelectedPlayersListBox.ItemsSource = null;
 
                 CreateTeamSection.Visibility = Visibility.Collapsed;
-                selectedPlayersForTeam = new List<Player>();
                 ClearFields(CreateTeamSection);
+            }
+            catch (ArgumentOutOfRangeException aEx)
+            {
+                await ShowExceptionMessage(aEx.Message);
             }
             catch (ArgumentException aEx)
             {
                 await ShowExceptionMessage(aEx.Message);
-            }
-            catch (FormatException fEx)
-            {
-                await ShowExceptionMessage(fEx.Message);
             }
             catch (Exception ex)
             {
@@ -271,12 +277,13 @@ namespace SportTeamManagementApp
             }
         }
 
-        public async void AddPlayerToTeam(object sender, RoutedEventArgs e)
+        public async void AddPlayerToSelectionForTeam(object sender, RoutedEventArgs e)
         {
             try
             {
                 Int32.TryParse(TeamPlayersComboBox.SelectedValue.ToString(), out int playerId);
                 Player playerToAdd = players.Find(p => p.Id == playerId);
+
                 bool exists = selectedPlayersForTeam.Exists(sp => sp.Id == playerId);
                 if (exists)
                 {
@@ -312,6 +319,25 @@ namespace SportTeamManagementApp
                     EditTeamSelectSection.Visibility = Visibility.Collapsed;
                     EditTeamSection.Visibility = Visibility.Visible;
                     TeamNameEdit.Text = teamSelectedForEdit.name;
+
+                    AvailablePlayersComboBox.ItemsSource = players
+                        .Where(p => !teams.Any(t => t.players.Contains(p)))
+                        .Select(p => new { Key = p.Id, Value = p.firstName });
+
+                    SetAvailablePlayers();
+                    SetAvailableCoaches();
+
+                    if (teamSelectedForEdit.coach != null)
+                    {
+                        List<object> items = new List<object>();
+                        items.Add(new { Key = teamSelectedForEdit.coach.Id, Value = teamSelectedForEdit.coach.firstName });
+                        CoachesInTeamComboBox.ItemsSource = items;
+                    }
+                    else
+                    {
+                        CoachesInTeamComboBox.ItemsSource = null;
+                    }
+                    
                 }
             }
             catch (ArgumentException aEx)
@@ -349,6 +375,71 @@ namespace SportTeamManagementApp
             }
         }
 
+        public async void AddPlayerToTeam(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Int32.TryParse(AvailablePlayersComboBox.SelectedValue.ToString(), out int playerId);
+                if (teamSelectedForEdit == null)
+                {
+                    throw new ArgumentException("No team selected");
+                }
+
+                Player playerToAdd = players.Find(p => p.Id == playerId);
+                Team teamToEdit = teams.Find(t => t.Id == teamSelectedForEdit.Id);
+
+                teamToEdit.AddPlayer(playerToAdd);
+                PlayersInTeamComboBox.ItemsSource = teamToEdit.players.Select(p => new { Key = p.Id, Value = p.firstName }).ToList();
+                SetAvailablePlayers();
+            }
+            catch (ArgumentException aEx)
+            {
+                await ShowExceptionMessage(aEx.Message);
+            }
+            catch (FormatException fEx)
+            {
+                await ShowExceptionMessage(fEx.Message);
+            }
+            catch (Exception ex)
+            {
+                await ShowExceptionMessage($"Something went wrong {ex.Message} ");
+            }
+        }
+
+        public async void AddCoachToTeam(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Int32.TryParse(AvailableCoachesComboBox.SelectedValue.ToString(), out int coachId);
+                if (teamSelectedForEdit == null)
+                {
+                    throw new ArgumentException("No team selected");
+                }
+
+                Coach coachToAdd = coaches.Find(c => c.Id == coachId);
+                Team teamToEdit = teams.Find(t => t.Id == teamSelectedForEdit.Id);
+
+                teamToEdit.coach = coachToAdd;
+
+                List<object> items = new List<object>();
+                items.Add(new { Key = teamSelectedForEdit.coach.Id, Value = teamSelectedForEdit.coach.firstName });
+                CoachesInTeamComboBox.ItemsSource = items;
+                SetAvailablePlayers();
+            }
+            catch (ArgumentException aEx)
+            {
+                await ShowExceptionMessage(aEx.Message);
+            }
+            catch (FormatException fEx)
+            {
+                await ShowExceptionMessage(fEx.Message);
+            }
+            catch (Exception ex)
+            {
+                await ShowExceptionMessage($"Something went wrong {ex.Message} ");
+            }
+        }
+
         public async void RemovePlayerFromTeam(object sender, RoutedEventArgs e)
         {
             try
@@ -359,9 +450,42 @@ namespace SportTeamManagementApp
                     throw new ArgumentException("No team selected");
                 }
                 Player teamPlayer = teamSelectedForEdit.players.Find(p => p.Id == playerId);
+                Team teamToEdit = teams.Find(t => t.Id == teamSelectedForEdit.Id);
 
-                teamSelectedForEdit.players.Remove(teamPlayer);
-                PlayersInTeamComboBox.ItemsSource = teamSelectedForEdit.players.Select(p => new { Key = p.Id, Value = p.firstName }).ToList();
+                teamToEdit.RemovePlayer(teamPlayer);
+                PlayersInTeamComboBox.ItemsSource = teamToEdit.players.Select(p => new { Key = p.Id, Value = p.firstName }).ToList();
+                SetAvailablePlayers();
+            }
+            catch (ArgumentException aEx)
+            {
+                await ShowExceptionMessage(aEx.Message);
+            }
+            catch (FormatException fEx)
+            {
+                await ShowExceptionMessage(fEx.Message);
+            }
+            catch (Exception ex)
+            {
+                await ShowExceptionMessage($"Something went wrong {ex.Message} ");
+            }
+        }
+
+        public async void RemoveCoachFromTeam(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Int32.TryParse(CoachesInTeamComboBox.SelectedValue.ToString(), out int coachId);
+                if (teamSelectedForEdit == null)
+                {
+                    throw new ArgumentException("No team selected");
+                }
+                Coach teamCoach = teamSelectedForEdit.coach;
+                Team teamToEdit = teams.Find(t => t.Id == teamSelectedForEdit.Id);
+
+                teamToEdit.coach = null;
+                CoachesInTeamComboBox.ItemsSource = null;
+                SetAvailablePlayers();
+                SetAvailableCoaches();
             }
             catch (ArgumentException aEx)
             {
@@ -473,6 +597,67 @@ namespace SportTeamManagementApp
             }
         }
 
+        private async void RemovePlayer(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Player playerToRemove = players.FirstOrDefault(p => p.Id == playerSelectedForEdit.Id);
+                if (playerToRemove != null)
+                {
+                    players.Remove(playerToRemove);
+                }
+
+                foreach(Team team in teams)
+                {
+                    Player player = team.players.Find(p => p.Id == playerSelectedForEdit.Id);
+
+                    team.RemovePlayer(player);
+                }
+
+                EditPlayerSection.Visibility = Visibility.Collapsed;
+                SetAvailablePlayers();
+            }
+            catch (InvalidOperationException ioEx)
+            {
+                await ShowExceptionMessage(ioEx.Message);
+            }
+            catch (Exception ex)
+            {
+                await ShowExceptionMessage($"Something went wrong {ex.Message} ");
+            }
+        }
+
+        private async void RemoveCoach(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Coach coachToRemove = coaches.FirstOrDefault(c => c.Id == coachSelectedForEdit.Id);
+                if (coachToRemove != null)
+                {
+                    foreach (Team team in teams)
+                    {
+                        if (team.coach != null && team.coach.Id == coachToRemove.Id)
+                        {
+                            team.coach = null;
+                        }
+                    }
+
+                    coaches.Remove(coachToRemove);
+                }
+
+                EditPlayerSection.Visibility = Visibility.Collapsed;
+                SetAvailableCoaches();
+            }
+            catch (InvalidOperationException ioEx)
+            {
+                await ShowExceptionMessage(ioEx.Message);
+            }
+            catch (Exception ex)
+            {
+                await ShowExceptionMessage($"Something went wrong {ex.Message} ");
+            }
+        }
+
         public async void SelectCoachToEdit(object sender, RoutedEventArgs e)
         {
             try
@@ -572,6 +757,41 @@ namespace SportTeamManagementApp
         {
             ErrorDialog.Content = errorMessage;
             await ErrorDialog.ShowAsync();
+        }
+
+        private List<Player> GetAvailablePlayers()
+        {
+            return players.Where(p => !teams.Any(t => t.players.Contains(p))).Select(player => player).ToList();
+        }
+
+        private void SetAvailablePlayers()
+        {
+            PlayerToEditComboBox.ItemsSource = players.Select(p => new { Key = p.Id, Value = p.firstName }).ToList();
+
+            var availablePlayers = players
+              .Where(p => !teams.Any(t => t.players.Contains(p)))
+              .Select(p => new { Key = p.Id, Value = p.firstName });
+
+            AvailablePlayersComboBox.ItemsSource = availablePlayers;
+            TeamPlayersComboBox.ItemsSource = availablePlayers;
+        }
+
+        private void SetAvailableCoaches()
+        {
+            var availableCoaches = coaches
+                  .Where(c => !teams
+                  .Where(t => t.coach != null)
+                  .Any(t => t.coach.Equals(c)))
+                  .Select(c => new { Key = c.Id, Value = c.firstName });
+
+            TeamCoachesComboBox.ItemsSource = availableCoaches;
+            CoachToEditComboBox.ItemsSource = coaches.Select(c => new { Key = c.Id, Value = c.firstName }).ToList();
+            AvailableCoachesComboBox.ItemsSource = availableCoaches;
+        }
+
+        private void SetAvailableTeams()
+        {
+            TeamsToEditComboBox.ItemsSource = teams.Select(t => new { Key = t.Id, Value = t.name }).ToList();
         }
     }
 }

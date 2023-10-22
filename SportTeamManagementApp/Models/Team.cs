@@ -28,5 +28,29 @@ namespace SportTeamManagementApp.Models
             private set { id = value; }
         }
 
+        public void AddPlayer(Player player)
+        {
+            if (!players.Exists(p => p.Id == player.Id))
+            {
+                players.Add(player);
+            }
+            else
+            {
+                throw new InvalidOperationException($"Player {player?.firstName} is already in team!");
+            }
+        }
+
+        public void RemovePlayer(Player player)
+        {
+            if (players.Exists(p => p.Id == player.Id))
+            {
+                players.Remove(player);
+            }
+            else
+            {
+                throw new InvalidOperationException($"Could not find player {player?.firstName}");
+            }
+        }
+
     }
 }
