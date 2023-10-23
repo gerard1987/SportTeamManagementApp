@@ -1,0 +1,32 @@
+﻿<Page
+    x:Class="SportTeamManagementApp.Pages.CoachCreatePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SportTeamManagementApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        
+        <ContentDialog x:Name="ErrorDialog" Title="Message" PrimaryButtonText="OK">
+            <StackPanel>
+                <TextBlock Text="Your message goes here." />
+            </StackPanel>
+        </ContentDialog>
+        
+        <!-- Create Coach Section -->
+        <StackPanel VerticalAlignment="Center" x:Name="CreateCoachSection">
+            <TextBlock Text="Create Coach" FontSize="20"/>
+            <TextBox PlaceholderText="FirstName" Name="CoachFirstName" Margin="10"/>
+            <TextBox PlaceholderText="LastName" Name="CoachLastName" Margin="10"/>
+            <TextBox PlaceholderText="Age" Name="CoachAge" Margin="10"/>
+            <TextBox PlaceholderText="Salary" Name="CoachSalary" Margin="10"/>
+            <ComboBox PlaceholderText="Role" Margin="10" x:Name="SoccerCoachRoleComboBox" />
+
+            <Button Content="Save" Click="CreateCoach" Margin="10"/>
+            <Button Content="Cancel" Click="Cancel" Margin="10"/>
+        </StackPanel>
+    </Grid>
+</Page>

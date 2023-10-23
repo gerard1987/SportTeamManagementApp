@@ -1,0 +1,47 @@
+﻿<Page
+    x:Class="SportTeamManagementApp.Pages.TeamEditPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SportTeamManagementApp.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+
+        <ContentDialog x:Name="ErrorDialog" Title="Message" PrimaryButtonText="OK">
+            <StackPanel>
+                <TextBlock Text="Your message goes here." />
+            </StackPanel>
+        </ContentDialog>
+
+        <!-- Edit Select Team Section -->
+        <StackPanel VerticalAlignment="Center" x:Name="EditTeamSelectSection">
+            <TextBlock Text="Edit Team" FontSize="20"/>
+            <ComboBox PlaceholderText="Teams" Margin="10" x:Name="TeamsToEditComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
+            <Button Content="Select" Click="SelectTeamToEdit" Margin="10"/>
+            <Button Content="Cancel" Click="Cancel" Margin="10"/>
+        </StackPanel>
+
+        <!-- Edit Team Section -->
+        <StackPanel VerticalAlignment="Center" x:Name="EditTeamSection" Visibility="Collapsed">
+            <TextBox PlaceholderText="Name" Name="TeamNameEdit" Margin="10"/>
+            <Button Content="Save" Click="EditTeam" Margin="10"/>
+
+            <ComboBox PlaceholderText="Players" Margin="10" x:Name="AvailablePlayersComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
+            <Button Content="Add player to team" Click="AddPlayerToTeam" Margin="10" />
+
+            <ComboBox PlaceholderText="Players" Margin="10" x:Name="PlayersInTeamComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
+            <Button Content="Remove player from team" Click="RemovePlayerFromTeam" Margin="10" />
+
+            <ComboBox PlaceholderText="Players" Margin="10" x:Name="AvailableCoachesComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
+            <Button Content="Add Coach to team" Click="AddCoachToTeam" Margin="10" />
+
+            <ComboBox PlaceholderText="Coaches" Margin="10" x:Name="CoachesInTeamComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
+            <Button Content="Remove coach from team" Click="RemoveCoachFromTeam" Margin="10" />
+            <Button Content="Cancel" Click="Cancel" Margin="10"/>
+        </StackPanel>
+
+    </Grid>
+</Page>

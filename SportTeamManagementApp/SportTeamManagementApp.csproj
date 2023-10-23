@@ -119,6 +119,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\CoachCreatePage.xaml.cs">
+      <DependentUpon>CoachCreatePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Enums\SoccerCoachRole.cs" />
     <Compile Include="Enums\SoccerPlayerRole.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -131,7 +134,23 @@
     <Compile Include="Models\Sport.cs" />
     <Compile Include="Models\Team.cs" />
     <Compile Include="Models\TeamMember.cs" />
+    <Compile Include="Pages\CoachEditPage.xaml.cs">
+      <DependentUpon>CoachEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PlayerCreatePage.xaml.cs">
+      <DependentUpon>PlayerCreatePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PlayerEditPage.xaml.cs">
+      <DependentUpon>PlayerEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\TeamCreatePage.xaml.cs">
+      <DependentUpon>TeamCreatePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\TeamEditPage.xaml.cs">
+      <DependentUpon>TeamEditPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Models\ViewModels\ViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -154,9 +173,33 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Pages\CoachCreatePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\CoachEditPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\PlayerCreatePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\PlayerEditPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\TeamCreatePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\TeamEditPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

@@ -51,6 +51,5 @@ namespace SportTeamManagementApp.Models
                 throw new InvalidOperationException($"Could not find player {player?.firstName}");
             }
         }
-
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SportTeamManagementApp.Pages;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -31,6 +32,8 @@ namespace SportTeamManagementApp
             this.InitializeComponent();
             this.Suspending += OnSuspending;
         }
+
+        public static ViewModel SharedViewModel { get; } = new ViewModel();
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points

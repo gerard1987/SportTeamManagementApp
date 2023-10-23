@@ -10,139 +10,30 @@
     >
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <StackPanel>
-            <TextBlock Text="Sport Team Management" FontSize="24" Margin="10"/>
+        <ContentDialog x:Name="ErrorDialog" Title="Message" PrimaryButtonText="OK">
+            <StackPanel>
+                <TextBlock Text="Your message goes here." />
+            </StackPanel>
+        </ContentDialog>
 
-            <ContentDialog x:Name="ErrorDialog" Title="Message" PrimaryButtonText="OK">
-                <StackPanel>
-                    <TextBlock Text="Your message goes here." />
-                </StackPanel>
-            </ContentDialog>
+        <SplitView Name="MainSplitView" DisplayMode="CompactOverlay" CompactPaneLength="200" OpenPaneLength="200">
+            <!-- Menu Pane -->
+            <SplitView.Pane>
+                <ListView Name="MainMenu" SelectionChanged="MainMenu_SelectionChanged">
+                    <ListViewItem Content="Create Coach"/>
+                    <ListViewItem Content="Create Player"/>
+                    <ListViewItem Content="Create Team"/>
+                    <ListViewItem Content="Edit Team"/>
+                    <ListViewItem Content="Edit Player"/>
+                    <ListViewItem Content="Edit Coach"/>
+                    <ListViewItem Content="Exit"/>
+                </ListView>
+            </SplitView.Pane>
 
-            <!-- Main Menu -->
-            <ListView Name="MainMenu" SelectionChanged="MainMenu_SelectionChanged">
-                <ListViewItem Content="Create Coach"/>
-                <ListViewItem Content="Create Player"/>
-                <ListViewItem Content="Create Team"/>
-                <ListViewItem Content="Edit Team"/>
-                <ListViewItem Content="Edit Player"/>
-                <ListViewItem Content="Edit Coach"/>
-                <ListViewItem Content="Exit"/>
-            </ListView>
-        </StackPanel>
-
-        <!-- Create Coach Section -->
-        <StackPanel VerticalAlignment="Center" x:Name="CreateCoachSection" Visibility="Collapsed">
-            <TextBlock Text="Create Coach" FontSize="20"/>
-            <TextBox PlaceholderText="FirstName" Name="CoachFirstName" Margin="10"/>
-            <TextBox PlaceholderText="LastName" Name="CoachLastName" Margin="10"/>
-            <TextBox PlaceholderText="Age" Name="CoachAge" Margin="10"/>
-            <TextBox PlaceholderText="Salary" Name="CoachSalary" Margin="10"/>
-            <ComboBox PlaceholderText="Role" Margin="10" x:Name="SoccerCoachRoleComboBox" />
-
-            <Button Content="Save" Click="CreateCoach" Margin="10"/>
-            <Button Content="Cancel" Click="Cancel" Margin="10"/>
-        </StackPanel>
-
-        <!-- Create Player Section -->
-        <StackPanel VerticalAlignment="Center" x:Name="CreatePlayerSection" Visibility="Collapsed">
-            <TextBlock Text="Create Player" FontSize="20"/>
-            <TextBox PlaceholderText="FirstName" Name="PlayerFirstName" Margin="10"/>
-            <TextBox PlaceholderText="LastName" Name="PlayerLastName" Margin="10"/>
-            <TextBox PlaceholderText="Age" Name="PlayerAge" Margin="10"/>
-            <TextBox PlaceholderText="Salary" Name="PlayerSalary" Margin="10"/>
-            <ComboBox PlaceholderText="Role" Margin="10" x:Name="SoccerPlayerRoleComboBox" />
-
-            <Button Content="Save" Click="CreatePlayer" Margin="10"/>
-            <Button Content="Cancel" Click="Cancel" Margin="10"/>
-        </StackPanel>
-
-        <!-- Create Team Section -->
-        <StackPanel VerticalAlignment="Center" x:Name="CreateTeamSection" Visibility="Collapsed">
-            <TextBlock Text="Create Team" FontSize="20"/>
-            <TextBox PlaceholderText="Name" Name="TeamName" Margin="10"/>
-            <ComboBox PlaceholderText="Players" Margin="10" x:Name="TeamPlayersComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
-            <ListBox x:Name="SelectedPlayersListBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="200">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Value}" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            <Button Content="Add player to team" Click="AddPlayerToSelectionForTeam" Margin="10"/>
-            <ComboBox PlaceholderText="Coaches" Margin="10" x:Name="TeamCoachesComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
-
-            <Button Content="Create team" Click="CreateTeam" Margin="10"/>
-            <Button Content="Cancel" Click="Cancel" Margin="10"/>
-        </StackPanel>
-
-        <!-- Edit Select Team Section -->
-        <StackPanel VerticalAlignment="Center" x:Name="EditTeamSelectSection" Visibility="Collapsed">
-            <TextBlock Text="Edit Team" FontSize="20"/>
-            <ComboBox PlaceholderText="Teams" Margin="10" x:Name="TeamsToEditComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
-            <Button Content="Select" Click="SelectTeamToEdit" Margin="10"/>
-            <Button Content="Cancel" Click="Cancel" Margin="10"/>
-        </StackPanel>
-
-        <!-- Edit Team Section -->
-        <StackPanel VerticalAlignment="Center" x:Name="EditTeamSection" Visibility="Collapsed">
-            <TextBox PlaceholderText="Name" Name="TeamNameEdit" Margin="10"/>
-            <Button Content="Save" Click="EditTeam" Margin="10"/>
-
-            <ComboBox PlaceholderText="Players" Margin="10" x:Name="AvailablePlayersComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
-            <Button Content="Add player to team" Click="AddPlayerToTeam" Margin="10" />
-            
-            <ComboBox PlaceholderText="Players" Margin="10" x:Name="PlayersInTeamComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
-            <Button Content="Remove player from team" Click="RemovePlayerFromTeam" Margin="10" />
-
-            <ComboBox PlaceholderText="Players" Margin="10" x:Name="AvailableCoachesComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
-            <Button Content="Add Coach to team" Click="AddCoachToTeam" Margin="10" />
-
-            <ComboBox PlaceholderText="Coaches" Margin="10" x:Name="CoachesInTeamComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
-            <Button Content="Remove coach from team" Click="RemoveCoachFromTeam" Margin="10" />
-            <Button Content="Cancel" Click="Cancel" Margin="10"/>
-        </StackPanel>
-
-        <!-- Edit Select Player Section -->
-        <StackPanel VerticalAlignment="Center" x:Name="EditPlayerSelectSection" Visibility="Collapsed">
-            <TextBlock Text="Edit Player" FontSize="20"/>
-            <ComboBox PlaceholderText="Players to edit" Margin="10" x:Name="PlayerToEditComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
-            <Button Content="Select" Click="SelectPlayerToEdit" Margin="10"/>
-            <Button Content="Cancel" Click="Cancel" Margin="10"/>
-        </StackPanel>
-
-        <!-- Edit Player Section -->
-        <StackPanel VerticalAlignment="Center" x:Name="EditPlayerSection" Visibility="Collapsed">
-            <TextBox PlaceholderText="FirstName" Name="PlayerEditFirstName" Margin="10"/>
-            <TextBox PlaceholderText="LastName" Name="PlayerEditLastName" Margin="10"/>
-            <TextBox PlaceholderText="Age" Name="PlayerEditAge" Margin="10"/>
-            <TextBox PlaceholderText="Salary" Name="PlayerEditSalary" Margin="10"/>
-            <ComboBox PlaceholderText="Role" Margin="10" x:Name="SoccerPlayerRoleEditComboBox" />
-
-            <Button Content="Save" Click="EditPlayer" Margin="10"/>
-            <Button Content="Remove" Click="RemovePlayer" Margin="10"/>
-            <Button Content="Cancel" Click="Cancel" Margin="10"/>
-        </StackPanel>
-
-        <!-- Edit Select Coach Section -->
-        <StackPanel VerticalAlignment="Center" x:Name="EditCoachSelectSection" Visibility="Collapsed">
-            <TextBlock Text="Edit Coach" FontSize="20"/>
-            <ComboBox PlaceholderText="Players to edit" Margin="10" x:Name="CoachToEditComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
-            <Button Content="Select" Click="SelectCoachToEdit" Margin="10"/>
-            <Button Content="Cancel" Click="Cancel" Margin="10"/>
-        </StackPanel>
-
-        <!-- Edit Coach Section -->
-        <StackPanel VerticalAlignment="Center" x:Name="EditCoachSection" Visibility="Collapsed">
-            <TextBox PlaceholderText="FirstName" Name="CoachEditFirstName" Margin="10"/>
-            <TextBox PlaceholderText="LastName" Name="CoachEditLastName" Margin="10"/>
-            <TextBox PlaceholderText="Age" Name="CoachEditAge" Margin="10"/>
-            <TextBox PlaceholderText="Salary" Name="CoachEditSalary" Margin="10"/>
-            <ComboBox PlaceholderText="Role" Margin="10" x:Name="SoccerCoachRoleEditComboBox" />
-
-            <Button Content="Save" Click="EditCoach" Margin="10"/>
-            <Button Content="Remove" Click="RemoveCoach" Margin="10"/>
-            <Button Content="Cancel" Click="Cancel" Margin="10"/>
-        </StackPanel>
+            <!-- Content Pane -->
+            <SplitView.Content>
+                <Frame Name="MainFrame"/>
+            </SplitView.Content>
+        </SplitView>
     </Grid>
 </Page>
