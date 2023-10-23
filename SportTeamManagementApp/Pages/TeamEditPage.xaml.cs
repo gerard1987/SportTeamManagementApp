@@ -30,6 +30,10 @@ namespace SportTeamManagementApp.Pages
             this.InitializeComponent();
 
             viewModel = App.SharedViewModel;
+
+            AvailablePlayersComboBox.ItemsSource = viewModel.GetAvailablePlayers().Select(p => new { Key = p.Id, Value = p.firstName });
+            AvailableCoachesComboBox.ItemsSource = viewModel.GetAvailableCoaches().Select(c => new { Key = c.Id, Value = c.firstName });
+            TeamsToEditComboBox.ItemsSource = viewModel.GetAvailableTeams().Select(t => new { Key = t.Id, Value = t.name });
         }
 
         public async void SelectTeamToEdit(object sender, RoutedEventArgs e)

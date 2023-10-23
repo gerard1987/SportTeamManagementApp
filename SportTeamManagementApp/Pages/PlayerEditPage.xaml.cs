@@ -31,6 +31,8 @@ namespace SportTeamManagementApp.Pages
             this.InitializeComponent();
 
             viewModel = App.SharedViewModel;
+
+            PlayerToEditComboBox.ItemsSource = viewModel.Players.Select(p => new { Key = p.Id, Value = p.firstName });
         }
 
         public async void SelectPlayerToEdit(object sender, RoutedEventArgs e)
