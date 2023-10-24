@@ -40,6 +40,11 @@ namespace SportTeamManagementApp.Pages
         {
             try
             {
+                if (String.IsNullOrEmpty(TeamsToEditComboBox.SelectedValue.ToString()))
+                {
+                    throw new ArgumentException("No team selected");
+                }
+
                 Int32.TryParse(TeamsToEditComboBox.SelectedValue.ToString(), out int teamId);
                 viewModel.TeamSelectedForEdit = viewModel.Teams.Find(t => t.Id == teamId);
 
@@ -51,9 +56,6 @@ namespace SportTeamManagementApp.Pages
                     TeamNameEdit.Text = viewModel.TeamSelectedForEdit.name;
 
                     AvailablePlayersComboBox.ItemsSource = viewModel.GetAvailablePlayers().Select(p => new { Key = p.Id, Value = p.firstName });
-
-                    //SetAvailablePlayers();
-                    //SetAvailableCoaches();
 
                     if (viewModel.TeamSelectedForEdit.coach != null)
                     {
@@ -183,7 +185,8 @@ namespace SportTeamManagementApp.Pages
 
                 teamToEdit.RemovePlayer(teamPlayer);
                 PlayersInTeamComboBox.ItemsSource = teamToEdit.players.Select(p => new { Key = p.Id, Value = p.firstName }).ToList();
-                //SetAvailablePlayers();
+
+                AvailablePlayersComboBox.ItemsSource = viewModel.GetAvailablePlayers().Select(p => new { Key = p.Id, Value = p.firstName });
             }
             catch (ArgumentException aEx)
             {
@@ -213,8 +216,8 @@ namespace SportTeamManagementApp.Pages
 
                 teamToEdit.coach = null;
                 CoachesInTeamComboBox.ItemsSource = null;
-                //SetAvailablePlayers();
-                //SetAvailableCoaches();
+
+                AvailableCoachesComboBox.ItemsSource = viewModel.GetAvailableCoaches().Select(c => new { Key = c.Id, Value = c.firstName });
             }
             catch (ArgumentException aEx)
             {

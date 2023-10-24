@@ -39,6 +39,11 @@ namespace SportTeamManagementApp.Pages
         {
             try
             {
+                if (String.IsNullOrEmpty(PlayerToEditComboBox.SelectedValue.ToString()))
+                {
+                    throw new ArgumentException("No player selected!");
+                }
+
                 Int32.TryParse(PlayerToEditComboBox.SelectedValue.ToString(), out int playerId);
                 viewModel.PlayerSelectedForEdit = viewModel.Players.Find(p => p.Id == playerId);
 
@@ -115,7 +120,7 @@ namespace SportTeamManagementApp.Pages
                     playerToUpdate.role = soccerPlayerRole;
                 }
 
-                EditPlayerSection.Visibility = Visibility.Collapsed;
+                Frame.Navigate(typeof(MainPage));
             }
             catch (ArgumentException aEx)
             {
@@ -145,11 +150,13 @@ namespace SportTeamManagementApp.Pages
                 {
                     Player player = team.players.Find(p => p.Id == viewModel.PlayerSelectedForEdit.Id);
 
-                    team.RemovePlayer(player);
+                    if (player != null)
+                    {
+                        team.RemovePlayer(player);
+                    }
                 }
 
-                EditPlayerSection.Visibility = Visibility.Collapsed;
-                //SetAvailablePlayers();
+                Frame.Navigate(typeof(MainPage));
             }
             catch (InvalidOperationException ioEx)
             {

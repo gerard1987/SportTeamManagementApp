@@ -35,7 +35,7 @@
             <ComboBox PlaceholderText="Players" Margin="10" x:Name="PlayersInTeamComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
             <Button Content="Remove player from team" Click="RemovePlayerFromTeam" Margin="10" />
 
-            <ComboBox PlaceholderText="Players" Margin="10" x:Name="AvailableCoachesComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
+            <ComboBox PlaceholderText="Coaches" Margin="10" x:Name="AvailableCoachesComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
             <Button Content="Add Coach to team" Click="AddCoachToTeam" Margin="10" />
 
             <ComboBox PlaceholderText="Coaches" Margin="10" x:Name="CoachesInTeamComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />

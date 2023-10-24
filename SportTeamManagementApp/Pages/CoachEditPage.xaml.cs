@@ -39,6 +39,11 @@ namespace SportTeamManagementApp.Pages
         {
             try
             {
+                if (String.IsNullOrEmpty(CoachToEditComboBox.SelectedValue.ToString()))
+                {
+                    throw new ArgumentException("No coach selected!");
+                }
+
                 Int32.TryParse(CoachToEditComboBox.SelectedValue.ToString(), out int coachId);
                 viewModel.CoachSelectedForEdit = viewModel.Coaches.Find(p => p.Id == coachId);
 
@@ -113,8 +118,9 @@ namespace SportTeamManagementApp.Pages
                     coachToUpdate.role = soccerCoachRole;
                 }
 
-                EditCoachSection.Visibility = Visibility.Collapsed;
                 viewModel.CoachSelectedForEdit = new Coach();
+
+                Frame.Navigate(typeof(MainPage));
             }
             catch (ArgumentException aEx)
             {
@@ -148,7 +154,7 @@ namespace SportTeamManagementApp.Pages
                     viewModel.Coaches.Remove(coachToRemove);
                 }
 
-                //SetAvailableCoaches();
+                Frame.Navigate(typeof(MainPage));
             }
             catch (InvalidOperationException ioEx)
             {
