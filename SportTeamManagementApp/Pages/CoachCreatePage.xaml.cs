@@ -60,7 +60,7 @@ namespace SportTeamManagementApp.Pages
 
                 newCoach.firstName = CoachFirstName.Text;
                 newCoach.lastName = CoachLastName.Text;
-                newCoach.age = ageResult;
+                newCoach.Age = ageResult;
                 newCoach.salary = salaryResult;
                 newCoach.role = (SoccerPlayerRole)soccerCoachRole;
 
@@ -68,6 +68,10 @@ namespace SportTeamManagementApp.Pages
 
                 Frame.Navigate(typeof(MainPage));
 
+            }
+            catch (ArgumentOutOfRangeException aoEx)
+            {
+                await ShowExceptionMessage(aoEx.Message);
             }
             catch (ArgumentException aEx)
             {

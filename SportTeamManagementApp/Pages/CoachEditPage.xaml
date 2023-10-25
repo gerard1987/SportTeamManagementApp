@@ -19,7 +19,7 @@
         <!-- Edit Select Coach Section -->
         <StackPanel VerticalAlignment="Center" x:Name="EditCoachSelectSection">
             <TextBlock Text="Edit Coach" FontSize="20"/>
-            <ComboBox PlaceholderText="Players to edit" Margin="10" x:Name="CoachToEditComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
+            <ComboBox PlaceholderText="Coaches to edit" Margin="10" x:Name="CoachToEditComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
             <Button Content="Select" Click="SelectCoachToEdit" Margin="10"/>
             <Button Content="Cancel" Click="Cancel" Margin="10"/>
         </StackPanel>

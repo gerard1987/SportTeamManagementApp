@@ -65,7 +65,7 @@ namespace SportTeamManagementApp.Pages
 
                     CoachEditFirstName.Text = viewModel.CoachSelectedForEdit.firstName;
                     CoachEditLastName.Text = viewModel.CoachSelectedForEdit.lastName;
-                    CoachEditAge.Text = viewModel.CoachSelectedForEdit.age.ToString();
+                    CoachEditAge.Text = viewModel.CoachSelectedForEdit.Age.ToString();
                     CoachEditSalary.Text = viewModel.CoachSelectedForEdit.salary.ToString();
                     SoccerCoachRoleEditComboBox.ItemsSource = roles;
                     SoccerCoachRoleEditComboBox.SelectedIndex = selectedRole;
@@ -113,7 +113,7 @@ namespace SportTeamManagementApp.Pages
                 {
                     coachToUpdate.firstName = CoachEditFirstName.Text;
                     coachToUpdate.lastName = CoachEditLastName.Text;
-                    coachToUpdate.age = ageResult;
+                    coachToUpdate.Age = ageResult;
                     coachToUpdate.salary = salaryResult;
                     coachToUpdate.role = soccerCoachRole;
                 }

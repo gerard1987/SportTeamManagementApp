@@ -13,7 +13,7 @@ namespace SportTeamManagementApp.Models
         private int id;
         public string firstName;
         public string lastName;
-        public int age;
+        private int age;
         public double salary;
         public Enum role;
 
@@ -26,6 +26,25 @@ namespace SportTeamManagementApp.Models
         public TeamMember()
         {
             Id = nextId++;
+        }
+
+        public int Age
+        {
+            get
+            {
+                return this.age;
+            }
+            set
+            {
+                if (value >= 0 && value <= 120)
+                {
+                    this.age = value;
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value), "Value needs to be between 0 and 120");
+                }
+            }
         }
     }
 }

@@ -60,7 +60,7 @@ namespace SportTeamManagementApp.Pages
 
                 newPlayer.firstName = PlayerFirstName.Text;
                 newPlayer.lastName = PlayerLastName.Text;
-                newPlayer.age = ageResult;
+                newPlayer.Age = ageResult;
                 newPlayer.salary = salaryResult;
                 newPlayer.role = soccerPlayerRole;
 
