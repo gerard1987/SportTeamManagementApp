@@ -32,7 +32,7 @@ namespace SportTeamManagementApp.Pages
 
             viewModel = App.SharedViewModel;
 
-            PlayerToEditComboBox.ItemsSource = viewModel.Players.Select(p => new { Key = p.Id, Value = p.firstName });
+            PlayerToEditComboBox.ItemsSource = viewModel.Players.Select(p => new { Key = p.Id, Value = p.FirstName });
         }
 
         public async void SelectPlayerToEdit(object sender, RoutedEventArgs e)
@@ -57,18 +57,18 @@ namespace SportTeamManagementApp.Pages
                     for (int i = 0; i < roles.Length; i++)
                     {
                         SoccerPlayerRole role = (SoccerPlayerRole)roles.GetValue(i);
-                        if (viewModel.PlayerSelectedForEdit.role.Equals(role))
+                        if (viewModel.PlayerSelectedForEdit.Role.Equals(role))
                         {
                             selectedRole = i;
                         }
                     }
 
-                    Enum.TryParse(viewModel.PlayerSelectedForEdit.role.ToString(), out SoccerPlayerRole parsedRole);
+                    Enum.TryParse(viewModel.PlayerSelectedForEdit.Role.ToString(), out SoccerPlayerRole parsedRole);
 
-                    PlayerEditFirstName.Text = viewModel.PlayerSelectedForEdit.firstName;
-                    PlayerEditLastName.Text = viewModel.PlayerSelectedForEdit.lastName;
+                    PlayerEditFirstName.Text = viewModel.PlayerSelectedForEdit.FirstName;
+                    PlayerEditLastName.Text = viewModel.PlayerSelectedForEdit.LastName;
                     PlayerEditAge.Text = viewModel.PlayerSelectedForEdit.Age.ToString();
-                    PlayerEditSalary.Text = viewModel.PlayerSelectedForEdit.salary.ToString();
+                    PlayerEditSalary.Text = viewModel.PlayerSelectedForEdit.Salary.ToString();
                     SoccerPlayerRoleEditComboBox.ItemsSource = roles;
                     SoccerPlayerRoleEditComboBox.SelectedIndex = selectedRole;
                     EditPlayerSelectSection.Visibility = Visibility.Collapsed;
@@ -92,32 +92,15 @@ namespace SportTeamManagementApp.Pages
         {
             try
             {
-                if (String.IsNullOrEmpty(PlayerEditFirstName.Text) || String.IsNullOrEmpty(PlayerEditLastName.Text))
-                {
-                    throw new ArgumentException("First name or last name cannot be empty.");
-                }
-                if (!Int32.TryParse(PlayerEditAge.Text, out int ageResult))
-                {
-                    throw new FormatException($"Could not parse value {PlayerEditAge.Text} to a integer value");
-                }
-                if (!double.TryParse(PlayerEditSalary.Text, out double salaryResult))
-                {
-                    throw new FormatException($"Could not parse value {PlayerEditSalary.Text} to a integer value");
-                }
-                if (!Enum.TryParse(SoccerPlayerRoleEditComboBox.SelectedItem?.ToString(), out SoccerPlayerRole soccerPlayerRole))
-                {
-                    throw new FormatException($"Could not parse value {SoccerPlayerRoleEditComboBox.Text} to a SoccerPlayerRole");
-                }
-
                 Player playerToUpdate = viewModel.Players.FirstOrDefault(p => p.Id == viewModel.PlayerSelectedForEdit.Id);
 
                 if (playerToUpdate != null)
                 {
-                    playerToUpdate.firstName = PlayerEditFirstName.Text;
-                    playerToUpdate.lastName = PlayerEditLastName.Text;
-                    playerToUpdate.Age = ageResult;
-                    playerToUpdate.salary = salaryResult;
-                    playerToUpdate.role = soccerPlayerRole;
+                    playerToUpdate.FirstName = PlayerEditFirstName.Text;
+                    playerToUpdate.LastName = PlayerEditLastName.Text;
+                    playerToUpdate.Age = PlayerEditAge.Text;
+                    playerToUpdate.Salary = PlayerEditSalary.Text;
+                    playerToUpdate.Role = SoccerPlayerRoleEditComboBox.SelectedItem?.ToString();
                 }
 
                 Frame.Navigate(typeof(MainPage));

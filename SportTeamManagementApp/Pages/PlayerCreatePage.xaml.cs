@@ -39,30 +39,14 @@ namespace SportTeamManagementApp.Pages
         {
             try
             {
-                Player newPlayer = new Player();
-
-                if (String.IsNullOrEmpty(PlayerFirstName.Text) || String.IsNullOrEmpty(PlayerLastName.Text))
+                Player newPlayer = new Player
                 {
-                    throw new ArgumentException("First name or last name cannot be empty.");
-                }
-                if (!Int32.TryParse(PlayerAge.Text, out int ageResult))
-                {
-                    throw new FormatException($"Could not parse value {PlayerAge.Text} to a integer value");
-                }
-                if (!double.TryParse(PlayerSalary.Text, out double salaryResult))
-                {
-                    throw new FormatException($"Could not parse value {PlayerSalary.Text} to a integer value");
-                }
-                if (!Enum.TryParse(SoccerPlayerRoleComboBox.SelectedItem?.ToString(), out SoccerPlayerRole soccerPlayerRole))
-                {
-                    throw new FormatException($"Could not parse value {SoccerPlayerRoleComboBox.Text} to a SoccerPlayerRole");
-                }
-
-                newPlayer.firstName = PlayerFirstName.Text;
-                newPlayer.lastName = PlayerLastName.Text;
-                newPlayer.Age = ageResult;
-                newPlayer.salary = salaryResult;
-                newPlayer.role = soccerPlayerRole;
+                    FirstName = PlayerFirstName.Text,
+                    LastName = PlayerLastName.Text,
+                    Age = PlayerAge.Text,
+                    Salary = PlayerSalary.Text,
+                    Role = SoccerPlayerRoleComboBox.SelectedItem?.ToString()
+                };
 
                 viewModel.Players.Add(newPlayer);
 

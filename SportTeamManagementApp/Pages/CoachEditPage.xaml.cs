@@ -32,7 +32,7 @@ namespace SportTeamManagementApp.Pages
 
             viewModel = App.SharedViewModel;
 
-            CoachToEditComboBox.ItemsSource = viewModel.Coaches.Select(c => new { Key = c.Id, Value = c.firstName });
+            CoachToEditComboBox.ItemsSource = viewModel.Coaches.Select(c => new { Key = c.Id, Value = c.FirstName });
         }
 
         public async void SelectCoachToEdit(object sender, RoutedEventArgs e)
@@ -57,16 +57,16 @@ namespace SportTeamManagementApp.Pages
                     for (int i = 0; i < roles.Length; i++)
                     {
                         SoccerCoachRole role = (SoccerCoachRole)roles.GetValue(i);
-                        if (viewModel.CoachSelectedForEdit.role.Equals(role))
+                        if (viewModel.CoachSelectedForEdit.Role.Equals(role))
                         {
                             selectedRole = i;
                         }
                     }
 
-                    CoachEditFirstName.Text = viewModel.CoachSelectedForEdit.firstName;
-                    CoachEditLastName.Text = viewModel.CoachSelectedForEdit.lastName;
+                    CoachEditFirstName.Text = viewModel.CoachSelectedForEdit.FirstName;
+                    CoachEditLastName.Text = viewModel.CoachSelectedForEdit.LastName;
                     CoachEditAge.Text = viewModel.CoachSelectedForEdit.Age.ToString();
-                    CoachEditSalary.Text = viewModel.CoachSelectedForEdit.salary.ToString();
+                    CoachEditSalary.Text = viewModel.CoachSelectedForEdit.Salary.ToString();
 
                     SoccerCoachRoleEditComboBox.ItemsSource = roles;
                     SoccerCoachRoleEditComboBox.SelectedIndex = selectedRole;
@@ -91,32 +91,15 @@ namespace SportTeamManagementApp.Pages
         {
             try
             {
-                if (String.IsNullOrEmpty(CoachEditFirstName.Text) || String.IsNullOrEmpty(CoachEditLastName.Text))
-                {
-                    throw new ArgumentException("First name or last name cannot be empty.");
-                }
-                if (!Int32.TryParse(CoachEditAge.Text, out int ageResult))
-                {
-                    throw new FormatException($"Could not parse value {CoachEditAge.Text} to a integer value");
-                }
-                if (!double.TryParse(CoachEditSalary.Text, out double salaryResult))
-                {
-                    throw new FormatException($"Could not parse value {CoachEditSalary.Text} to a double value");
-                }
-                if (!Enum.TryParse(SoccerCoachRoleEditComboBox.SelectedItem?.ToString(), out SoccerCoachRole soccerCoachRole))
-                {
-                    throw new FormatException($"Could not parse value {SoccerCoachRoleEditComboBox.Text} to a SoccerCoachRole");
-                }
-
                 Coach coachToUpdate = viewModel.Coaches.FirstOrDefault(c => c.Id == viewModel.CoachSelectedForEdit.Id);
 
                 if (coachToUpdate != null)
                 {
-                    coachToUpdate.firstName = CoachEditFirstName.Text;
-                    coachToUpdate.lastName = CoachEditLastName.Text;
-                    coachToUpdate.Age = ageResult;
-                    coachToUpdate.salary = salaryResult;
-                    coachToUpdate.role = soccerCoachRole;
+                    coachToUpdate.FirstName = CoachEditFirstName.Text;
+                    coachToUpdate.LastName = CoachEditLastName.Text;
+                    coachToUpdate.Age = CoachEditAge.Text;
+                    coachToUpdate.Salary = CoachEditSalary.Text;
+                    coachToUpdate.Role = SoccerCoachRoleEditComboBox.SelectedItem?.ToString();
                 }
 
                 viewModel.CoachSelectedForEdit = new Coach();

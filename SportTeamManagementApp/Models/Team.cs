@@ -18,7 +18,7 @@ namespace SportTeamManagementApp.Models
         public Team(string name, Coach coach, List<Player> players)
         {
             Id = nextId++;
-            this.name = name;
+            this.Name = name;
             this.coach = coach;
             this.players = players;
         }
@@ -26,6 +26,25 @@ namespace SportTeamManagementApp.Models
         {
             get { return id; }
             private set { id = value; }
+        }
+
+        public string Name
+        {
+            get
+            {
+                return this.name;
+            }
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    this.name = value;
+                }
+                else
+                {
+                    throw new ArgumentException("Name cannot be empty or null.");
+                }
+            }
         }
 
         public void AddPlayer(Player player)
@@ -36,7 +55,7 @@ namespace SportTeamManagementApp.Models
             }
             else
             {
-                throw new InvalidOperationException($"Player {player?.firstName} is already in team!");
+                throw new InvalidOperationException($"Player {player?.FirstName} is already in team!");
             }
         }
 
@@ -48,7 +67,7 @@ namespace SportTeamManagementApp.Models
             }
             else
             {
-                throw new InvalidOperationException($"Could not find player {player?.firstName}");
+                throw new InvalidOperationException($"Could not find player {player?.FirstName}");
             }
         }
     }

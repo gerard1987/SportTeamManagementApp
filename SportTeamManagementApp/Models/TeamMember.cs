@@ -14,7 +14,7 @@ namespace SportTeamManagementApp.Models
         public string lastName;
         private int age;
         public double salary;
-        public Enum role;
+        protected Enum role;
 
         public int Id { get; private set; }
 
@@ -23,21 +23,79 @@ namespace SportTeamManagementApp.Models
             Id = nextId++;
         }
 
-        public int Age
+        public string FirstName
         {
             get
             {
-                return this.age;
+                return this.firstName;
             }
             set
             {
-                if (value >= 0 && value <= 120)
+                if (!string.IsNullOrEmpty(value))
                 {
-                    this.age = value;
+                    this.firstName = value;
                 }
                 else
                 {
-                    throw new ArgumentOutOfRangeException(nameof(value), "Value needs to be between 0 and 120");
+                    throw new ArgumentException("First name cannot be empty or null.");
+                }
+            }
+        }
+
+        public string LastName
+        {
+            get
+            {
+                return this.lastName;
+            }
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    this.lastName = value;
+                }
+                else
+                {
+                    throw new ArgumentException("Last name cannot be empty or null.");
+                }
+            }
+        }
+
+
+        public string Age
+        {
+            get
+            {
+                return this.age.ToString();
+            }
+            set
+            {
+                if (Int32.TryParse(value, out int result))
+                {
+                    this.age = (result >= 0 && result <= 120) ? result : throw new ArgumentOutOfRangeException(nameof(value), "Value needs to be between 0 and 120");
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value), $"Cannot convert type of {value} to integer");
+                }
+            }
+        }
+
+        public string Salary
+        {
+            get
+            {
+                return this.salary.ToString();
+            }
+            set
+            {
+                if (double.TryParse(value.ToString(), out double salaryResult))
+                {
+                    this.salary = salaryResult;
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value), $"Cannot convert type of {value} to double");
                 }
             }
         }

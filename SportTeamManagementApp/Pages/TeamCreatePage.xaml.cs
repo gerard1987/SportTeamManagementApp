@@ -31,8 +31,8 @@ namespace SportTeamManagementApp.Pages
 
             viewModel = App.SharedViewModel;
 
-            TeamPlayersComboBox.ItemsSource = viewModel.GetAvailablePlayers().Select(p => new { Key = p.Id, Value = p.firstName });
-            TeamCoachesComboBox.ItemsSource = viewModel.GetAvailableCoaches().Select(c => new { Key = c.Id, Value = c.firstName });
+            TeamPlayersComboBox.ItemsSource = viewModel.GetAvailablePlayers().Select(p => new { Key = p.Id, Value = p.FirstName });
+            TeamCoachesComboBox.ItemsSource = viewModel.GetAvailableCoaches().Select(c => new { Key = c.Id, Value = c.FirstName });
         }
 
         public async void AddPlayerToSelectionForTeam(object sender, RoutedEventArgs e)
@@ -48,7 +48,7 @@ namespace SportTeamManagementApp.Pages
                     throw new ArgumentException($"Player already in team!");
                 }
                 viewModel.SelectedPlayersForTeam.Add(playerToAdd);
-                SelectedPlayersListBox.ItemsSource = viewModel.SelectedPlayersForTeam.Select(c => new { Key = c.Id, Value = c.firstName }).ToList();
+                SelectedPlayersListBox.ItemsSource = viewModel.SelectedPlayersForTeam.Select(c => new { Key = c.Id, Value = c.FirstName }).ToList();
             }
             catch (ArgumentException aEx)
             {

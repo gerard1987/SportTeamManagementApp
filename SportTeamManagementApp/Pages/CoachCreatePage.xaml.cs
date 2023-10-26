@@ -39,30 +39,14 @@ namespace SportTeamManagementApp.Pages
         {
             try
             {
-                Coach newCoach = new Coach();
-
-                if (String.IsNullOrEmpty(CoachFirstName.Text) || String.IsNullOrEmpty(CoachLastName.Text))
+                Coach newCoach = new Coach
                 {
-                    throw new ArgumentException("First name or last name cannot be empty.");
-                }
-                if (!Int32.TryParse(CoachAge.Text, out int ageResult))
-                {
-                    throw new FormatException($"Could not parse value {CoachAge.Text} to a integer value");
-                }
-                if (!double.TryParse(CoachSalary.Text, out double salaryResult))
-                {
-                    throw new FormatException($"Could not parse value {CoachSalary.Text} to a double value");
-                }
-                if (!Enum.TryParse(SoccerCoachRoleComboBox.SelectedItem?.ToString(), out SoccerCoachRole soccerCoachRole))
-                {
-                    throw new FormatException($"Could not parse value {SoccerCoachRoleComboBox.Text} to a SoccerPlayerRole");
-                } 
-
-                newCoach.firstName = CoachFirstName.Text;
-                newCoach.lastName = CoachLastName.Text;
-                newCoach.Age = ageResult;
-                newCoach.salary = salaryResult;
-                newCoach.role = (SoccerPlayerRole)soccerCoachRole;
+                    FirstName = CoachFirstName.Text,
+                    LastName = CoachLastName.Text,
+                    Age = CoachAge.Text,
+                    Salary = CoachSalary.Text,
+                    Role = SoccerCoachRoleComboBox.SelectedItem?.ToString()
+                };
 
                 viewModel.Coaches.Add(newCoach);
 

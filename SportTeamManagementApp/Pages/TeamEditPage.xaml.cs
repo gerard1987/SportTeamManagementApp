@@ -31,8 +31,8 @@ namespace SportTeamManagementApp.Pages
 
             viewModel = App.SharedViewModel;
 
-            AvailablePlayersComboBox.ItemsSource = viewModel.GetAvailablePlayers().Select(p => new { Key = p.Id, Value = p.firstName });
-            AvailableCoachesComboBox.ItemsSource = viewModel.GetAvailableCoaches().Select(c => new { Key = c.Id, Value = c.firstName });
+            AvailablePlayersComboBox.ItemsSource = viewModel.GetAvailablePlayers().Select(p => new { Key = p.Id, Value = p.FirstName });
+            AvailableCoachesComboBox.ItemsSource = viewModel.GetAvailableCoaches().Select(c => new { Key = c.Id, Value = c.FirstName });
             TeamsToEditComboBox.ItemsSource = viewModel.GetAvailableTeams().Select(t => new { Key = t.Id, Value = t.name });
         }
 
@@ -50,17 +50,17 @@ namespace SportTeamManagementApp.Pages
 
                 if (viewModel.TeamSelectedForEdit != null)
                 {
-                    PlayersInTeamComboBox.ItemsSource = viewModel.TeamSelectedForEdit.players.Select(p => new { Key = p.Id, Value = p.firstName }).ToList();
+                    PlayersInTeamComboBox.ItemsSource = viewModel.TeamSelectedForEdit.players.Select(p => new { Key = p.Id, Value = p.FirstName }).ToList();
                     EditTeamSelectSection.Visibility = Visibility.Collapsed;
                     EditTeamSection.Visibility = Visibility.Visible;
                     TeamNameEdit.Text = viewModel.TeamSelectedForEdit.name;
 
-                    AvailablePlayersComboBox.ItemsSource = viewModel.GetAvailablePlayers().Select(p => new { Key = p.Id, Value = p.firstName });
+                    AvailablePlayersComboBox.ItemsSource = viewModel.GetAvailablePlayers().Select(p => new { Key = p.Id, Value = p.FirstName });
 
                     if (viewModel.TeamSelectedForEdit.coach != null)
                     {
                         List<object> items = new List<object>();
-                        items.Add(new { Key = viewModel.TeamSelectedForEdit.coach.Id, Value = viewModel.TeamSelectedForEdit.coach.firstName });
+                        items.Add(new { Key = viewModel.TeamSelectedForEdit.coach.Id, Value = viewModel.TeamSelectedForEdit.coach.FirstName });
                         CoachesInTeamComboBox.ItemsSource = items;
                     }
                     else
@@ -120,7 +120,7 @@ namespace SportTeamManagementApp.Pages
                 Team teamToEdit = viewModel.Teams.Find(t => t.Id == viewModel.TeamSelectedForEdit.Id);
 
                 teamToEdit.AddPlayer(playerToAdd);
-                PlayersInTeamComboBox.ItemsSource = teamToEdit.players.Select(p => new { Key = p.Id, Value = p.firstName }).ToList();
+                PlayersInTeamComboBox.ItemsSource = teamToEdit.players.Select(p => new { Key = p.Id, Value = p.FirstName }).ToList();
             }
             catch (ArgumentException aEx)
             {
@@ -152,7 +152,7 @@ namespace SportTeamManagementApp.Pages
                 teamToEdit.coach = coachToAdd;
 
                 List<object> items = new List<object>();
-                items.Add(new { Key = viewModel.TeamSelectedForEdit.coach.Id, Value = viewModel.TeamSelectedForEdit.coach.firstName });
+                items.Add(new { Key = viewModel.TeamSelectedForEdit.coach.Id, Value = viewModel.TeamSelectedForEdit.coach.FirstName });
                 CoachesInTeamComboBox.ItemsSource = items;
             }
             catch (ArgumentException aEx)
@@ -182,9 +182,9 @@ namespace SportTeamManagementApp.Pages
                 Team teamToEdit = viewModel.Teams.Find(t => t.Id == viewModel.TeamSelectedForEdit.Id);
 
                 teamToEdit.RemovePlayer(teamPlayer);
-                PlayersInTeamComboBox.ItemsSource = teamToEdit.players.Select(p => new { Key = p.Id, Value = p.firstName }).ToList();
+                PlayersInTeamComboBox.ItemsSource = teamToEdit.players.Select(p => new { Key = p.Id, Value = p.FirstName }).ToList();
 
-                AvailablePlayersComboBox.ItemsSource = viewModel.GetAvailablePlayers().Select(p => new { Key = p.Id, Value = p.firstName });
+                AvailablePlayersComboBox.ItemsSource = viewModel.GetAvailablePlayers().Select(p => new { Key = p.Id, Value = p.FirstName });
             }
             catch (ArgumentException aEx)
             {
@@ -215,7 +215,7 @@ namespace SportTeamManagementApp.Pages
                 teamToEdit.coach = null;
                 CoachesInTeamComboBox.ItemsSource = null;
 
-                AvailableCoachesComboBox.ItemsSource = viewModel.GetAvailableCoaches().Select(c => new { Key = c.Id, Value = c.firstName });
+                AvailableCoachesComboBox.ItemsSource = viewModel.GetAvailableCoaches().Select(c => new { Key = c.Id, Value = c.FirstName });
             }
             catch (ArgumentException aEx)
             {
