@@ -40,6 +40,8 @@
 
             <ComboBox PlaceholderText="Coaches" Margin="10" x:Name="CoachesInTeamComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
             <Button Content="Remove coach from team" Click="RemoveCoachFromTeam" Margin="10" />
+
+            <Button Content="Remove team" Click="RemoveTeam" Margin="10" />
             <Button Content="Cancel" Click="Cancel" Margin="10"/>
         </StackPanel>
 

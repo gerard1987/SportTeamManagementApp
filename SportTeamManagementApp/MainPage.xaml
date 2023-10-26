@@ -29,11 +29,6 @@
                     <ListViewItem Content="Exit"/>
                 </ListView>
             </SplitView.Pane>
-
-            <!-- Content Pane -->
-            <SplitView.Content>
-                <Frame Name="MainFrame"/>
-            </SplitView.Content>
         </SplitView>
     </Grid>
 </Page>

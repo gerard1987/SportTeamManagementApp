@@ -19,19 +19,6 @@ namespace SportTeamManagementApp
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        public Sport soccer = new Sport("Soccer");
-        public List<Coach> coaches = new List<Coach>();
-        public List<Player> players = new List<Player>();
-        public List<Team> teams = new List<Team>();
-
-        public List<Player> selectedPlayersForTeam = new List<Player>();
-
-        public Team teamSelectedForEdit;
-        public Player playerSelectedForEdit;
-        public Coach coachSelectedForEdit;
-
-        List<StackPanel> sections;
-
         public MainPage()
         {
             this.InitializeComponent();
@@ -74,68 +61,10 @@ namespace SportTeamManagementApp
             }
         }
 
-        private void ClearFields(StackPanel section)
-        {
-            if (section.Children.Any())
-            {
-                foreach (var child in section.Children)
-                {
-                    if (child is TextBox textBox)
-                    {
-                        textBox.Text = "";
-                        string text = textBox.Text;
-                    }
-                    if (child is ComboBox comboBox)
-                    {
-                        comboBox.SelectedIndex = 0;
-                    }
-                }
-            }
-        }
-
         private async Task ShowExceptionMessage(string errorMessage)
         {
             ErrorDialog.Content = errorMessage;
             await ErrorDialog.ShowAsync();
         }
-
-        //private List<Player> GetAvailablePlayers()
-        //{
-        //    return players
-        //                .Where(p => !teams
-        //                .Any(t => t.players.Contains(p)))
-        //                .Select(player => player)
-        //                .ToList();
-        //}
-
-        //private void SetAvailablePlayers()
-        //{
-        //    PlayerToEditComboBox.ItemsSource = players.Select(p => new { Key = p.Id, Value = p.firstName }).ToList();
-
-        //    var availablePlayers = players
-        //      .Where(p => !teams.Any(t => t.players.Contains(p)))
-        //      .Select(p => new { Key = p.Id, Value = p.firstName });
-
-        //    AvailablePlayersComboBox.ItemsSource = availablePlayers;
-        //    TeamPlayersComboBox.ItemsSource = availablePlayers;
-        //}
-
-        //private void SetAvailableCoaches()
-        //{
-        //    var availableCoaches = coaches
-        //          .Where(c => !teams
-        //          .Where(t => t.coach != null)
-        //          .Any(t => t.coach.Equals(c)))
-        //          .Select(c => new { Key = c.Id, Value = c.firstName });
-
-        //    TeamCoachesComboBox.ItemsSource = availableCoaches;
-        //    CoachToEditComboBox.ItemsSource = coaches.Select(c => new { Key = c.Id, Value = c.firstName }).ToList();
-        //    AvailableCoachesComboBox.ItemsSource = availableCoaches;
-        //}
-
-        //private void SetAvailableTeams()
-        //{
-        //    TeamsToEditComboBox.ItemsSource = teams.Select(t => new { Key = t.Id, Value = t.name }).ToList();
-        //}
     }
 }

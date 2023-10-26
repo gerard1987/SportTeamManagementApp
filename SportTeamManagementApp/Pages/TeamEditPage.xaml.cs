@@ -121,7 +121,6 @@ namespace SportTeamManagementApp.Pages
 
                 teamToEdit.AddPlayer(playerToAdd);
                 PlayersInTeamComboBox.ItemsSource = teamToEdit.players.Select(p => new { Key = p.Id, Value = p.firstName }).ToList();
-                //SetAvailablePlayers();
             }
             catch (ArgumentException aEx)
             {
@@ -155,7 +154,6 @@ namespace SportTeamManagementApp.Pages
                 List<object> items = new List<object>();
                 items.Add(new { Key = viewModel.TeamSelectedForEdit.coach.Id, Value = viewModel.TeamSelectedForEdit.coach.firstName });
                 CoachesInTeamComboBox.ItemsSource = items;
-                //SetAvailablePlayers();
             }
             catch (ArgumentException aEx)
             {
@@ -226,6 +224,29 @@ namespace SportTeamManagementApp.Pages
             catch (FormatException fEx)
             {
                 await ShowExceptionMessage(fEx.Message);
+            }
+            catch (Exception ex)
+            {
+                await ShowExceptionMessage($"Something went wrong {ex.Message} ");
+            }
+        }
+
+        private async void RemoveTeam(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Int32.TryParse(TeamsToEditComboBox.SelectedValue.ToString(), out int teamId);
+                Team teamToRemove = viewModel.Teams.FirstOrDefault(t => t.Id == teamId);
+                if (teamToRemove != null)
+                {
+                    viewModel.Teams.Remove(teamToRemove);
+                }
+
+                Frame.Navigate(typeof(MainPage));
+            }
+            catch (InvalidOperationException ioEx)
+            {
+                await ShowExceptionMessage(ioEx.Message);
             }
             catch (Exception ex)
             {
