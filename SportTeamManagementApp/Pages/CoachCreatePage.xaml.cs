@@ -51,12 +51,12 @@ namespace SportTeamManagementApp.Pages
                 }
                 if (!double.TryParse(CoachSalary.Text, out double salaryResult))
                 {
-                    throw new FormatException($"Could not parse value {CoachSalary.Text} to a integer value");
+                    throw new FormatException($"Could not parse value {CoachSalary.Text} to a double value");
                 }
                 if (!Enum.TryParse(SoccerCoachRoleComboBox.SelectedItem?.ToString(), out SoccerCoachRole soccerCoachRole))
                 {
                     throw new FormatException($"Could not parse value {SoccerCoachRoleComboBox.Text} to a SoccerPlayerRole");
-                }
+                } 
 
                 newCoach.firstName = CoachFirstName.Text;
                 newCoach.lastName = CoachLastName.Text;

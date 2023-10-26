@@ -37,16 +37,7 @@ namespace SportTeamManagementApp.Models
 
         public void ChangeTeams(Team oldTeam, Team newTeam)
         {
-            if(oldTeam.players.Any(p => p.Equals(this)))
-            {
-                oldTeam.players.Remove(this);
-
-                newTeam.players.Add(this);
-            }
-            else
-            {
-                throw new Exception("Cant change teams!");
-            }
+            throw new NotImplementedException();
         }
     }
 }

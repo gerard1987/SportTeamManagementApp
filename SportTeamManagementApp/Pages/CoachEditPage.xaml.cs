@@ -67,6 +67,7 @@ namespace SportTeamManagementApp.Pages
                     CoachEditLastName.Text = viewModel.CoachSelectedForEdit.lastName;
                     CoachEditAge.Text = viewModel.CoachSelectedForEdit.Age.ToString();
                     CoachEditSalary.Text = viewModel.CoachSelectedForEdit.salary.ToString();
+
                     SoccerCoachRoleEditComboBox.ItemsSource = roles;
                     SoccerCoachRoleEditComboBox.SelectedIndex = selectedRole;
                     EditCoachSelectSection.Visibility = Visibility.Collapsed;
@@ -100,7 +101,7 @@ namespace SportTeamManagementApp.Pages
                 }
                 if (!double.TryParse(CoachEditSalary.Text, out double salaryResult))
                 {
-                    throw new FormatException($"Could not parse value {CoachEditSalary.Text} to a integer value");
+                    throw new FormatException($"Could not parse value {CoachEditSalary.Text} to a double value");
                 }
                 if (!Enum.TryParse(SoccerCoachRoleEditComboBox.SelectedItem?.ToString(), out SoccerCoachRole soccerCoachRole))
                 {

@@ -10,18 +10,13 @@ namespace SportTeamManagementApp.Models
     public abstract class TeamMember
     {
         private static int nextId = 1;
-        private int id;
         public string firstName;
         public string lastName;
         private int age;
         public double salary;
         public Enum role;
 
-        public int Id
-        {
-            get { return id; }
-            private set { id = value; }
-        }
+        public int Id { get; private set; }
 
         public TeamMember()
         {

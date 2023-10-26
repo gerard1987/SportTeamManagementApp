@@ -32,15 +32,7 @@ namespace SportTeamManagementApp.Models
 
         public void RemovePlayerFromTeam(Team team, Player soccerPlayer)
         {
-
-            if (this.Equals(team.coach))
-            {
-                team.players.Remove(soccerPlayer);
-            }
-            else
-            {
-                throw new Exception("Player is not from a team that gets managed by this coach");
-            }
+            throw new NotImplementedException();
         }
     }
 }
