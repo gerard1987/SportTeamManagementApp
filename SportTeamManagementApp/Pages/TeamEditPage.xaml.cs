@@ -120,15 +120,17 @@ namespace SportTeamManagementApp.Pages
                 Team teamToEdit = viewModel.Teams.Find(t => t.Id == viewModel.TeamSelectedForEdit.Id);
 
                 teamToEdit.AddPlayer(playerToAdd);
+
                 PlayersInTeamComboBox.ItemsSource = teamToEdit.players.Select(p => new { Key = p.Id, Value = p.FirstName }).ToList();
+                AvailablePlayersComboBox.ItemsSource = viewModel.GetAvailablePlayers().Select(p => new { Key = p.Id, Value = p.FirstName });
             }
             catch (ArgumentException aEx)
             {
                 await ShowExceptionMessage(aEx.Message);
             }
-            catch (FormatException fEx)
+            catch (InvalidOperationException ioEx)
             {
-                await ShowExceptionMessage(fEx.Message);
+                await ShowExceptionMessage(ioEx.Message);
             }
             catch (Exception ex)
             {

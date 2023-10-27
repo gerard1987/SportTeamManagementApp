@@ -49,10 +49,10 @@ namespace SportTeamManagementApp.Pages
         public List<Coach> GetAvailableCoaches()
         {
             return Coaches
-                  .Where(c => !Teams
-                  .Where(t => t.coach != null)
-                  .Any(t => t.coach.Equals(c)))
-                  .Select(c => c).ToList();
+                      .Where(c => !Teams
+                      .Where(t => t.coach != null)
+                      .Any(t => t.coach.Equals(c)))
+                      .Select(c => c).ToList();
         }
 
         public List<Team> GetAvailableTeams()

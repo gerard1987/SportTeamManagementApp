@@ -26,23 +26,30 @@
 
         <!-- Edit Team Section -->
         <StackPanel VerticalAlignment="Center" x:Name="EditTeamSection" Visibility="Collapsed">
-            <TextBox PlaceholderText="Name" Name="TeamNameEdit" Margin="10"/>
-            <Button Content="Save" Click="EditTeam" Margin="10"/>
-
-            <ComboBox PlaceholderText="Players" Margin="10" x:Name="AvailablePlayersComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
-            <Button Content="Add player to team" Click="AddPlayerToTeam" Margin="10" />
-
-            <ComboBox PlaceholderText="Players" Margin="10" x:Name="PlayersInTeamComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
-            <Button Content="Remove player from team" Click="RemovePlayerFromTeam" Margin="10" />
-
-            <ComboBox PlaceholderText="Coaches" Margin="10" x:Name="AvailableCoachesComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
-            <Button Content="Add Coach to team" Click="AddCoachToTeam" Margin="10" />
-
-            <ComboBox PlaceholderText="Coaches" Margin="10" x:Name="CoachesInTeamComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
-            <Button Content="Remove coach from team" Click="RemoveCoachFromTeam" Margin="10" />
-
-            <Button Content="Remove team" Click="RemoveTeam" Margin="10" />
-            <Button Content="Cancel" Click="Cancel" Margin="10"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBox PlaceholderText="Name" Name="TeamNameEdit" Margin="10"/>
+                <Button Content="Save" Click="EditTeam" Margin="10"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <ComboBox PlaceholderText="Players" Margin="10" x:Name="AvailablePlayersComboBox" DisplayMemberPath="Value" SelectedValuePath="Key" />
+                <Button Content="Add player to team" Click="AddPlayerToTeam" Margin="10" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <ComboBox PlaceholderText="Players" Margin="10" x:Name="PlayersInTeamComboBox" DisplayMemberPath="Value" SelectedValuePath="Key" />
+                <Button Content="Remove player from team" Click="RemovePlayerFromTeam" Margin="10" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <ComboBox PlaceholderText="Coaches" Margin="10" x:Name="AvailableCoachesComboBox" DisplayMemberPath="Value" SelectedValuePath="Key" />
+                <Button Content="Add Coach to team" Click="AddCoachToTeam" Margin="10" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <ComboBox PlaceholderText="Coaches" Margin="10" x:Name="CoachesInTeamComboBox" DisplayMemberPath="Value" SelectedValuePath="Key" />
+                <Button Content="Remove coach from team" Click="RemoveCoachFromTeam" Margin="10" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Remove team" Click="RemoveTeam" Margin="10" />
+                <Button Content="Cancel" Click="Cancel" Margin="10" />
+            </StackPanel>
         </StackPanel>
 
     </Grid>

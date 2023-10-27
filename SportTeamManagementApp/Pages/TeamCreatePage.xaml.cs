@@ -49,6 +49,7 @@ namespace SportTeamManagementApp.Pages
                 }
                 viewModel.SelectedPlayersForTeam.Add(playerToAdd);
                 SelectedPlayersListBox.ItemsSource = viewModel.SelectedPlayersForTeam.Select(c => new { Key = c.Id, Value = c.FirstName }).ToList();
+                TeamPlayersComboBox.ItemsSource = viewModel.GetAvailablePlayers().Where(p => !viewModel.SelectedPlayersForTeam.Contains(p)).Select(p => new { Key = p.Id, Value = p.FirstName });
             }
             catch (ArgumentException aEx)
             {
@@ -72,13 +73,13 @@ namespace SportTeamManagementApp.Pages
                 {
                     throw new ArgumentException("Cannot create a team without having created a coach or players first!");
                 }
-                if (String.IsNullOrEmpty(TeamName.Text))
-                {
-                    throw new ArgumentException("Team name cannot be empty!");
-                }
                 if (viewModel.SelectedPlayersForTeam.Count < 1)
                 {
                     throw new ArgumentException("Please select at least 1 player for the team");
+                }
+                if (String.IsNullOrEmpty(TeamCoachesComboBox.SelectedValue.ToString()))
+                {
+                    throw new ArgumentException("Please select at least 1 coach for the team");
                 }
 
                 Int32.TryParse(TeamCoachesComboBox.SelectedValue.ToString(), out int coachId);

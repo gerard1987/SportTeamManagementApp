@@ -20,7 +20,10 @@
         <StackPanel VerticalAlignment="Center" x:Name="CreateTeamSection">
             <TextBlock Text="Create Team" FontSize="20"/>
             <TextBox PlaceholderText="Name" Name="TeamName" Margin="10"/>
+            
             <ComboBox PlaceholderText="Players" Margin="10" x:Name="TeamPlayersComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
+            <Button Content="Add player to team" Click="AddPlayerToSelectionForTeam" Margin="10"/>
+
             <ListBox x:Name="SelectedPlayersListBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="200">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -28,8 +31,8 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Button Content="Add player to team" Click="AddPlayerToSelectionForTeam" Margin="10"/>
-            <ComboBox PlaceholderText="Coaches" Margin="10" x:Name="TeamCoachesComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
+
+            <ComboBox PlaceholderText="Select coach" Margin="10" x:Name="TeamCoachesComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
 
             <Button Content="Create team" Click="CreateTeam" Margin="10"/>
             <Button Content="Cancel" Click="Cancel" Margin="10"/>

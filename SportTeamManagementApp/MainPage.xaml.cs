@@ -57,7 +57,7 @@ namespace SportTeamManagementApp
                         break;
                 }
 
-                MainSplitView.IsPaneOpen = false; // Close the menu pane after selecting an item
+                MainSplitView.IsPaneOpen = false;
             }
         }
 
