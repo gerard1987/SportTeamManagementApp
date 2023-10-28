@@ -39,17 +39,24 @@ namespace SportTeamManagementApp.Pages
         {
             try
             {
-                Int32.TryParse(TeamPlayersComboBox.SelectedValue.ToString(), out int playerId);
-                Player playerToAdd = viewModel.Players.Find(p => p.Id == playerId);
-
-                bool exists = viewModel.SelectedPlayersForTeam.Exists(sp => sp.Id == playerId);
-                if (exists)
+                if (TeamPlayersComboBox.SelectedValue != null)
                 {
-                    throw new ArgumentException($"Player already in team!");
+                    Int32.TryParse(TeamPlayersComboBox.SelectedValue.ToString(), out int playerId);
+                    Player playerToAdd = viewModel.Players.Find(p => p.Id == playerId);
+
+                    bool exists = viewModel.SelectedPlayersForTeam.Exists(sp => sp.Id == playerId);
+                    if (exists)
+                    {
+                        throw new ArgumentException($"Player already in team!");
+                    }
+                    viewModel.SelectedPlayersForTeam.Add(playerToAdd);
+                    SelectedPlayersListBox.ItemsSource = viewModel.SelectedPlayersForTeam.Select(c => new { Key = c.Id, Value = c.FirstName }).ToList();
+                    TeamPlayersComboBox.ItemsSource = viewModel.GetAvailablePlayers().Where(p => !viewModel.SelectedPlayersForTeam.Contains(p)).Select(p => new { Key = p.Id, Value = p.FirstName });
                 }
-                viewModel.SelectedPlayersForTeam.Add(playerToAdd);
-                SelectedPlayersListBox.ItemsSource = viewModel.SelectedPlayersForTeam.Select(c => new { Key = c.Id, Value = c.FirstName }).ToList();
-                TeamPlayersComboBox.ItemsSource = viewModel.GetAvailablePlayers().Where(p => !viewModel.SelectedPlayersForTeam.Contains(p)).Select(p => new { Key = p.Id, Value = p.FirstName });
+                else
+                {
+                    throw new ArgumentException("No player selected!");
+                }
             }
             catch (ArgumentException aEx)
             {
@@ -77,7 +84,7 @@ namespace SportTeamManagementApp.Pages
                 {
                     throw new ArgumentException("Please select at least 1 player for the team");
                 }
-                if (String.IsNullOrEmpty(TeamCoachesComboBox.SelectedValue.ToString()))
+                if (TeamCoachesComboBox.SelectedValue == null)
                 {
                     throw new ArgumentException("Please select at least 1 coach for the team");
                 }
@@ -110,6 +117,7 @@ namespace SportTeamManagementApp.Pages
         }
         private void Cancel(object sender, RoutedEventArgs e)
         {
+            viewModel.SelectedPlayersForTeam = new List<Player>();
             Frame.Navigate(typeof(MainPage));
         }
 

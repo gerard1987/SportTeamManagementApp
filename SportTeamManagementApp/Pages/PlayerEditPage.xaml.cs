@@ -39,7 +39,7 @@ namespace SportTeamManagementApp.Pages
         {
             try
             {
-                if (String.IsNullOrEmpty(PlayerToEditComboBox.SelectedValue.ToString()))
+                if (PlayerToEditComboBox.SelectedValue == null)
                 {
                     throw new ArgumentException("No player selected!");
                 }

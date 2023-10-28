@@ -12,7 +12,6 @@ namespace SportTeamManagementApp.Pages
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public Sport Soccer { get; set; }
         public List<Coach> Coaches { get; set; }
         public List<Player> Players { get; set; }
         public List<Team> Teams { get; set; }
@@ -25,7 +24,6 @@ namespace SportTeamManagementApp.Pages
 
         public ViewModel()
         {
-            Soccer = new Sport("Soccer");
             Coaches = new List<Coach>();
             Players = new List<Player>();
             Teams = new List<Team>();

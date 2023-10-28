@@ -131,7 +131,6 @@
     <Compile Include="Models\Interfaces\ISoccerCoach.cs" />
     <Compile Include="Models\Interfaces\ISoccerPlayer.cs" />
     <Compile Include="Models\Player.cs" />
-    <Compile Include="Models\Sport.cs" />
     <Compile Include="Models\Team.cs" />
     <Compile Include="Models\TeamMember.cs" />
     <Compile Include="Pages\CoachEditPage.xaml.cs">

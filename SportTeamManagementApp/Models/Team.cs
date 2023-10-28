@@ -67,7 +67,7 @@ namespace SportTeamManagementApp.Models
             }
             else
             {
-                throw new InvalidOperationException($"Could not find player {player?.FirstName}");
+                throw new InvalidOperationException($"Cant find player {player?.FirstName} in team for removal!");
             }
         }
     }
