@@ -1,5 +1,5 @@
-﻿using SportTeamManagementApp.Enums;
-using SportTeamManagementApp.Models;
+﻿using SportTeamManagementApp.Data.Enums;
+using SportTeamManagementApp.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -92,7 +92,7 @@ namespace SportTeamManagementApp.Pages
         {
             try
             {
-                Player playerToUpdate = viewModel.Players.FirstOrDefault(p => p.Id == viewModel.PlayerSelectedForEdit.Id);
+                PlayerModel playerToUpdate = viewModel.Players.FirstOrDefault(p => p.Id == viewModel.PlayerSelectedForEdit.Id);
 
                 if (playerToUpdate != null)
                 {
@@ -123,15 +123,15 @@ namespace SportTeamManagementApp.Pages
         {
             try
             {
-                Player playerToRemove = viewModel.Players.FirstOrDefault(p => p.Id == viewModel.PlayerSelectedForEdit.Id);
+                PlayerModel playerToRemove = viewModel.Players.FirstOrDefault(p => p.Id == viewModel.PlayerSelectedForEdit.Id);
                 if (playerToRemove != null)
                 {
                     viewModel.Players.Remove(playerToRemove);
                 }
 
-                foreach (Team team in viewModel.Teams)
+                foreach (TeamModel team in viewModel.Teams)
                 {
-                    Player player = team.players.Find(p => p.Id == viewModel.PlayerSelectedForEdit.Id);
+                    PlayerModel player = team.players.Find(p => p.Id == viewModel.PlayerSelectedForEdit.Id);
 
                     if (player != null)
                     {

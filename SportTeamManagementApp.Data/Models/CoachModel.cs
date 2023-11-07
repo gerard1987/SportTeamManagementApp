@@ -1,14 +1,14 @@
-﻿using SportTeamManagementApp.Enums;
-using SportTeamManagementApp.Models.Interfaces;
+﻿using SportTeamManagementApp.Data.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SportTeamManagementApp.Data.Enums;
 
-namespace SportTeamManagementApp.Models
+namespace SportTeamManagementApp.Data.Models
 {
-    public class Coach : TeamMember, ISoccerCoach
+    public class CoachModel : TeamMember, ISoccerCoach
     {
         public string Role
         {
@@ -29,7 +29,7 @@ namespace SportTeamManagementApp.Models
             }
         }
 
-        public void RemovePlayerFromTeam(Team team, Player soccerPlayer)
+        public void RemovePlayerFromTeam(TeamModel team, PlayerModel soccerPlayer)
         {
             throw new NotImplementedException();
         }

@@ -1,14 +1,14 @@
-﻿using SportTeamManagementApp.Enums;
-using SportTeamManagementApp.Models.Interfaces;
+﻿using SportTeamManagementApp.Data.Enums;
+using SportTeamManagementApp.Data.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SportTeamManagementApp.Models
+namespace SportTeamManagementApp.Data.Models
 {
-    public class Player : TeamMember, ISoccerPlayer
+    public class PlayerModel : TeamMember, ISoccerPlayer
     {
         public string Role
         {
@@ -29,7 +29,7 @@ namespace SportTeamManagementApp.Models
             }
         }
 
-        public void ChangeTeams(Team oldTeam, Team newTeam)
+        public void ChangeTeams(TeamModel oldTeam, TeamModel newTeam)
         {
             throw new NotImplementedException();
         }

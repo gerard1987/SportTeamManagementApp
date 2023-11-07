@@ -1,5 +1,5 @@
-﻿using SportTeamManagementApp.Enums;
-using SportTeamManagementApp.Models;
+﻿using SportTeamManagementApp.Data.Enums;
+using SportTeamManagementApp.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -91,7 +91,7 @@ namespace SportTeamManagementApp.Pages
         {
             try
             {
-                Coach coachToUpdate = viewModel.Coaches.FirstOrDefault(c => c.Id == viewModel.CoachSelectedForEdit.Id);
+                CoachModel coachToUpdate = viewModel.Coaches.FirstOrDefault(c => c.Id == viewModel.CoachSelectedForEdit.Id);
 
                 if (coachToUpdate != null)
                 {
@@ -102,7 +102,7 @@ namespace SportTeamManagementApp.Pages
                     coachToUpdate.Role = SoccerCoachRoleEditComboBox.SelectedItem?.ToString();
                 }
 
-                viewModel.CoachSelectedForEdit = new Coach();
+                viewModel.CoachSelectedForEdit = new CoachModel();
 
                 Frame.Navigate(typeof(MainPage));
             }
@@ -124,10 +124,10 @@ namespace SportTeamManagementApp.Pages
         {
             try
             {
-                Coach coachToRemove = viewModel.Coaches.FirstOrDefault(c => c.Id == viewModel.CoachSelectedForEdit.Id);
+                CoachModel coachToRemove = viewModel.Coaches.FirstOrDefault(c => c.Id == viewModel.CoachSelectedForEdit.Id);
                 if (coachToRemove != null)
                 {
-                    foreach (Team team in viewModel.Teams)
+                    foreach (TeamModel team in viewModel.Teams)
                     {
                         if (team.coach != null && team.coach.Id == coachToRemove.Id)
                         {

@@ -1,4 +1,4 @@
-﻿using SportTeamManagementApp.Models;
+﻿using SportTeamManagementApp.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -42,7 +42,7 @@ namespace SportTeamManagementApp.Pages
                 if (TeamPlayersComboBox.SelectedValue != null)
                 {
                     Int32.TryParse(TeamPlayersComboBox.SelectedValue.ToString(), out int playerId);
-                    Player playerToAdd = viewModel.Players.Find(p => p.Id == playerId);
+                    PlayerModel playerToAdd = viewModel.Players.Find(p => p.Id == playerId);
 
                     bool exists = viewModel.SelectedPlayersForTeam.Exists(sp => sp.Id == playerId);
                     if (exists)
@@ -90,14 +90,14 @@ namespace SportTeamManagementApp.Pages
                 }
 
                 Int32.TryParse(TeamCoachesComboBox.SelectedValue.ToString(), out int coachId);
-                Coach coach = viewModel.Coaches.Find(c => c.Id == coachId);
+                CoachModel coach = viewModel.Coaches.Find(c => c.Id == coachId);
 
-                List<Player> playersToAdd = viewModel.SelectedPlayersForTeam;
-                Team newTeam = new Team(TeamName.Text, coach, playersToAdd);
+                List<PlayerModel> playersToAdd = viewModel.SelectedPlayersForTeam;
+                TeamModel newTeam = new TeamModel(TeamName.Text, coach, playersToAdd);
 
                 viewModel.Teams.Add(newTeam);
 
-                viewModel.SelectedPlayersForTeam = new List<Player>();
+                viewModel.SelectedPlayersForTeam = new List<PlayerModel>();
                 SelectedPlayersListBox.ItemsSource = null;
 
                 Frame.Navigate(typeof(MainPage));
@@ -117,7 +117,7 @@ namespace SportTeamManagementApp.Pages
         }
         private void Cancel(object sender, RoutedEventArgs e)
         {
-            viewModel.SelectedPlayersForTeam = new List<Player>();
+            viewModel.SelectedPlayersForTeam = new List<PlayerModel>();
             Frame.Navigate(typeof(MainPage));
         }
 

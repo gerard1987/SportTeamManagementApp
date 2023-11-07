@@ -1,5 +1,5 @@
-﻿using SportTeamManagementApp.Enums;
-using SportTeamManagementApp.Models;
+﻿using SportTeamManagementApp.Data.Enums;
+using SportTeamManagementApp.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -39,7 +39,7 @@ namespace SportTeamManagementApp.Pages
         {
             try
             {
-                Player newPlayer = new Player
+                PlayerModel newPlayer = new PlayerModel
                 {
                     FirstName = PlayerFirstName.Text,
                     LastName = PlayerLastName.Text,

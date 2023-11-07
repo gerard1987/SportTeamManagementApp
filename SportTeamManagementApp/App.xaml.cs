@@ -1,4 +1,7 @@
-﻿using SportTeamManagementApp.Pages;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using SportTeamManagementApp.Data;
+using SportTeamManagementApp.Pages;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,6 +11,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -31,9 +35,17 @@ namespace SportTeamManagementApp
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+            using (var db = new AppDbContext())
+            {
+                // Ensure the database is created and the tables are created if they don't exist
+                db.Database.EnsureCreated();
+            }
         }
 
-        public static ViewModel SharedViewModel { get; } = new ViewModel();
+
+        public static ViewModel SharedViewModel { get; private set; }
+        public static AppDbContext AppDatabase { get; private set; }
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
@@ -48,6 +60,12 @@ namespace SportTeamManagementApp
             // just ensure that the window is active
             if (rootFrame == null)
             {
+                // Configure and create the AppDbContext instance.
+                AppDatabase = new AppDbContext();
+
+                // Create the ViewModel and pass the AppDbContext.
+                SharedViewModel = new ViewModel(AppDatabase);
+
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
 

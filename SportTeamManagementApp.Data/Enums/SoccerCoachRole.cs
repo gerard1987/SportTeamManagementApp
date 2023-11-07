@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SportTeamManagementApp.Enums
+namespace SportTeamManagementApp.Data.Enums
 {
     public enum SoccerCoachRole
     {

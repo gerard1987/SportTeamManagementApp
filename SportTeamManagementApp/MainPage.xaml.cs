@@ -1,6 +1,6 @@
-﻿using SportTeamManagementApp.Enums;
-using SportTeamManagementApp.Models;
-using SportTeamManagementApp.Models.Interfaces;
+﻿using SportTeamManagementApp.Data.Enums;
+using SportTeamManagementApp.Data.Models;
+using SportTeamManagementApp.Data.Models.Interfaces;
 using SportTeamManagementApp.Pages;
 using System;
 using System.Collections.Generic;

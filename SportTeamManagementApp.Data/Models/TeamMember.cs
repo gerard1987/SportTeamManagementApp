@@ -1,11 +1,11 @@
-﻿using SportTeamManagementApp.Models;
+﻿using SportTeamManagementApp.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SportTeamManagementApp.Models
+namespace SportTeamManagementApp.Data.Models
 {
     public abstract class TeamMember
     {

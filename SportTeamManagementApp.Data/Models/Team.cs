@@ -1,21 +1,21 @@
-﻿using SportTeamManagementApp.Models.Interfaces;
+﻿using SportTeamManagementApp.Data.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SportTeamManagementApp.Models
+namespace SportTeamManagementApp.Data.Models
 {
-    public class Team
+    public class TeamModel
     {
         private static int nextId = 1;
         private int id;
         public string name;
-        public Coach coach;
-        public List<Player> players = new List<Player>();
+        public CoachModel coach;
+        public List<PlayerModel> players = new List<PlayerModel>();
 
-        public Team(string name, Coach coach, List<Player> players)
+        public TeamModel(string name, CoachModel coach, List<PlayerModel> players)
         {
             Id = nextId++;
             this.Name = name;
@@ -47,7 +47,7 @@ namespace SportTeamManagementApp.Models
             }
         }
 
-        public void AddPlayer(Player player)
+        public void AddPlayer(PlayerModel player)
         {
             if (!players.Exists(p => p.Id == player.Id))
             {
@@ -59,7 +59,7 @@ namespace SportTeamManagementApp.Models
             }
         }
 
-        public void RemovePlayer(Player player)
+        public void RemovePlayer(PlayerModel player)
         {
             if (players.Exists(p => p.Id == player.Id))
             {

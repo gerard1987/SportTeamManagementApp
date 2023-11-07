@@ -1,5 +1,5 @@
-﻿using SportTeamManagementApp.Enums;
-using SportTeamManagementApp.Models;
+﻿using SportTeamManagementApp.Data;
+using SportTeamManagementApp.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using SportTeamManagementApp.Data.Enums;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -39,7 +40,7 @@ namespace SportTeamManagementApp.Pages
         {
             try
             {
-                Coach newCoach = new Coach
+                CoachModel newCoach = new CoachModel
                 {
                     FirstName = CoachFirstName.Text,
                     LastName = CoachLastName.Text,
@@ -49,6 +50,19 @@ namespace SportTeamManagementApp.Pages
                 };
 
                 viewModel.Coaches.Add(newCoach);
+
+                using (var context = new AppDbContext())
+                {
+                    var newEntity = new Data.Entities.Coach() {
+                        FirstName = newCoach.firstName,
+                        LastName = newCoach.lastName,
+                        Age = int.Parse(newCoach.Age),
+                        Salary = newCoach.salary,
+                        Role = Enum.Parse<SoccerCoachRole>(newCoach.Role)
+                    };
+                    context.Coaches.Add(newEntity);
+                    context.SaveChanges();
+                }
 
                 Frame.Navigate(typeof(MainPage));
 

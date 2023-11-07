@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SportTeamManagementApp.Models.Interfaces
+namespace SportTeamManagementApp.Data.Models.Interfaces
 {
     public interface ISoccerCoach
     {
-        void RemovePlayerFromTeam(Team team ,Player soccerPlayer);
+        void RemovePlayerFromTeam(TeamModel team ,PlayerModel soccerPlayer);
     }
 }
