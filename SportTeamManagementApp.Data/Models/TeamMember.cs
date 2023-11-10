@@ -17,6 +17,7 @@ namespace SportTeamManagementApp.Data.Models
         public double salary;
         protected Enum role;
         public int? teamId { get; set; }
+        public Team Team { get; set; }
 
         public TeamMember()
         {

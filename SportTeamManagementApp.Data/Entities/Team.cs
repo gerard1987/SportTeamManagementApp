@@ -13,7 +13,6 @@ namespace SportTeamManagementApp.Data.Entities
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public int CoachId { get; set; } // Foreign key for one-to-one relationship
         public Coach Coach { get; set; } // Navigation property for one-to-one relationship
 
         public List<Player> Players { get; set; } // Navigation property for one-to-many relationship
@@ -28,7 +27,6 @@ namespace SportTeamManagementApp.Data.Entities
             this.Name = name;
             this.Coach = coach;
             this.Players = players;
-            this.CoachId = coach.Id;
         }
     }
 }

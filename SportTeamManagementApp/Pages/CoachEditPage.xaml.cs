@@ -103,6 +103,8 @@ namespace SportTeamManagementApp.Pages
                     coachToUpdate.Role = SoccerCoachRoleEditComboBox.SelectedItem?.ToString();
                 }
 
+                viewModel.dataProvider.EditCoach(coachToUpdate);
+
                 viewModel.CoachSelectedForEdit = new Coach();
 
                 Frame.Navigate(typeof(MainPage));
@@ -133,10 +135,11 @@ namespace SportTeamManagementApp.Pages
                         if (team.Coach != null && team.Coach.Id == coachToRemove.Id)
                         {
                             team.Coach = null;
+                            viewModel.dataProvider.EditTeam(team);
                         }
                     }
 
-                    viewModel.dataProvider.Coaches.Remove(coachToRemove);
+                    viewModel.dataProvider.RemoveCoach(coachToRemove);
                 }
 
                 Frame.Navigate(typeof(MainPage));

@@ -170,6 +170,7 @@ namespace SportTeamManagementApp.Pages
 
                     teamToEdit.Coach = coachToAdd;
                     viewModel.dataProvider.EditTeam(teamToEdit);
+                    viewModel.dataProvider.AddCoachToTeam(teamToEdit);
 
                     List<object> items = new List<object>();
                     items.Add(new { Key = viewModel.TeamSelectedForEdit.Coach.Id, Value = viewModel.TeamSelectedForEdit.Coach.FirstName });

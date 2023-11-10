@@ -17,16 +17,16 @@ namespace SportTeamManagementApp.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Team>()
-                .HasOne(t => t.Coach)
-                .WithOne()
-                .HasForeignKey<Team>(t => t.CoachId);
-
+                .HasMany(t => t.Players)
+                .WithOne(p => p.Team)
+                .HasForeignKey(p => p.teamId);
 
             modelBuilder.Entity<Team>()
-                .HasMany(t => t.Players)
-                .WithOne()
-                .HasForeignKey(p => p.teamId);
+                .HasOne(t => t.Coach)
+                .WithOne(c => c.Team)
+                .HasForeignKey<Coach>(c => c.teamId);
         }
+
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -88,37 +88,31 @@ namespace SportTeamManagementApp.Data
 
         public void CreatePlayer(Player player)
         {
-            using (var context = new AppDbContext())
-            {
-                Player playerAlreadyExists = _dbContext.Players.Find(player.Id);
+            Player playerAlreadyExists = _dbContext.Players.Find(player.Id);
 
-                if (playerAlreadyExists is null)
-                {
-                    context.Players.Add(player);
-                    context.SaveChanges();
-                }
-                else
-                {
-                    throw new InvalidOperationException("Player already exists!");
-                }
+            if (playerAlreadyExists is null)
+            {
+                _dbContext.Players.Add(player);
+                _dbContext.SaveChanges();
+            }
+            else
+            {
+                throw new InvalidOperationException("Player already exists!");
             }
         }
 
         public void CreateCoach(Coach coach)
         {
-            using (var context = new AppDbContext())
-            {
-                Coach coachAlreadyExists = _dbContext.Coaches.Find(coach.Id);
+            Coach coachAlreadyExists = _dbContext.Coaches.Find(coach.Id);
 
-                if (coachAlreadyExists is null)
-                {
-                    context.Coaches.Add(coach);
-                    context.SaveChanges();
-                }
-                else
-                {
-                    throw new InvalidOperationException("Coach already exists!");
-                }
+            if (coachAlreadyExists is null)
+            {
+                _dbContext.Coaches.Add(coach);
+                _dbContext.SaveChanges();
+            }
+            else
+            {
+                throw new InvalidOperationException("Coach already exists!");
             }
         }
 
@@ -126,8 +120,6 @@ namespace SportTeamManagementApp.Data
         {
             _dbContext.Teams.Add(team);
             _dbContext.SaveChanges();
-
-            Team teamInserted = _dbContext.Teams.Find(team.Id)
         }
 
         #endregion
@@ -142,65 +134,29 @@ namespace SportTeamManagementApp.Data
             _dbContext.SaveChanges();
         }
 
-        //public void AddPlayerToTeam(Team team, Player player)
-        //{
-        //    using (var context = new AppDbContext())
-        //    {
-        //        Player existingPlayer = context.Players.Find(player.Id);
+        public void EditCoach(Coach coach)
+        {
+            Coach coachToEdit = _dbContext.Coaches.Find(coach.Id);
+            coachToEdit = coach;
 
-        //        if (existingPlayer.teamId is null)
-        //        {
-        //            existingPlayer.teamId = team.Id;
-        //            context.SaveChanges();
+            _dbContext.SaveChanges();
+        }
 
-        //            this.Players.Add(existingPlayer);
-        //        }
-        //        else
-        //        {
-        //            throw new InvalidOperationException($"Player {player?.FirstName} is already in a team!");
-        //        }
-        //    }
-        //}
+        public void EditPlayer(Player player)
+        {
+            Player playerToEdit = _dbContext.Players.Find(player.Id);
+            playerToEdit = player;
 
-        //public void RemovePlayer(Player player)
-        //{
-        //    using (var context = new AppDbContext())
-        //    {
-        //        Player existingPlayer = context.Players.Find(player.Id);
+            _dbContext.SaveChanges();
+        }
 
-        //        if (existingPlayer.teamId != null && existingPlayer.teamId.Equals(this.Id))
-        //        {
-        //            existingPlayer.teamId = null;
-        //            context.SaveChanges();
-        //            this.Players.Remove(existingPlayer);
-        //        }
-        //        else
-        //        {
-        //            throw new InvalidOperationException($"Cant find player {player?.FirstName} in team for removal!");
-        //        }
-        //    }
-        //}
+        public void AddCoachToTeam(Team team)
+        {
+            Coach coachToUpdate = _dbContext.Coaches.Find(team.Coach.Id);
+            coachToUpdate.teamId = team.Id;
 
-        //public void RemoveCoach(Coach coach)
-        //{
-        //    using (var context = new AppDbContext())
-        //    {
-        //        bool isCoachInTeam = context.Coaches.Any(c => c.teamId == this.Id);
-
-        //        if (isCoachInTeam)
-        //        {
-        //            Coach coachToUpdate = context.Coaches.Find(coach);
-        //            // Assign the teamId to the new coach
-        //            coachToUpdate.teamId = null;
-        //            context.SaveChanges();
-        //            this.Coach = null;
-        //        }
-        //        else
-        //        {
-        //            throw new InvalidOperationException($"A coach is already associated with the team!");
-        //        }
-        //    }
-        //}
+            _dbContext.SaveChanges();
+        }
 
         #endregion
 
@@ -212,6 +168,23 @@ namespace SportTeamManagementApp.Data
             _dbContext.Teams.Remove(teamToDelete);
             _dbContext.SaveChanges();
         }
+
+        public void RemoveCoach(Coach coach)
+        {
+            Coach coachToDelete = _dbContext.Coaches.Find(coach.Id);
+
+            _dbContext.Coaches.Remove(coachToDelete);
+            _dbContext.SaveChanges();
+        }
+
+        public void RemovePlayer(Player player)
+        {
+            Player playerToDelete = _dbContext.Players.Find(player.Id);
+
+            _dbContext.Players.Remove(playerToDelete);
+            _dbContext.SaveChanges();
+        }
+
         #endregion
     }
 }

@@ -104,6 +104,8 @@ namespace SportTeamManagementApp.Pages
                     playerToUpdate.Role = SoccerPlayerRoleEditComboBox.SelectedItem?.ToString();
                 }
 
+                viewModel.dataProvider.EditPlayer(playerToUpdate);
+
                 Frame.Navigate(typeof(MainPage));
             }
             catch (ArgumentException aEx)
@@ -127,7 +129,7 @@ namespace SportTeamManagementApp.Pages
                 Player playerToRemove = viewModel.dataProvider.Players.FirstOrDefault(p => p.Id == viewModel.PlayerSelectedForEdit.Id);
                 if (playerToRemove != null)
                 {
-                    viewModel.dataProvider.Players.Remove(playerToRemove);
+                    viewModel.dataProvider.RemovePlayer(playerToRemove);
                 }
 
                 foreach (Team team in viewModel.dataProvider.Teams)
