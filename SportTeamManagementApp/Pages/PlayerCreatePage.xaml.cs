@@ -1,4 +1,6 @@
-﻿using SportTeamManagementApp.Data.Enums;
+﻿using SportTeamManagementApp.Data;
+using SportTeamManagementApp.Data.Entities;
+using SportTeamManagementApp.Data.Enums;
 using SportTeamManagementApp.Data.Models;
 using System;
 using System.Collections.Generic;
@@ -39,7 +41,7 @@ namespace SportTeamManagementApp.Pages
         {
             try
             {
-                PlayerModel newPlayer = new PlayerModel
+                var newPlayer = new Player
                 {
                     FirstName = PlayerFirstName.Text,
                     LastName = PlayerLastName.Text,
@@ -48,13 +50,13 @@ namespace SportTeamManagementApp.Pages
                     Role = SoccerPlayerRoleComboBox.SelectedItem?.ToString()
                 };
 
-                viewModel.Players.Add(newPlayer);
+                viewModel.dataProvider.CreatePlayer(newPlayer);
 
                 Frame.Navigate(typeof(MainPage));
             }
-            catch (ArgumentOutOfRangeException aEx)
+            catch (InvalidOperationException ioEx)
             {
-                await ShowExceptionMessage(aEx.Message);
+                await ShowExceptionMessage(ioEx.Message);
             }
             catch (ArgumentException aEx)
             {

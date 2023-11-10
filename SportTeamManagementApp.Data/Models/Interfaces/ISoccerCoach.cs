@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using SportTeamManagementApp.Data.Entities;
 
 namespace SportTeamManagementApp.Data.Models.Interfaces
 {
     public interface ISoccerCoach
     {
-        void RemovePlayerFromTeam(TeamModel team ,PlayerModel soccerPlayer);
+        void RemovePlayerFromTeam(Team team ,Player soccerPlayer);
     }
 }

@@ -1,4 +1,5 @@
-﻿using SportTeamManagementApp.Data.Enums;
+﻿using SportTeamManagementApp.Data.Entities;
+using SportTeamManagementApp.Data.Enums;
 using SportTeamManagementApp.Data.Models;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace SportTeamManagementApp.Pages
 
             viewModel = App.SharedViewModel;
 
-            PlayerToEditComboBox.ItemsSource = viewModel.Players.Select(p => new { Key = p.Id, Value = p.FirstName });
+            PlayerToEditComboBox.ItemsSource = viewModel.dataProvider.Players.Select(p => new { Key = p.Id, Value = p.FirstName });
         }
 
         public async void SelectPlayerToEdit(object sender, RoutedEventArgs e)
@@ -45,7 +46,7 @@ namespace SportTeamManagementApp.Pages
                 }
 
                 Int32.TryParse(PlayerToEditComboBox.SelectedValue.ToString(), out int playerId);
-                viewModel.PlayerSelectedForEdit = viewModel.Players.Find(p => p.Id == playerId);
+                viewModel.PlayerSelectedForEdit = viewModel.dataProvider.Players.Find(p => p.Id == playerId);
 
                 if (viewModel.PlayerSelectedForEdit != null)
                 {
@@ -92,7 +93,7 @@ namespace SportTeamManagementApp.Pages
         {
             try
             {
-                PlayerModel playerToUpdate = viewModel.Players.FirstOrDefault(p => p.Id == viewModel.PlayerSelectedForEdit.Id);
+                Player playerToUpdate = viewModel.dataProvider.Players.FirstOrDefault(p => p.Id == viewModel.PlayerSelectedForEdit.Id);
 
                 if (playerToUpdate != null)
                 {
@@ -123,19 +124,20 @@ namespace SportTeamManagementApp.Pages
         {
             try
             {
-                PlayerModel playerToRemove = viewModel.Players.FirstOrDefault(p => p.Id == viewModel.PlayerSelectedForEdit.Id);
+                Player playerToRemove = viewModel.dataProvider.Players.FirstOrDefault(p => p.Id == viewModel.PlayerSelectedForEdit.Id);
                 if (playerToRemove != null)
                 {
-                    viewModel.Players.Remove(playerToRemove);
+                    viewModel.dataProvider.Players.Remove(playerToRemove);
                 }
 
-                foreach (TeamModel team in viewModel.Teams)
+                foreach (Team team in viewModel.dataProvider.Teams)
                 {
-                    PlayerModel player = team.players.Find(p => p.Id == viewModel.PlayerSelectedForEdit.Id);
+                    Player player = team.Players.Find(p => p.Id == viewModel.PlayerSelectedForEdit.Id);
 
                     if (player != null)
                     {
-                        team.RemovePlayer(player);
+                        team.Players.Remove(player);
+                        viewModel.dataProvider.EditTeam(team);
                     }
                 }
 

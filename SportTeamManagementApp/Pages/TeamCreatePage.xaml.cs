@@ -1,4 +1,5 @@
-﻿using SportTeamManagementApp.Data.Models;
+﻿using SportTeamManagementApp.Data.Entities;
+using SportTeamManagementApp.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,14 +26,15 @@ namespace SportTeamManagementApp.Pages
     public sealed partial class TeamCreatePage : Page
     {
         ViewModel viewModel;
+
         public TeamCreatePage()
         {
             this.InitializeComponent();
 
             viewModel = App.SharedViewModel;
 
-            TeamPlayersComboBox.ItemsSource = viewModel.GetAvailablePlayers().Select(p => new { Key = p.Id, Value = p.FirstName });
-            TeamCoachesComboBox.ItemsSource = viewModel.GetAvailableCoaches().Select(c => new { Key = c.Id, Value = c.FirstName });
+            TeamPlayersComboBox.ItemsSource = viewModel.dataProvider.GetAvailablePlayers().Select(p => new { Key = p.Id, Value = p.FirstName });
+            TeamCoachesComboBox.ItemsSource = viewModel.dataProvider.GetAvailableCoaches().Select(c => new { Key = c.Id, Value = c.FirstName });
         }
 
         public async void AddPlayerToSelectionForTeam(object sender, RoutedEventArgs e)
@@ -42,7 +44,7 @@ namespace SportTeamManagementApp.Pages
                 if (TeamPlayersComboBox.SelectedValue != null)
                 {
                     Int32.TryParse(TeamPlayersComboBox.SelectedValue.ToString(), out int playerId);
-                    PlayerModel playerToAdd = viewModel.Players.Find(p => p.Id == playerId);
+                    Player playerToAdd = viewModel.dataProvider.Players.Find(p => p.Id == playerId);
 
                     bool exists = viewModel.SelectedPlayersForTeam.Exists(sp => sp.Id == playerId);
                     if (exists)
@@ -51,7 +53,7 @@ namespace SportTeamManagementApp.Pages
                     }
                     viewModel.SelectedPlayersForTeam.Add(playerToAdd);
                     SelectedPlayersListBox.ItemsSource = viewModel.SelectedPlayersForTeam.Select(c => new { Key = c.Id, Value = c.FirstName }).ToList();
-                    TeamPlayersComboBox.ItemsSource = viewModel.GetAvailablePlayers().Where(p => !viewModel.SelectedPlayersForTeam.Contains(p)).Select(p => new { Key = p.Id, Value = p.FirstName });
+                    TeamPlayersComboBox.ItemsSource = viewModel.dataProvider.GetAvailablePlayers().Where(p => !viewModel.SelectedPlayersForTeam.Contains(p)).Select(p => new { Key = p.Id, Value = p.FirstName });
                 }
                 else
                 {
@@ -76,7 +78,7 @@ namespace SportTeamManagementApp.Pages
         {
             try
             {
-                if (viewModel.Coaches.Count < 1 || viewModel.Players.Count < 1)
+                if (viewModel.dataProvider.Coaches.Count < 1 || viewModel.dataProvider.Players.Count < 1)
                 {
                     throw new ArgumentException("Cannot create a team without having created a coach or players first!");
                 }
@@ -90,14 +92,14 @@ namespace SportTeamManagementApp.Pages
                 }
 
                 Int32.TryParse(TeamCoachesComboBox.SelectedValue.ToString(), out int coachId);
-                CoachModel coach = viewModel.Coaches.Find(c => c.Id == coachId);
+                Coach coach = viewModel.dataProvider.Coaches.Find(c => c.Id == coachId);
 
-                List<PlayerModel> playersToAdd = viewModel.SelectedPlayersForTeam;
-                TeamModel newTeam = new TeamModel(TeamName.Text, coach, playersToAdd);
+                List<Player> playersToAdd = viewModel.SelectedPlayersForTeam;
+                Team newTeam = new Team(TeamName.Text, coach, playersToAdd);
 
-                viewModel.Teams.Add(newTeam);
+                viewModel.dataProvider.CreateTeam(newTeam);
 
-                viewModel.SelectedPlayersForTeam = new List<PlayerModel>();
+                viewModel.SelectedPlayersForTeam = new List<Player>();
                 SelectedPlayersListBox.ItemsSource = null;
 
                 Frame.Navigate(typeof(MainPage));
@@ -115,9 +117,10 @@ namespace SportTeamManagementApp.Pages
                 await ShowExceptionMessage($"Something went wrong {ex.Message} ");
             }
         }
+
         private void Cancel(object sender, RoutedEventArgs e)
         {
-            viewModel.SelectedPlayersForTeam = new List<PlayerModel>();
+            viewModel.SelectedPlayersForTeam = new List<Player>();
             Frame.Navigate(typeof(MainPage));
         }
 

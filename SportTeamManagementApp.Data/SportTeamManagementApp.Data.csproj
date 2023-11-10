@@ -121,16 +121,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AppDbContext.cs" />
+    <Compile Include="DataProvider.cs" />
     <Compile Include="Entities\Coach.cs" />
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Entities\Team.cs" />
     <Compile Include="Enums\SoccerCoachRole.cs" />
     <Compile Include="Enums\SoccerPlayerRole.cs" />
-    <Compile Include="Models\CoachModel.cs" />
     <Compile Include="Models\Interfaces\ISoccerCoach.cs" />
     <Compile Include="Models\Interfaces\ISoccerPlayer.cs" />
-    <Compile Include="Models\PlayerModel.cs" />
-    <Compile Include="Models\Team.cs" />
     <Compile Include="Models\TeamMember.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\SportTeamManagementApp.Data.rd.xml" />

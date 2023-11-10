@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using SportTeamManagementApp.Data.Entities;
 
 namespace SportTeamManagementApp.Data.Models.Interfaces
 {
     public interface ISoccerPlayer
     {
-        void ChangeTeams(TeamModel oldTeam,TeamModel newTeam);
+        void ChangeTeams(Team oldTeam,Team newTeam);
     }
 }

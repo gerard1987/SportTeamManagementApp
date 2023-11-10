@@ -62,9 +62,10 @@ namespace SportTeamManagementApp
             {
                 // Configure and create the AppDbContext instance.
                 AppDatabase = new AppDbContext();
+                DataProvider dataProvider = new DataProvider(AppDatabase);
 
                 // Create the ViewModel and pass the AppDbContext.
-                SharedViewModel = new ViewModel(AppDatabase);
+                SharedViewModel = new ViewModel(AppDatabase, dataProvider);
 
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();

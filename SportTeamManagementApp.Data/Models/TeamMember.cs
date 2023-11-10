@@ -1,6 +1,8 @@
-﻿using SportTeamManagementApp.Data.Models;
+﻿using SportTeamManagementApp.Data.Entities;
+using SportTeamManagementApp.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,18 +11,16 @@ namespace SportTeamManagementApp.Data.Models
 {
     public abstract class TeamMember
     {
-        private static int nextId = 1;
         public string firstName;
         public string lastName;
         private int age;
         public double salary;
         protected Enum role;
-
-        public int Id { get; private set; }
+        public int? teamId { get; set; }
 
         public TeamMember()
         {
-            Id = nextId++;
+
         }
 
         public string FirstName

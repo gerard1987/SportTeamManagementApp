@@ -12,6 +12,22 @@ namespace SportTeamManagementApp.Data
     {
         public DbSet<Player> Players { get; set; }
         public DbSet<Coach> Coaches { get; set; }
+        public DbSet<Team> Teams { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Team>()
+                .HasOne(t => t.Coach)
+                .WithOne()
+                .HasForeignKey<Team>(t => t.CoachId);
+
+
+            modelBuilder.Entity<Team>()
+                .HasMany(t => t.Players)
+                .WithOne()
+                .HasForeignKey(p => p.teamId);
+        }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -21,8 +37,6 @@ namespace SportTeamManagementApp.Data
             // Configure SQLite as the database provider.
             optionsBuilder.UseSqlite($"Filename={dbPath}");
         }
-
-
     }
 
 }

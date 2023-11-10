@@ -1,4 +1,5 @@
-﻿using SportTeamManagementApp.Data.Enums;
+﻿using SportTeamManagementApp.Data.Entities;
+using SportTeamManagementApp.Data.Enums;
 using SportTeamManagementApp.Data.Models;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace SportTeamManagementApp.Pages
 
             viewModel = App.SharedViewModel;
 
-            CoachToEditComboBox.ItemsSource = viewModel.Coaches.Select(c => new { Key = c.Id, Value = c.FirstName });
+            CoachToEditComboBox.ItemsSource = viewModel.dataProvider.Coaches.Select(c => new { Key = c.Id, Value = c.FirstName });
         }
 
         public async void SelectCoachToEdit(object sender, RoutedEventArgs e)
@@ -45,7 +46,7 @@ namespace SportTeamManagementApp.Pages
                 }
 
                 Int32.TryParse(CoachToEditComboBox.SelectedValue.ToString(), out int coachId);
-                viewModel.CoachSelectedForEdit = viewModel.Coaches.Find(p => p.Id == coachId);
+                viewModel.CoachSelectedForEdit = viewModel.dataProvider.Coaches.Find(p => p.Id == coachId);
 
                 if (viewModel.CoachSelectedForEdit != null)
                 {
@@ -91,7 +92,7 @@ namespace SportTeamManagementApp.Pages
         {
             try
             {
-                CoachModel coachToUpdate = viewModel.Coaches.FirstOrDefault(c => c.Id == viewModel.CoachSelectedForEdit.Id);
+                Coach coachToUpdate = viewModel.dataProvider.Coaches.FirstOrDefault(c => c.Id == viewModel.CoachSelectedForEdit.Id);
 
                 if (coachToUpdate != null)
                 {
@@ -102,7 +103,7 @@ namespace SportTeamManagementApp.Pages
                     coachToUpdate.Role = SoccerCoachRoleEditComboBox.SelectedItem?.ToString();
                 }
 
-                viewModel.CoachSelectedForEdit = new CoachModel();
+                viewModel.CoachSelectedForEdit = new Coach();
 
                 Frame.Navigate(typeof(MainPage));
             }
@@ -124,18 +125,18 @@ namespace SportTeamManagementApp.Pages
         {
             try
             {
-                CoachModel coachToRemove = viewModel.Coaches.FirstOrDefault(c => c.Id == viewModel.CoachSelectedForEdit.Id);
+                Coach coachToRemove = viewModel.dataProvider.Coaches.FirstOrDefault(c => c.Id == viewModel.CoachSelectedForEdit.Id);
                 if (coachToRemove != null)
                 {
-                    foreach (TeamModel team in viewModel.Teams)
+                    foreach (Team team in viewModel.dataProvider.Teams)
                     {
-                        if (team.coach != null && team.coach.Id == coachToRemove.Id)
+                        if (team.Coach != null && team.Coach.Id == coachToRemove.Id)
                         {
-                            team.coach = null;
+                            team.Coach = null;
                         }
                     }
 
-                    viewModel.Coaches.Remove(coachToRemove);
+                    viewModel.dataProvider.Coaches.Remove(coachToRemove);
                 }
 
                 Frame.Navigate(typeof(MainPage));

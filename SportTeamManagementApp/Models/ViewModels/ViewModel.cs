@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using SportTeamManagementApp.Data.Models;
 using SportTeamManagementApp.Data;
+using SportTeamManagementApp.Data.Entities;
 
 namespace SportTeamManagementApp.Pages
 {  
@@ -14,53 +15,24 @@ namespace SportTeamManagementApp.Pages
         public event PropertyChangedEventHandler PropertyChanged;
 
         private AppDbContext _dbContext;
+        public DataProvider dataProvider;
 
-        public List<CoachModel> Coaches { get; set; }
-        public List<PlayerModel> Players { get; set; }
-        public List<TeamModel> Teams { get; set; }
+        public List<Player> SelectedPlayersForTeam { get; set; } = new List<Player>();
+        public Team TeamSelectedForEdit { get; set; }
+        public Player PlayerSelectedForEdit { get; set; }
+        public Coach CoachSelectedForEdit { get; set; }
 
-        public List<PlayerModel> SelectedPlayersForTeam { get; set; }
-
-        public TeamModel TeamSelectedForEdit { get; set; }
-        public PlayerModel PlayerSelectedForEdit { get; set; }
-        public CoachModel CoachSelectedForEdit { get; set; }
-
-        public ViewModel(AppDbContext appDbContext)
+        public ViewModel(AppDbContext appDbContext, DataProvider dataProvider)
         {
             _dbContext = appDbContext;
+            this.dataProvider = dataProvider;
 
-            Coaches = new List<CoachModel>();
-            Players = new List<PlayerModel>();
-            Teams = new List<TeamModel>();
-            SelectedPlayersForTeam = new List<PlayerModel>();
+            SelectedPlayersForTeam = new List<Player>();
         }
 
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public List<PlayerModel> GetAvailablePlayers()
-        {
-            return Players
-                        .Where(p => !Teams
-                        .Any(t => t.players.Contains(p)))
-                        .Select(player => player)
-                        .ToList();
-        }
-
-        public List<CoachModel> GetAvailableCoaches()
-        {
-            return Coaches
-                      .Where(c => !Teams
-                      .Where(t => t.coach != null)
-                      .Any(t => t.coach.Equals(c)))
-                      .Select(c => c).ToList();
-        }
-
-        public List<TeamModel> GetAvailableTeams()
-        {
-            return Teams.Select(t => t).ToList();
         }
     }
 
