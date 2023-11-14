@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace SportTeamManagementApp.Data
 {
@@ -46,6 +48,16 @@ namespace SportTeamManagementApp.Data
                 return teams;
             }
         }
+        public List<Match> Matches
+        {
+            get
+            {
+                return _dbContext.Matches
+                    .Include(m => m.HomeTeam)
+                    .Include(m => m.AwayTeam)
+                    .ToList();
+            }
+        }
 
         public List<Player> GetAvailablePlayers()
         {
@@ -80,6 +92,20 @@ namespace SportTeamManagementApp.Data
                 .ToList();
 
             return team;
+        }
+
+        public List<Player> GetPlayersInMatch(Match match)
+        {
+            return _dbContext.Players
+                .Where(p => p.teamId == match.HomeTeamId || p.teamId == match.AwayTeamId)
+                .ToList();
+        }
+
+
+        public Team GetPlayerTeam(Player player)
+        {
+            return _dbContext.Teams
+                .FirstOrDefault(t => t.Id == player.teamId);
         }
 
         #endregion
@@ -122,6 +148,36 @@ namespace SportTeamManagementApp.Data
             _dbContext.SaveChanges();
         }
 
+        public void CreateMatch(Match match)
+        {
+            Match matchAlreadyExists = _dbContext.Matches.Find(match.Id);
+
+            if (matchAlreadyExists is null)
+            {
+                _dbContext.Matches.Add(match);
+                _dbContext.SaveChanges();
+            }
+            else
+            {
+                throw new InvalidOperationException("Coach already exists!");
+            }
+        }
+
+        public void CreateGoal(Goal goal)
+        {
+            Goal goalAlreadyExists = _dbContext.Goals.Find(goal.Id);
+
+            if (goalAlreadyExists is null)
+            {
+                _dbContext.Goals.Add(goal);
+                _dbContext.SaveChanges();
+            }
+            else
+            {
+                throw new InvalidOperationException("Coach already exists!");
+            }
+        }
+
         #endregion
 
         #region EDITS
@@ -154,6 +210,14 @@ namespace SportTeamManagementApp.Data
         {
             Coach coachToUpdate = _dbContext.Coaches.Find(team.Coach.Id);
             coachToUpdate.teamId = team.Id;
+
+            _dbContext.SaveChanges();
+        }
+
+        public void EditMatch(Match match)
+        {
+            Match matchToEdit = _dbContext.Matches.Find(match.Id);
+            matchToEdit = match;
 
             _dbContext.SaveChanges();
         }

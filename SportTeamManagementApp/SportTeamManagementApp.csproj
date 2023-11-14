@@ -128,6 +128,12 @@
     <Compile Include="Pages\CoachEditPage.xaml.cs">
       <DependentUpon>CoachEditPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\CreateMatchPage.xaml.cs">
+      <DependentUpon>CreateMatchPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\GoalCreatePage.xaml.cs">
+      <DependentUpon>GoalCreatePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\PlayerCreatePage.xaml.cs">
       <DependentUpon>PlayerCreatePage.xaml</DependentUpon>
     </Compile>
@@ -173,6 +179,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\CoachEditPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\CreateMatchPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\GoalCreatePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

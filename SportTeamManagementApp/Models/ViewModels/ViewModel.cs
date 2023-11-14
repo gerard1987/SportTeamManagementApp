@@ -17,10 +17,11 @@ namespace SportTeamManagementApp.Pages
         private AppDbContext _dbContext;
         public DataProvider dataProvider;
 
-        public List<Player> SelectedPlayersForTeam { get; set; } = new List<Player>();
+        public List<Player> SelectedPlayersForTeam { get; set; }
         public Team TeamSelectedForEdit { get; set; }
         public Player PlayerSelectedForEdit { get; set; }
         public Coach CoachSelectedForEdit { get; set; }
+        public Match MatchSelectedForEdit { get; set; }
 
         public ViewModel(AppDbContext appDbContext, DataProvider dataProvider)
         {

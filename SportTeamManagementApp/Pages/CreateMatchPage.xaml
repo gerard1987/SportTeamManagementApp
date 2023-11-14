@@ -1,0 +1,28 @@
+﻿<Page
+    x:Class="SportTeamManagementApp.Pages.CreateGoalPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SportTeamManagementApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+
+        <ContentDialog x:Name="ErrorDialog" Title="Message" PrimaryButtonText="OK">
+            <StackPanel>
+                <TextBlock Text="Your message goes here." />
+            </StackPanel>
+        </ContentDialog>
+
+        <!-- Create Match Section -->
+        <StackPanel VerticalAlignment="Center" x:Name="CreateMatchSection">
+            <TextBlock Text="Create Match" FontSize="20"/>
+            <ComboBox PlaceholderText="Select home team" Margin="10" x:Name="HomeTeamComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
+            <ComboBox PlaceholderText="Select away team" Margin="10" x:Name="AwayTeamComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
+            <Button Content="Create match" Click="CreateMatch" Margin="10"/>
+            <Button Content="Cancel" Click="Cancel" Margin="10"/>
+        </StackPanel>
+    </Grid>
+</Page>

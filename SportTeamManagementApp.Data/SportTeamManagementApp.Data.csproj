@@ -123,6 +123,8 @@
     <Compile Include="AppDbContext.cs" />
     <Compile Include="DataProvider.cs" />
     <Compile Include="Entities\Coach.cs" />
+    <Compile Include="Entities\Goal.cs" />
+    <Compile Include="Entities\Match.cs" />
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Entities\Team.cs" />
     <Compile Include="Enums\SoccerCoachRole.cs" />

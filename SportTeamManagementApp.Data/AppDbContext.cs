@@ -14,6 +14,9 @@ namespace SportTeamManagementApp.Data
         public DbSet<Coach> Coaches { get; set; }
         public DbSet<Team> Teams { get; set; }
 
+        public DbSet<Match> Matches { get; set; }
+        public DbSet<Goal> Goals { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Team>()
@@ -25,9 +28,37 @@ namespace SportTeamManagementApp.Data
                 .HasOne(t => t.Coach)
                 .WithOne(c => c.Team)
                 .HasForeignKey<Coach>(c => c.teamId);
+
+            modelBuilder.Entity<Match>()
+                .HasOne(m => m.HomeTeam)
+                .WithMany()
+                .HasForeignKey(m => m.HomeTeamId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Match>()
+                .HasOne(m => m.AwayTeam)
+                .WithMany()
+                .HasForeignKey(m => m.AwayTeamId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Goal>()
+                .HasOne(g => g.Player)
+                .WithMany()
+                .HasForeignKey(g => g.PlayerId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Goal>()
+                .HasOne(g => g.Match)
+                .WithMany(m => m.Goals)
+                .HasForeignKey(g => g.MatchId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Goal>()
+                .HasOne(g => g.GoalScoredAgainstTeam)
+                .WithMany()
+                .HasForeignKey(g => g.GoalScoredAgainstTeamId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
-
-
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
