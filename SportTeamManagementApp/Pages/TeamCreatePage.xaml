@@ -5,38 +5,56 @@
     xmlns:local="using:SportTeamManagementApp.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local1="using:SportTeamManagementApp"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <!-- Define two columns with widths in the ratio of 70% and 30% -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7*"/>
+            <!-- 70% width -->
+            <ColumnDefinition Width="3*"/>
+            <!-- 30% width -->
+        </Grid.ColumnDefinitions>
 
-        <ContentDialog x:Name="ErrorDialog" Title="Message" PrimaryButtonText="OK">
-            <StackPanel>
-                <TextBlock Text="Your message goes here." />
+        <!-- First section with 70% width -->
+        <Grid Grid.Column="0">
+
+            <ContentDialog x:Name="ErrorDialog" Title="Message" PrimaryButtonText="OK">
+                <StackPanel>
+                    <TextBlock Text="Your message goes here." />
+                </StackPanel>
+            </ContentDialog>
+
+            <!-- Create Team Section -->
+            <StackPanel VerticalAlignment="Center" x:Name="CreateTeamSection">
+                <TextBlock Text="Create Team" FontSize="20"/>
+                <TextBox PlaceholderText="Name" Name="TeamName" Margin="10"/>
+
+                <ComboBox PlaceholderText="Players" Margin="10" x:Name="TeamPlayersComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
+                <Button Content="Add player to team" Click="AddPlayerToSelectionForTeam" Margin="10"/>
+
+                <ListBox x:Name="SelectedPlayersListBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="200">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Value}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <ComboBox PlaceholderText="Select coach" Margin="10" x:Name="TeamCoachesComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
+
+                <Button Content="Create team" Click="CreateTeam" Margin="10"/>
+                <Button Content="Cancel" Click="Cancel" Margin="10"/>
             </StackPanel>
-        </ContentDialog>
-        
-        <!-- Create Team Section -->
-        <StackPanel VerticalAlignment="Center" x:Name="CreateTeamSection">
-            <TextBlock Text="Create Team" FontSize="20"/>
-            <TextBox PlaceholderText="Name" Name="TeamName" Margin="10"/>
-            
-            <ComboBox PlaceholderText="Players" Margin="10" x:Name="TeamPlayersComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
-            <Button Content="Add player to team" Click="AddPlayerToSelectionForTeam" Margin="10"/>
 
-            <ListBox x:Name="SelectedPlayersListBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="200">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Value}" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+        </Grid>
 
-            <ComboBox PlaceholderText="Select coach" Margin="10" x:Name="TeamCoachesComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
+        <!-- Second section with 30% width -->
+        <Grid Grid.Column="1">
+            <local1:Results VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+        </Grid>
 
-            <Button Content="Create team" Click="CreateTeam" Margin="10"/>
-            <Button Content="Cancel" Click="Cancel" Margin="10"/>
-        </StackPanel>
-        
     </Grid>
 </Page>

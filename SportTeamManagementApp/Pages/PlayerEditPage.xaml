@@ -5,37 +5,55 @@
     xmlns:local="using:SportTeamManagementApp.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local1="using:SportTeamManagementApp"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <!-- Define two columns with widths in the ratio of 70% and 30% -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7*"/>
+            <!-- 70% width -->
+            <ColumnDefinition Width="3*"/>
+            <!-- 30% width -->
+        </Grid.ColumnDefinitions>
 
-        <ContentDialog x:Name="ErrorDialog" Title="Message" PrimaryButtonText="OK">
-            <StackPanel>
-                <TextBlock Text="Your message goes here." />
+        <!-- First section with 70% width -->
+        <Grid Grid.Column="0">
+
+            <ContentDialog x:Name="ErrorDialog" Title="Message" PrimaryButtonText="OK">
+                <StackPanel>
+                    <TextBlock Text="Your message goes here." />
+                </StackPanel>
+            </ContentDialog>
+
+            <!-- Edit Select Player Section -->
+            <StackPanel VerticalAlignment="Center" x:Name="EditPlayerSelectSection">
+                <TextBlock Text="Edit Player" FontSize="20"/>
+                <ComboBox PlaceholderText="Players to edit" Margin="10" x:Name="PlayerToEditComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
+                <Button Content="Select" Click="SelectPlayerToEdit" Margin="10"/>
+                <Button Content="Cancel" Click="Cancel" Margin="10"/>
             </StackPanel>
-        </ContentDialog>
 
-        <!-- Edit Select Player Section -->
-        <StackPanel VerticalAlignment="Center" x:Name="EditPlayerSelectSection">
-            <TextBlock Text="Edit Player" FontSize="20"/>
-            <ComboBox PlaceholderText="Players to edit" Margin="10" x:Name="PlayerToEditComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
-            <Button Content="Select" Click="SelectPlayerToEdit" Margin="10"/>
-            <Button Content="Cancel" Click="Cancel" Margin="10"/>
-        </StackPanel>
+            <!-- Edit Player Section -->
+            <StackPanel VerticalAlignment="Center" x:Name="EditPlayerSection" Visibility="Collapsed">
+                <TextBox PlaceholderText="FirstName" Name="PlayerEditFirstName" Margin="10"/>
+                <TextBox PlaceholderText="LastName" Name="PlayerEditLastName" Margin="10"/>
+                <TextBox PlaceholderText="Age" Name="PlayerEditAge" Margin="10"/>
+                <TextBox PlaceholderText="Salary" Name="PlayerEditSalary" Margin="10"/>
+                <ComboBox PlaceholderText="Role" Margin="10" x:Name="SoccerPlayerRoleEditComboBox" />
 
-        <!-- Edit Player Section -->
-        <StackPanel VerticalAlignment="Center" x:Name="EditPlayerSection" Visibility="Collapsed">
-            <TextBox PlaceholderText="FirstName" Name="PlayerEditFirstName" Margin="10"/>
-            <TextBox PlaceholderText="LastName" Name="PlayerEditLastName" Margin="10"/>
-            <TextBox PlaceholderText="Age" Name="PlayerEditAge" Margin="10"/>
-            <TextBox PlaceholderText="Salary" Name="PlayerEditSalary" Margin="10"/>
-            <ComboBox PlaceholderText="Role" Margin="10" x:Name="SoccerPlayerRoleEditComboBox" />
+                <Button Content="Save" Click="EditPlayer" Margin="10"/>
+                <Button Content="Remove" Click="RemovePlayer" Margin="10"/>
+                <Button Content="Cancel" Click="Cancel" Margin="10"/>
+            </StackPanel>
 
-            <Button Content="Save" Click="EditPlayer" Margin="10"/>
-            <Button Content="Remove" Click="RemovePlayer" Margin="10"/>
-            <Button Content="Cancel" Click="Cancel" Margin="10"/>
-        </StackPanel>
+        </Grid>
+
+        <!-- Second section with 30% width -->
+        <Grid Grid.Column="1">
+            <local1:Results VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+        </Grid>
 
     </Grid>
 </Page>

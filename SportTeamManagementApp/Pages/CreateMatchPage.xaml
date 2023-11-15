@@ -10,19 +10,37 @@
 
     <Grid>
 
-        <ContentDialog x:Name="ErrorDialog" Title="Message" PrimaryButtonText="OK">
-            <StackPanel>
-                <TextBlock Text="Your message goes here." />
-            </StackPanel>
-        </ContentDialog>
+        <!-- Define two columns with widths in the ratio of 70% and 30% -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7*"/>
+            <!-- 70% width -->
+            <ColumnDefinition Width="3*"/>
+            <!-- 30% width -->
+        </Grid.ColumnDefinitions>
 
-        <!-- Create Match Section -->
-        <StackPanel VerticalAlignment="Center" x:Name="CreateMatchSection">
-            <TextBlock Text="Create Match" FontSize="20"/>
-            <ComboBox PlaceholderText="Select home team" Margin="10" x:Name="HomeTeamComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
-            <ComboBox PlaceholderText="Select away team" Margin="10" x:Name="AwayTeamComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
-            <Button Content="Create match" Click="CreateMatch" Margin="10"/>
-            <Button Content="Cancel" Click="Cancel" Margin="10"/>
-        </StackPanel>
+        <!-- First section with 70% width -->
+        <Grid Grid.Column="0">
+
+            <ContentDialog x:Name="ErrorDialog" Title="Message" PrimaryButtonText="OK">
+                <StackPanel>
+                    <TextBlock Text="Your message goes here." />
+                </StackPanel>
+            </ContentDialog>
+
+            <!-- Create Match Section -->
+            <StackPanel VerticalAlignment="Center" x:Name="CreateMatchSection">
+                <TextBlock Text="Create Match" FontSize="20"/>
+                <ComboBox PlaceholderText="Select home team" Margin="10" x:Name="HomeTeamComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
+                <ComboBox PlaceholderText="Select away team" Margin="10" x:Name="AwayTeamComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
+                <Button Content="Create match" Click="CreateMatch" Margin="10"/>
+                <Button Content="Cancel" Click="Cancel" Margin="10"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Second section with 30% width -->
+        <Grid Grid.Column="1">
+            <local:Results VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+        </Grid>
+
     </Grid>
 </Page>

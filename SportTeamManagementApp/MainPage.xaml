@@ -10,27 +10,46 @@
     >
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <ContentDialog x:Name="ErrorDialog" Title="Message" PrimaryButtonText="OK">
-            <StackPanel>
-                <TextBlock Text="Your message goes here." />
-            </StackPanel>
-        </ContentDialog>
+        
+        <!-- Define two columns with widths in the ratio of 70% and 30% -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7*"/>
+            <!-- 70% width -->
+            <ColumnDefinition Width="3*"/>
+            <!-- 30% width -->
+        </Grid.ColumnDefinitions>
 
-        <SplitView Name="MainSplitView" DisplayMode="CompactOverlay" CompactPaneLength="200" OpenPaneLength="200">
-            <!-- Menu Pane -->
-            <SplitView.Pane>
-                <ListView Name="MainMenu" SelectionChanged="MainMenu_SelectionChanged">
-                    <ListViewItem Content="Create Coach"/>
-                    <ListViewItem Content="Create Player"/>
-                    <ListViewItem Content="Create Team"/>
-                    <ListViewItem Content="Edit Team"/>
-                    <ListViewItem Content="Edit Player"/>
-                    <ListViewItem Content="Edit Coach"/>
-                    <ListViewItem Content="Create match"/>
-                    <ListViewItem Content="Add goal to match"/>
-                    <ListViewItem Content="Exit"/>
-                </ListView>
-            </SplitView.Pane>
-        </SplitView>
+        <!-- First section with 70% width -->
+        <Grid Grid.Column="0">
+            
+            <ContentDialog x:Name="ErrorDialog" Title="Message" PrimaryButtonText="OK">
+                <StackPanel>
+                    <TextBlock Text="Your message goes here." />
+                </StackPanel>
+            </ContentDialog>
+
+            <SplitView Name="MainSplitView" DisplayMode="CompactOverlay" CompactPaneLength="200" OpenPaneLength="200">
+                <!-- Menu Pane -->
+                <SplitView.Pane>
+                    <ListView Name="MainMenu" SelectionChanged="MainMenu_SelectionChanged">
+                        <ListViewItem Content="Create Coach"/>
+                        <ListViewItem Content="Create Player"/>
+                        <ListViewItem Content="Create Team"/>
+                        <ListViewItem Content="Edit Team"/>
+                        <ListViewItem Content="Edit Player"/>
+                        <ListViewItem Content="Edit Coach"/>
+                        <ListViewItem Content="Create match"/>
+                        <ListViewItem Content="Add goal to match"/>
+                        <ListViewItem Content="Exit"/>
+                    </ListView>
+                </SplitView.Pane>
+            </SplitView>
+        </Grid>
+
+        <!-- Second section with 30% width -->
+        <Grid Grid.Column="1">
+            <local:Results VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+        </Grid>
     </Grid>
+    
 </Page>
