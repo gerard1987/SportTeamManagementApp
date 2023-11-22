@@ -52,7 +52,7 @@
 
         <!-- Second section with 30% width -->
         <Grid Grid.Column="1">
-            <local1:Results VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+            <local1:Results VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
         </Grid>
     </Grid>
 

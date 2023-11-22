@@ -5,7 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-
+using System.Text.Json;
+using Windows.Storage;
 
 namespace SportTeamManagementApp.Data
 {
@@ -55,6 +56,7 @@ namespace SportTeamManagementApp.Data
                 return _dbContext.Matches
                     .Include(m => m.HomeTeam)
                     .Include(m => m.AwayTeam)
+                    .Include(m => m.Goals)
                     .ToList();
             }
         }
@@ -156,10 +158,12 @@ namespace SportTeamManagementApp.Data
             {
                 _dbContext.Matches.Add(match);
                 _dbContext.SaveChanges();
+
+                this.StoreMatchInJsonFile(match);
             }
             else
             {
-                throw new InvalidOperationException("Coach already exists!");
+                throw new InvalidOperationException("Match already exists!");
             }
         }
 
@@ -218,8 +222,12 @@ namespace SportTeamManagementApp.Data
         {
             Match matchToEdit = _dbContext.Matches.Find(match.Id);
             matchToEdit = match;
+            matchToEdit.HomeTeamScore = match.HomeTeamScore;
+            matchToEdit.AwayTeamScore = match.AwayTeamScore;
 
             _dbContext.SaveChanges();
+
+            this.StoreMatchInJsonFile(match);
         }
 
         #endregion
@@ -250,5 +258,83 @@ namespace SportTeamManagementApp.Data
         }
 
         #endregion
+
+        #region methods
+        public async void StoreMatchInJsonFile(Match match)
+        {
+            string fileName = "matches.json";
+
+            // Get the local folder for the app
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+
+            List<Match> matches = await ReadMatchesFromJson(fileName);
+
+            if (matches != null)
+            {
+                Match matchToUpdate = matches.FirstOrDefault(m => m.Id.Equals(match.Id));
+
+                if (matchToUpdate != null)
+                {
+                    matchToUpdate.Goals = match.Goals;
+
+                    matchToUpdate.AwayTeamScore = match.AwayTeamScore;
+                    matchToUpdate.HomeTeamScore = match.HomeTeamScore;
+                }
+                else
+                {
+                    matches.Add(match);
+                }
+            }
+            else
+            {
+                matches = new List<Match>
+                {
+                    match
+                };
+            }
+
+            // Create a new file or overwrite if it already exists
+            StorageFile jsonFile = await localFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+
+            string jsonData = JsonSerializer.Serialize(matches);
+
+            // Write the JSON string to the file
+            await FileIO.WriteTextAsync(jsonFile, jsonData);
+        }
+
+        public async Task<List<Match>> ReadMatchesFromJson(string fileName)
+        {
+            try
+            {
+                StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+
+                // Check if the file exists
+                if (await localFolder.TryGetItemAsync(fileName) is StorageFile jsonFile)
+                {
+                    // Read the JSON content from the file
+                    string jsonData = await FileIO.ReadTextAsync(jsonFile);
+
+                    // Deserialize the JSON content into a List<Match>
+                    List<Match> matches = JsonSerializer.Deserialize<List<Match>>(jsonData);
+
+                    return matches;
+                }
+                else
+                {
+                    // Handle if the file does not exist
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions if any
+                Console.WriteLine($"Error reading JSON file: {ex.Message}");
+                return null;
+            }
+        }
+
+
+        #endregion
+
     }
 }

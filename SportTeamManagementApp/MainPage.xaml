@@ -48,7 +48,7 @@
 
         <!-- Second section with 30% width -->
         <Grid Grid.Column="1">
-            <local:Results VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+            <local:Results VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
         </Grid>
     </Grid>
     
