@@ -51,8 +51,6 @@ namespace SportTeamManagementApp.Pages
 
                     if (viewModel.GoalSelectedForEdit != null)
                     {
-                        TeamScoredFor.ItemsSource = viewModel.dataProvider.Teams.Select(t => new { Key = t.Id, Value = t.Name }).ToList();
-                        TeamScoredAgainst.ItemsSource = viewModel.dataProvider.Teams.Select(t => new { Key = t.Id, Value = t.Name }).ToList();
                         PlayerComboBox.ItemsSource = viewModel.dataProvider.Players.Select(p => new { Key = p.Id, Value = p.firstName }).ToList();
                         MatchScoredIn.ItemsSource = viewModel.dataProvider.Matches.Select(m => new { Key = m.Id, Value = $"{m.HomeTeam.Name} vs {m.AwayTeam.Name}" }).ToList();
 
@@ -95,6 +93,9 @@ namespace SportTeamManagementApp.Pages
                 }
 
                 await viewModel.dataProvider.EditMatchAsync(match);
+
+                TeamScoredFor.ItemsSource = viewModel.dataProvider.Teams.Where(team => team.Id.Equals(match.HomeTeamId) || team.Id.Equals(match.AwayTeamId)).Select(t => new { Key = t.Id, Value = t.Name }).ToList();
+                TeamScoredAgainst.ItemsSource = viewModel.dataProvider.Teams.Where(team => team.Id.Equals(match.HomeTeamId) || team.Id.Equals(match.AwayTeamId)).Select(t => new { Key = t.Id, Value = t.Name }).ToList();
 
                 AsignGoalSection.Visibility = Visibility.Collapsed;
                 EditGoalSection.Visibility = Visibility.Visible;
