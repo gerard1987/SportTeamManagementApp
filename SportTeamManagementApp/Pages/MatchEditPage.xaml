@@ -46,10 +46,9 @@
                 <TextBlock Text="Select Away Team" Margin="5"/>
                 <ComboBox PlaceholderText="Away Teams" Margin="5" x:Name="AwayTeamsComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
 
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Content="Save" Click="EditMatch" Margin="5"/>
-                    <Button Content="Cancel" Click="Cancel" Margin="5"/>
-                </StackPanel>
+                <Button Content="Remove" Click="RemoveMatch" Margin="10"/>
+                <Button Content="Save" Click="EditMatch" Margin="5"/>
+                <Button Content="Cancel" Click="Cancel" Margin="5"/>
             </StackPanel>
 
         </Grid>

@@ -110,6 +110,28 @@ namespace SportTeamManagementApp.Pages
                 await ShowExceptionMessage($"Something went wrong {ex.Message} ");
             }
         }
+        private async void RemoveMatch(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Match matchToRemove = viewModel.dataProvider.Matches.FirstOrDefault(m => m.Id == viewModel.MatchSelectedForEdit.Id);
+                if (matchToRemove != null)
+                {
+                    viewModel.dataProvider.RemoveMatch(matchToRemove);
+                }
+
+                Frame.Navigate(typeof(MainPage));
+            }
+            catch (InvalidOperationException ioEx)
+            {
+                await ShowExceptionMessage(ioEx.Message);
+            }
+            catch (Exception ex)
+            {
+                await ShowExceptionMessage($"Something went wrong {ex.Message} ");
+            }
+        }
+
 
         private void Cancel(object sender, RoutedEventArgs e)
         {

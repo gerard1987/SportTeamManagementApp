@@ -278,6 +278,14 @@ namespace SportTeamManagementApp.Data
             _dbContext.SaveChanges();
         }
 
+        public void RemoveMatch(Match match)
+        {
+            Match matchToDelete = _dbContext.Matches.Find(match.Id);
+
+            _dbContext.Matches.Remove(matchToDelete);
+            _dbContext.SaveChanges();
+        }
+
         #endregion
 
         #region methods
