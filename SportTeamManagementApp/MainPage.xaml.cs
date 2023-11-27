@@ -62,6 +62,9 @@ namespace SportTeamManagementApp
                     case "Edit match":
                         Frame.Navigate(typeof(MatchEditPage));
                         break;
+                    case "Edit goal":
+                        Frame.Navigate(typeof(GoalEditPage));
+                        break;
                     case "Exit":
                         Application.Current.Exit();
                         break;

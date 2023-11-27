@@ -41,6 +41,7 @@
                         <ListViewItem Content="Create match"/>
                         <ListViewItem Content="Add goal to match"/>
                         <ListViewItem Content="Edit match"/>
+                        <ListViewItem Content="Edit goal"/>
                         <ListViewItem Content="Exit"/>
                     </ListView>
                 </SplitView.Pane>

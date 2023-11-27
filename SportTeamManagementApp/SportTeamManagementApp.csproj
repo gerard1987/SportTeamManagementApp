@@ -134,6 +134,9 @@
     <Compile Include="Pages\GoalCreatePage.xaml.cs">
       <DependentUpon>GoalCreatePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\GoalEditPage.xaml.cs">
+      <DependentUpon>GoalEditPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\MatchEditPage.xaml.cs">
       <DependentUpon>MatchEditPage.xaml</DependentUpon>
     </Compile>
@@ -196,6 +199,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\GoalCreatePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\GoalEditPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
