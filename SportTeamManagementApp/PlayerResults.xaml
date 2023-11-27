@@ -16,7 +16,6 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" Margin="5">
-                            <TextBlock Text="{Binding PlayerId}" Width="50"/>
                             <TextBlock Text="{Binding PlayerName}" Width="200"/>
                             <TextBlock Text="{Binding GoalsScored}" Width="100"/>
                         </StackPanel>

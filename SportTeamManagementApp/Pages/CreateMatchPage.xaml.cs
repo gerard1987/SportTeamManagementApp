@@ -51,7 +51,7 @@ namespace SportTeamManagementApp.Pages
                     AwayTeamId = awayTeam.Id
                 };
 
-                viewModel.dataProvider.CreateMatch(newMatch);
+                await viewModel.dataProvider.CreateMatchAsync(newMatch);
 
                 Frame.Navigate(typeof(MainPage));
 

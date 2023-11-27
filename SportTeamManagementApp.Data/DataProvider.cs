@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using Windows.Storage;
+using System.IO;
 
 namespace SportTeamManagementApp.Data
 {
@@ -160,7 +161,7 @@ namespace SportTeamManagementApp.Data
             _dbContext.SaveChanges();
         }
 
-        public void CreateMatch(Match match)
+        public async Task CreateMatchAsync(Match match)
         {
             Match matchAlreadyExists = _dbContext.Matches.Find(match.Id);
 
@@ -170,6 +171,11 @@ namespace SportTeamManagementApp.Data
                 _dbContext.SaveChanges();
 
                 this.StoreMatchInJsonFile(match);
+
+                foreach (Goal goal in match.Goals)
+                {
+                    await StoreGoalInJsonFile(goal);
+                }
             }
             else
             {
@@ -228,7 +234,7 @@ namespace SportTeamManagementApp.Data
             _dbContext.SaveChanges();
         }
 
-        public void EditMatch(Match match)
+        public async Task EditMatchAsync(Match match)
         {
             Match matchToEdit = _dbContext.Matches.Find(match.Id);
             matchToEdit = match;
@@ -238,6 +244,11 @@ namespace SportTeamManagementApp.Data
             _dbContext.SaveChanges();
 
             this.StoreMatchInJsonFile(match);
+
+            foreach (Goal goal in match.Goals)
+            {
+                await StoreGoalInJsonFile(goal);
+            }
         }
 
         #endregion
@@ -309,7 +320,13 @@ namespace SportTeamManagementApp.Data
             string jsonData = JsonSerializer.Serialize(matches);
 
             // Write the JSON string to the file
-            await FileIO.WriteTextAsync(jsonFile, jsonData);
+
+            using (Stream stream = await jsonFile.OpenStreamForWriteAsync())
+            {
+                stream.SetLength(0); // Clear the file before writing
+                await JsonSerializer.SerializeAsync(stream, matches);
+            }
+
         }
 
         public async Task<List<Match>> ReadMatchesFromJson(string fileName)
@@ -343,6 +360,83 @@ namespace SportTeamManagementApp.Data
             }
         }
 
+        public async Task StoreGoalInJsonFile(Goal goal)
+        {
+            string fileName = "goals.json";
+
+            // Get the local folder for the app
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+
+            List<Goal> goals = await ReadGoalsFromJson(fileName);
+
+            if (goals != null)
+            {
+                Goal goalToUpdate = goals.FirstOrDefault(g => g.Id.Equals(goal.Id));
+
+                if (goalToUpdate != null)
+                {
+                    goalToUpdate.GoalScoredAgainstTeamId = goal.GoalScoredAgainstTeamId;
+                    goalToUpdate.GoalScoredForTeamId = goal.GoalScoredForTeamId;
+                    goalToUpdate.PlayerId = goal.PlayerId;
+                    goalToUpdate.MatchId = goal.MatchId;
+                }
+                else
+                {
+                    goals.Add(goal);
+                }
+            }
+            else
+            {
+                goals = new List<Goal>
+                {
+                    goal
+                };
+            }
+
+            // Create a new file or overwrite if it already exists
+            StorageFile jsonFile = await localFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+
+            string jsonData = JsonSerializer.Serialize(goals);
+
+            // Write the JSON string to the file
+
+            using (Stream stream = await jsonFile.OpenStreamForWriteAsync())
+            {
+                stream.SetLength(0); // Clear the file before writing
+                await JsonSerializer.SerializeAsync(stream, goals);
+            }
+        }
+
+        public async Task<List<Goal>> ReadGoalsFromJson(string fileName)
+        {
+            try
+            {
+                StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+
+                // Check if the file exists
+                if (await localFolder.TryGetItemAsync(fileName) is StorageFile jsonFile)
+                {
+                    // Read the JSON content from the file
+                    string jsonData = await FileIO.ReadTextAsync(jsonFile);
+
+                    // Deserialize the JSON content into a List<Match>
+                    List<Goal> goals = JsonSerializer.Deserialize<List<Goal>>(jsonData);
+
+                    return goals;
+                }
+                else
+                {
+                    // Handle if the file does not exist
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions if any
+                Console.WriteLine($"Error reading JSON file: {ex.Message}");
+                return null;
+            }
+        }
 
         #endregion
 

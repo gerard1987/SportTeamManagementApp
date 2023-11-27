@@ -101,7 +101,7 @@ namespace SportTeamManagementApp.Pages
                 };
 
                 viewModel.MatchSelectedForEdit.Goals.Add(newGoal);
-                viewModel.dataProvider.EditMatch(viewModel.MatchSelectedForEdit);
+                await viewModel.dataProvider.EditMatchAsync(viewModel.MatchSelectedForEdit);
 
                 Frame.Navigate(typeof(MainPage));
             }
