@@ -61,6 +61,16 @@ namespace SportTeamManagementApp.Data
             }
         }
 
+        public List<Goal> Goals
+        {
+            get
+            {
+                return _dbContext.Goals
+                    .Include(g => g.Player)
+                    .ToList();
+            }
+        }
+
         public List<Player> GetAvailablePlayers()
         {
             return _dbContext.Players.ToList()

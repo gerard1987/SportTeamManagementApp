@@ -23,28 +23,27 @@ using Windows.UI.Xaml.Navigation;
 
 namespace SportTeamManagementApp
 {
-    public sealed partial class Results : UserControl
+    public sealed partial class PlayerResults : UserControl
     {
         ViewModel viewModel;
 
-        public Results()
+        public PlayerResults()
         {
             this.InitializeComponent();
 
             viewModel = App.SharedViewModel;
 
-            var matchDetails = viewModel.dataProvider.Matches
-                .Select(match => new
+            var playerGoalDetails = viewModel.dataProvider.Goals
+                .GroupBy(goal => goal.PlayerId)
+                .Select(group => new
                 {
-                    MatchId = match.Id,
-                    HomeTeamName = match.HomeTeam.Name,
-                    AwayTeamName = match.AwayTeam.Name,
-                    HomeTeamScore = match.HomeTeamScore,
-                    AwayTeamScore = match.AwayTeamScore
+                    PlayerId = group.Key,
+                    PlayerName = group.FirstOrDefault()?.Player.firstName,
+                    GoalsScored = group.Count()
                 })
                 .ToList();
 
-            MatchesListBox.ItemsSource = matchDetails;
+            PlayerGoalsListBox.ItemsSource = playerGoalDetails;
 
         }
     }

@@ -40,6 +40,7 @@
         <!-- Second section with 30% width -->
         <Grid Grid.Column="1">
             <local:Results VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+            <local:PlayerResults HorizontalAlignment="Right" VerticalAlignment="Bottom" />
         </Grid>
 
     </Grid>

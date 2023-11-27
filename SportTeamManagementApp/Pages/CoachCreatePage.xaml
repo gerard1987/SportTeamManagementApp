@@ -44,6 +44,7 @@
         <Grid Grid.Column="1">
             <!-- Always visible window -->
             <local:Results HorizontalAlignment="Right"/>
+            <local:PlayerResults HorizontalAlignment="Right" VerticalAlignment="Bottom" />
         </Grid>
     </Grid>
 
