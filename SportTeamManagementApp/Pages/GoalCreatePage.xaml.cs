@@ -103,6 +103,8 @@ namespace SportTeamManagementApp.Pages
                 viewModel.MatchSelectedForEdit.Goals.Add(newGoal);
                 await viewModel.dataProvider.EditMatchAsync(viewModel.MatchSelectedForEdit);
 
+                viewModel.MatchSelectedForEdit = new Match();
+
                 Frame.Navigate(typeof(MainPage));
             }
             catch (InvalidOperationException ioEx)

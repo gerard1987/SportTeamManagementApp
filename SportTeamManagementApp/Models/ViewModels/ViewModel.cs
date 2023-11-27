@@ -22,6 +22,7 @@ namespace SportTeamManagementApp.Pages
         public Player PlayerSelectedForEdit { get; set; }
         public Coach CoachSelectedForEdit { get; set; }
         public Match MatchSelectedForEdit { get; set; }
+        public Goal GoalSelectedForEdit { get; set; }
 
         public ViewModel(AppDbContext appDbContext, DataProvider dataProvider)
         {
