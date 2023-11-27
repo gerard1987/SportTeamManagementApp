@@ -286,6 +286,14 @@ namespace SportTeamManagementApp.Data
             _dbContext.SaveChanges();
         }
 
+        public void RemoveGoal(Goal goal)
+        {
+            Goal goalToDelete = _dbContext.Goals.Find(goal.Id);
+
+            _dbContext.Goals.Remove(goalToDelete);
+            _dbContext.SaveChanges();
+        }
+
         #endregion
 
         #region methods

@@ -164,6 +164,28 @@ namespace SportTeamManagementApp.Pages
             }
         }
 
+        private async void RemoveGoal(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Goal goalToRemove = viewModel.dataProvider.Goals.FirstOrDefault(g => g.Id == viewModel.GoalSelectedForEdit.Id);
+                if (goalToRemove != null)
+                {
+                    viewModel.dataProvider.RemoveGoal(goalToRemove);
+                }
+
+                Frame.Navigate(typeof(MainPage));
+            }
+            catch (InvalidOperationException ioEx)
+            {
+                await ShowExceptionMessage(ioEx.Message);
+            }
+            catch (Exception ex)
+            {
+                await ShowExceptionMessage($"Something went wrong {ex.Message} ");
+            }
+        }
+
         private void Cancel(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(MainPage));

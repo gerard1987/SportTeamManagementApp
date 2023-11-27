@@ -42,10 +42,9 @@
                 <TextBlock Text="Select match of goal" Margin="5"/>
                 <ComboBox PlaceholderText="Played matches" Margin="5" x:Name="MatchScoredIn" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
 
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Content="Save" Click="AssignGoal" Margin="5"/>
-                    <Button Content="Cancel" Click="Cancel" Margin="5"/>
-                </StackPanel>
+                <Button Content="Save" Click="AssignGoal" Margin="5"/>
+                <Button Content="Remove" Click="RemoveGoal" Margin="10"/>
+                <Button Content="Cancel" Click="Cancel" Margin="5"/>
             </StackPanel>
 
             <!-- Edit Goal Section -->
