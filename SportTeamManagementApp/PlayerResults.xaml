@@ -12,6 +12,10 @@
 
     <Grid>
         <StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock Text="Player Name" Width="200" FontWeight="Bold"/>
+                <TextBlock Text="Goals Scored" Width="100" FontWeight="Bold"/>
+            </StackPanel>
             <ListBox x:Name="PlayerGoalsListBox">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -24,4 +28,5 @@
             </ListBox>
         </StackPanel>
     </Grid>
+
 </UserControl>

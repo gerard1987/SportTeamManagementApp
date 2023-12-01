@@ -12,6 +12,14 @@
 
     <Grid>
         <StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock Text="ID" Width="50" FontWeight="Bold"/>
+                <TextBlock Text="HomeTeam" Width="200" FontWeight="Bold"/>
+                <TextBlock Text="Score" Width="50" FontWeight="Bold"/>
+                <TextBlock Text="vs" Width="30" FontWeight="Bold"/>
+                <TextBlock Text="Score" Width="50" FontWeight="Bold"/>
+                <TextBlock Text="AwayTeam" Width="200" FontWeight="Bold"/>
+            </StackPanel>
             <ListBox x:Name="MatchesListBox">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -28,4 +36,5 @@
             </ListBox>
         </StackPanel>
     </Grid>
+
 </UserControl>
