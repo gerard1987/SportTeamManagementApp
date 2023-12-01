@@ -28,7 +28,7 @@
 
             <!-- Edit Select Match Section -->
             <StackPanel VerticalAlignment="Center" x:Name="EditMatchSelectSection">
-                <TextBlock Text="Edit Team" FontSize="20"/>
+                <TextBlock Text="Edit Match" FontSize="20"/>
                 <ComboBox PlaceholderText="Teams" Margin="10" x:Name="MatchesToEditComboBox" DisplayMemberPath = "Value" SelectedValuePath = "Key" />
                 <Button Content="Select" Click="SelectMatchToEdit" Margin="10"/>
                 <Button Content="Cancel" Click="Cancel" Margin="10"/>

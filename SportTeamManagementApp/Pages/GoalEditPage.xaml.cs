@@ -34,7 +34,7 @@ namespace SportTeamManagementApp.Pages
             GoalsToEditComboBox.ItemsSource = viewModel.dataProvider.Goals.Select(goal => new
             {
                 Key = goal.Id,
-                Value = $"Goal scored by {goal.Player.firstName} for {goal.GoalScoredForTeam.Name} against {goal.GoalScoredAgainstTeam.Name}",
+                Value = $"{goal.Id} : Goal scored by {goal.Player.firstName} for {goal.GoalScoredForTeam.Name} against {goal.GoalScoredAgainstTeam.Name} in match {goal.MatchId}",
             })
             .ToList();
         }

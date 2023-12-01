@@ -284,6 +284,8 @@ namespace SportTeamManagementApp.Data
 
             _dbContext.Matches.Remove(matchToDelete);
             _dbContext.SaveChanges();
+
+            RemoveMatchInJsonFile(matchToDelete);
         }
 
         public void RemoveGoal(Goal goal)
@@ -292,6 +294,8 @@ namespace SportTeamManagementApp.Data
 
             _dbContext.Goals.Remove(goalToDelete);
             _dbContext.SaveChanges();
+
+            RemoveGoalInJsonFile(goalToDelete);
         }
 
         #endregion
@@ -328,6 +332,40 @@ namespace SportTeamManagementApp.Data
                 {
                     match
                 };
+            }
+
+            // Create a new file or overwrite if it already exists
+            StorageFile jsonFile = await localFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+
+            string jsonData = JsonSerializer.Serialize(matches);
+
+            // Write the JSON string to the file
+
+            using (Stream stream = await jsonFile.OpenStreamForWriteAsync())
+            {
+                stream.SetLength(0); // Clear the file before writing
+                await JsonSerializer.SerializeAsync(stream, matches);
+            }
+
+        }
+
+        public async void RemoveMatchInJsonFile(Match match)
+        {
+            string fileName = "matches.json";
+
+            // Get the local folder for the app
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+
+            List<Match> matches = await ReadMatchesFromJson(fileName);
+
+            if (matches != null)
+            {
+                Match matchToRemove = matches.FirstOrDefault(m => m.Id.Equals(match.Id));
+
+                if (matchToRemove != null)
+                {
+                    matches.Remove(matchToRemove);
+                }
             }
 
             // Create a new file or overwrite if it already exists
@@ -407,6 +445,39 @@ namespace SportTeamManagementApp.Data
                 {
                     goal
                 };
+            }
+
+            // Create a new file or overwrite if it already exists
+            StorageFile jsonFile = await localFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+
+            string jsonData = JsonSerializer.Serialize(goals);
+
+            // Write the JSON string to the file
+
+            using (Stream stream = await jsonFile.OpenStreamForWriteAsync())
+            {
+                stream.SetLength(0); // Clear the file before writing
+                await JsonSerializer.SerializeAsync(stream, goals);
+            }
+        }
+
+        public async void RemoveGoalInJsonFile(Goal goal)
+        {
+            string fileName = "goals.json";
+
+            // Get the local folder for the app
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+
+            List<Goal> goals = await ReadGoalsFromJson(fileName);
+
+            if (goals != null)
+            {
+                Goal goalToRemove = goals.FirstOrDefault(g => g.Id.Equals(goal.Id));
+
+                if (goalToRemove != null)
+                {
+                    goals.Remove(goalToRemove);
+                }
             }
 
             // Create a new file or overwrite if it already exists

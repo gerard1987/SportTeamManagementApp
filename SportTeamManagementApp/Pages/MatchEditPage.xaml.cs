@@ -34,7 +34,7 @@ namespace SportTeamManagementApp.Pages
             MatchesToEditComboBox.ItemsSource = viewModel.dataProvider.Matches.Select(match => new
             {
                 Key = match.Id,
-                Value = $"{match.HomeTeam.Name} vs {match.AwayTeam.Name}",
+                Value = $"{match.Id} : {match.HomeTeam.Name} vs {match.AwayTeam.Name}",
             })
             .ToList();
         }
